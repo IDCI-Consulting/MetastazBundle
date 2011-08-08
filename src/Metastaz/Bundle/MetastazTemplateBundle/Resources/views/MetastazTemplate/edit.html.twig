@@ -1,0 +1,71 @@
+{% extends 'MetastazTemplateBundle::base.html.twig' %}
+
+{% block content %}
+<div id="header">
+    <h1>MetastazTemplate edit</h1>
+</div>
+
+<form action="{{ path('metastaz_template_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+    {{ form_widget(edit_form._token) }}
+    <fieldset>
+        <div class="inputs">
+            {{ form_label(edit_form.name) }}
+            {{ form_widget(edit_form.name) }}
+            <button type="submit">Save</button>
+        </div>
+    </fieldset>
+        
+    <p>
+        
+    </p>
+    
+    <div class="spacer"></div>
+
+    
+    {% if metastaz_fields | length %}
+    <table id="fields_list">
+        <tr>
+            <th>Namespace</th>
+            <th>Key</th>
+            <th>Indexed</th>
+            <th>Type</th>
+            <th>Options</th>
+            <th>Actions</th>
+        </tr>
+        {% for field in metastaz_fields %}
+        <tr>
+            <td>{{ field.metaNamespace }}</td>
+            <td>{{ field.metaKey }}</td>
+            <td>{{ field.isIndexed }}</td>
+            <td>{{ field.getMetastazFieldType() }}</td>
+            <td>{{ field.options }}</td>
+            <td class="actions">
+                <ul>
+                    <li><a href="{{ path('metastaz_template_field_edit', { 'id': field.id }) }}">edit</a></li>
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <a class="action new" href="{{ path('metastaz_template_field_new', { 'id': entity.id }) }}">Create new field</a>
+
+    
+
+    
+</form>
+
+<ul class="record_actions">
+    <li>
+        <a class="action back" href="{{ path('metastaz_template') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('metastaz_template_delete', { 'id': entity.id }) }}" method="post">
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}

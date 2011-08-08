@@ -19,7 +19,7 @@ abstract class MetastazStore
     /**
      * Constructor
      *
-     * @param Metastaz\MetastazContainer $metastazContainer
+     * @param MetastazContainer $metastazContainer
      */
     public function __construct(MetastazContainer $metastaz_container)
     {
@@ -29,7 +29,7 @@ abstract class MetastazStore
     /**
      * Get the MetastazContainer
      *
-     * @return Metastaz\MetastazContainer
+     * @return MetastazContainer
      */
     protected function getMetastazContainer()
     {
@@ -39,7 +39,7 @@ abstract class MetastazStore
     /**
      * Set the MetastazContainer
      *
-     * @param Metastaz\MetastazContainer $metastazContainer
+     * @param MetastazContainer $metastazContainer
      */
     protected function setMetastazContainer($metastaz_container)
     {

@@ -1,0 +1,40 @@
+{% extends 'MetastazTemplateBundle::base.html.twig' %}
+
+{% block content %}
+<div id="header">
+    <h1>MetastazTemplate list</h1>
+</div>
+
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('metastaz_template_edit', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.name }}</td>
+            <td>
+                <ul>
+                    <li>
+                        <a class="action edit" href="{{ path('metastaz_template_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<ul>
+    <li>
+        <a class="action new" href="{{ path('metastaz_template_new') }}">
+            Create a new template
+        </a>
+    </li>
+</ul>
+{% endblock %}

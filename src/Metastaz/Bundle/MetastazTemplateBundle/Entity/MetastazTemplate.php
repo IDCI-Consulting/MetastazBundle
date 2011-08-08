@@ -120,7 +120,7 @@ class MetastazTemplate extends MetastazFieldType
      */
     public function hasField($namespace, $key)
     {
-        foreach($this->getFields() as $field)
+        foreach($this->getMetastazFields() as $field)
         {
             if($field->getMetaNamespace() == $namespace &&
                $field->getMetaKey() == $key) {

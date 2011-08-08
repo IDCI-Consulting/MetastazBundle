@@ -1,0 +1,49 @@
+{% extends 'MetastazTemplateBundle::base.html.twig' %}
+
+{% block content %}
+<h1>MetastazTemplate Field edition</h1>
+
+<form action="{{ path('metastaz_template_field_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+    
+    
+    {{ form_widget(edit_form._token) }}
+    
+    {{ form_errors(edit_form) }}
+    
+    {{ form_label(edit_form.meta_namespace) }}
+    {{ form_widget(edit_form.meta_namespace) }}
+    
+    {{ form_label(edit_form.meta_key) }}
+    {{ form_widget(edit_form.meta_key) }}
+    
+    {{ form_label(edit_form.is_indexed) }}
+    {{ form_widget(edit_form.is_indexed) }}
+    
+    {{ form_label(edit_form.options) }}
+    {{ form_widget(edit_form.options) }}
+    
+    
+    <input type="hidden" name="{{ edit_form.metastaz_template.vars.full_name }}" value="{{ entity.getMetastazTemplateId() }}" />
+    
+    {{ form_label(edit_form.metastaz_field_type) }}
+    {{ form_widget(edit_form.metastaz_field_type) }}
+    
+    <p>
+        <button type="submit">Update</button>
+    </p>
+</form>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('metastaz_template_edit', { 'id': entity.getMetastazTemplateId() }) }}">
+            Back to the template
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('metastaz_template_field_delete', { 'id': entity.id }) }}" method="post">
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}

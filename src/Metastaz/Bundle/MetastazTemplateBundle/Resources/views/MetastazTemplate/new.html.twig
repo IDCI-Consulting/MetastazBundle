@@ -1,0 +1,25 @@
+{% extends 'MetastazTemplateBundle::base.html.twig' %}
+
+{% block content %}
+<h1>MetastazTemplate creation</h1>
+
+<form action="{{ path('metastaz_template_create') }}" method="post" {{ form_enctype(form) }}>
+<fieldset>
+    {{ form_widget(form._token) }}
+        
+    {{ form_label(form.name) }}
+    <div class="inputs">{{ form_widget(form.name) }}</div>
+</fieldset>
+    <p>
+        <button type="submit">Create</button>
+    </p>
+</form>
+
+<ul class="record_actions">
+    <li>
+        <a class="action back" href="{{ path('metastaz_template') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}

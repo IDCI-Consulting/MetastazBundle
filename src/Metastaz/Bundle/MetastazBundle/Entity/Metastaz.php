@@ -1,6 +1,7 @@
 <?php
-// src/Hevea/Bundle/MetastazBundle/Entity/Metastaz.php
-namespace Hevea\Bundle\MetastazBundle\Entity;
+namespace Metastaz\Bundle\MetastazBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Metastaz is a concrete store for metadata.
@@ -8,31 +9,43 @@ namespace Hevea\Bundle\MetastazBundle\Entity;
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
  * @author:  Michel ROTTA <michel.r@allopneus.com>
  * @licence: LGPL
+ * @ORM\Entity
+ * @ORM\Table(name="metastaz")
  */
 class Metastaz
 {
     /**
-     * Id
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * Dimension
+     *
+     * @ORM\Column(type="string", length="255")
      */
     protected $meta_dimension;
 
     /**
      * Namespace
+     *
+     * @ORM\Column(type="string", length="128")
      */
     protected $meta_namespace;
 
     /**
      * Key
+     *
+     * @ORM\Column(type="string", length="128")
      */
     protected $meta_key;
 
     /**
      * Value
+     *
+     * @ORM\Column(type="text")
      */
     protected $meta_value;
 

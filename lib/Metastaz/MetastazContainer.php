@@ -4,7 +4,6 @@ namespace Metastaz;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Metastaz\Bundle\MetastazTemplateBundle\MetastazTemplateBundle;
-use Metastaz\Stores as MetastazStores;
 
 /**
  * MetastazContainer manage Metastaz (MetastazStore, MetastazTemplate)
@@ -136,7 +135,7 @@ class MetastazContainer
             return self::$shared[$share_key];
         }
 
-        $_class = 'MetastazStores\\'.$class;
+        $_class = 'Metastaz\\Stores\\'.$class;
         if(class_exists($_class)) {
             $store = new $_class($this);
             return self::$shared[$share_key] = $store;
@@ -181,7 +180,7 @@ class MetastazContainer
         if(!$template->hasField($namespace, $key))
         {
             throw new NotFoundHttpException(
-                sprintf('The MetastazTemplate %s not contain the following field: %s %s.',
+                sprintf('The MetastazTemplate "%s" doesn\'t contain the following field {namespace: "%s", key: "%s"}.',
                     $template->getName(),
                     $namespace,
                     $key
