@@ -1,7 +1,6 @@
 <?php
 
-namespace Bundle\MetastazBundle\Interfaces;
-namespace Bundle\MetastazBundle\Stores\MetastazContainer;
+namespace Metastaz\Interfaces;
 
 /**
  * MetastazStore interface define operations which must be override 

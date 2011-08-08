@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\MetastazBundle;
+namespace Metastaz\Bundle\MetastazBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerInterface;

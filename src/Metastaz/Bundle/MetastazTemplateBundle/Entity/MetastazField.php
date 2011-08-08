@@ -1,13 +1,13 @@
 <?php
-namespace Bundle\MetastazBundle\Entity;
+namespace Metastaz\Bundle\MetastazTemplateBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * MetastazField define a field aggregated by a MetastazTemplate
+ * MetastazField define a field aggregate by a MetastazTemplate
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
- * @licence: GPL
+ * @licence: LGPL
  * @ORM\Entity
  * @ORM\Table(name="metastaz_field")
  */
@@ -167,9 +167,9 @@ class MetastazField
     /**
      * Set metastaz_template
      *
-     * @param Bundle\MetastazBundle\Entity\MetastazTemplate $metastazTemplate
+     * @param MetastazTemplate $metastazTemplate
      */
-    public function setMetastazTemplate(Bundle\MetastazBundle\Entity\MetastazTemplate $metastazTemplate)
+    public function setMetastazTemplate(MetastazTemplate $metastazTemplate)
     {
         $this->metastaz_template = $metastazTemplate;
     }
@@ -177,19 +177,29 @@ class MetastazField
     /**
      * Get metastaz_template
      *
-     * @return Bundle\MetastazBundle\Entity\MetastazTemplate 
+     * @return MetastazTemplate 
      */
     public function getMetastazTemplate()
     {
         return $this->metastaz_template;
     }
+    
+    /**
+     * Get metastaz_template_id
+     *
+     * @return integer
+     */
+    public function getMetastazTemplateId()
+    {
+        return $this->getMetastazTemplate()->getId();
+    }
 
     /**
      * Set metastaz_field_type
      *
-     * @param Bundle\MetastazBundle\Entity\MetastazFieldType $metastazFieldType
+     * @param MetastazFieldType $metastazFieldType
      */
-    public function setMetastazFieldType(Bundle\MetastazBundle\Entity\MetastazFieldType $metastazFieldType)
+    public function setMetastazFieldType(MetastazFieldType $metastazFieldType)
     {
         $this->metastaz_field_type = $metastazFieldType;
     }
@@ -197,7 +207,7 @@ class MetastazField
     /**
      * Get metastaz_field_type
      *
-     * @return Bundle\MetastazBundle\Entity\MetastazFieldType 
+     * @return MetastazFieldType 
      */
     public function getMetastazFieldType()
     {

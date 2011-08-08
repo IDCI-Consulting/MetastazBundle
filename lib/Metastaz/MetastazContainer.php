@@ -1,9 +1,10 @@
 <?php
 
-namespace Bundle\MetastazBundle\Stores;
+namespace Metastaz;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Bundle\MetastazBundle\MetastazBundle;
+use Metastaz\Bundle\MetastazTemplateBundle\MetastazTemplateBundle;
+use Metastaz\Stores as MetastazStores;
 
 /**
  * MetastazContainer manage Metastaz (MetastazStore, MetastazTemplate)
@@ -106,8 +107,8 @@ class MetastazContainer
         }
 
         // Retrieve MetastazTemplate by its name
-        $em = MetastazBundle::getContainer()->get('doctrine')->getEntityManager('metastaz_template');
-        $re = $em->getRepository('MetastazBundle:MetastazTemplate');
+        $em = MetastazTemplateBundle::getContainer()->get('doctrine')->getEntityManager('metastaz_template');
+        $re = $em->getRepository('MetastazTemplateBundle:MetastazTemplate');
         $template = $re->findOneByName($obj->getMetastazTemplateName());
 
         if ($template) {
@@ -135,7 +136,7 @@ class MetastazContainer
             return self::$shared[$share_key];
         }
 
-        $_class = __NAMESPACE__.'\\'.$class;
+        $_class = 'MetastazStores\\'.$class;
         if(class_exists($_class)) {
             $store = new $_class($this);
             return self::$shared[$share_key] = $store;

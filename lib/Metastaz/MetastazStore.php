@@ -1,7 +1,8 @@
 <?php
 
-namespace Bundle\MetastazBundle\Stores;
-use Bundle\MetastazBundle\Stores\MetastazContainer;
+namespace Metastaz;
+
+use Metastaz\MetastazContainer;
 
 /**
  * MetastazStore abstract class define operations which must be override 
@@ -18,7 +19,7 @@ abstract class MetastazStore
     /**
      * Constructor
      *
-     * @param Bundle\MetastazBundle\Stores\MetastazContainer $metastazContainer
+     * @param Metastaz\MetastazContainer $metastazContainer
      */
     public function __construct(MetastazContainer $metastaz_container)
     {
@@ -28,7 +29,7 @@ abstract class MetastazStore
     /**
      * Get the MetastazContainer
      *
-     * @return Bundle\MetastazBundle\Stores\MetastazContainer
+     * @return Metastaz\MetastazContainer
      */
     protected function getMetastazContainer()
     {
@@ -38,7 +39,7 @@ abstract class MetastazStore
     /**
      * Set the MetastazContainer
      *
-     * @param Bundle\MetastazBundle\Stores\MetastazContainer $metastazContainer
+     * @param Metastaz\MetastazContainer $metastazContainer
      */
     protected function setMetastazContainer($metastaz_container)
     {

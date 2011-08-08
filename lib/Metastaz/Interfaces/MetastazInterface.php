@@ -1,6 +1,6 @@
 <?php
 
-namespace Hevea\Bundle\MetastazBundle\Interfaces;
+namespace Metastaz\Interfaces;
 
 /**
  * Metastaz interface define operations which must be override 

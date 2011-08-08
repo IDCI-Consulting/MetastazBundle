@@ -1,15 +1,14 @@
 <?php
-namespace Bundle\MetastazBundle\Entity;
+namespace Metastaz\Bundle\MetastazTemplateBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Bundle\MetastazBundle\Entity\MetastazField;
 
 /**
  * MetastazFieldType
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
- * @licence: GPL
+ * @licence: LGPL
  * @ORM\Entity
  * @ORM\Table(
  *   name="metastaz_field_type",
@@ -87,22 +86,19 @@ class MetastazFieldType
         return $this->name;
     }
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->fields = new ArrayCollection();
     }
     
     /**
-     * Add metastaz_fields
+     * Add metastaz_field
      *
-     * @param Bundle\MetastazBundle\Entity\MetastazField $metastazFields
+     * @param MetastazField $metastazField
      */
-    public function addFields(MetastazField $fields)
+    public function addField(MetastazField $field)
     {
-        $this->fields[] = $fields;
+        $this->fields[] = $field;
     }
 
     /**

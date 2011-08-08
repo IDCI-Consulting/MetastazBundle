@@ -1,14 +1,14 @@
 <?php
-namespace Bundle\MetastazBundle\Entity;
+namespace Metastaz\Bundle\MetastazTemplateBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * MetastazTemplate define the metadata fields that can use a Metastaz object
+ * MetastazTemplate define the metadata fields that can use a metastaz object
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
- * @licence: GPL
+ * @licence: LGPL
  * @ORM\Entity
  */
 class MetastazTemplate extends MetastazFieldType
@@ -24,7 +24,7 @@ class MetastazTemplate extends MetastazFieldType
     protected $name;
 
     /**
-     * @var Bundle\MetastazBundle\Entity\MetastazField
+     * @var MetastazField
      */
     protected $fields;
 
@@ -40,7 +40,6 @@ class MetastazTemplate extends MetastazFieldType
     {
         $this->fields = new ArrayCollection();
     }
-
 
     /**
      * Get id
@@ -75,11 +74,11 @@ class MetastazTemplate extends MetastazFieldType
     /**
      * Add metastaz_fields
      *
-     * @param Bundle\MetastazBundle\Entity\MetastazField $metastazFields
+     * @param MetastazField $metastazField
      */
-    public function addMetastazFields(Bundle\MetastazBundle\Entity\MetastazField $metastazFields)
+    public function addMetastazField(MetastazField $metastazField)
     {
-        $this->metastaz_fields[] = $metastazFields;
+        $this->metastaz_fields[] = $metastazField;
     }
 
     /**
@@ -93,13 +92,13 @@ class MetastazTemplate extends MetastazFieldType
     }
 
     /**
-     * Add fields
+     * Add field
      *
-     * @param Bundle\MetastazBundle\Entity\MetastazField $fields
+     * @param MetastazField $field
      */
-    public function addFields(Bundle\MetastazBundle\Entity\MetastazField $fields)
+    public function addField(MetastazField $field)
     {
-        $this->fields[] = $fields;
+        $this->fields[] = $field;
     }
 
     /**

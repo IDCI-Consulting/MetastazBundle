@@ -1,16 +1,16 @@
 <?php
-namespace Bundle\MetastazBundle\Entity;
+namespace Metastaz\Bundle\MetastazTemplateBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * HiddenFieldType define scalar type
+ * ChoiceFieldType
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
- * @licence: GPL
+ * @licence: LGPL
  * @ORM\Entity
  */
-class HiddenFieldType extends MetastazFieldType
+class ChoiceFieldType extends MetastazFieldType
 {
     /**
      * @var integer $id
@@ -23,18 +23,15 @@ class HiddenFieldType extends MetastazFieldType
     protected $name;
 
     /**
-     * @var Bundle\MetastazBundle\Entity\MetastazField
+     * @var MetastazField
      */
     protected $fields;
 
     /**
-     * @var Bundle\MetastazBundle\Entity\MetastazField
+     * @var MetastazField
      */
     protected $metastaz_fields;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->metastaz_fields = new \Doctrine\Common\Collections\ArrayCollection();
@@ -71,13 +68,13 @@ class HiddenFieldType extends MetastazFieldType
     }
 
     /**
-     * Add metastaz_fields
+     * Add metastaz_field
      *
-     * @param Bundle\MetastazBundle\Entity\MetastazField $metastazFields
+     * @param  MetastazField $metastazField
      */
-    public function addMetastazFields(Bundle\MetastazBundle\Entity\MetastazField $metastazFields)
+    public function addMetastazField(MetastazField $metastazField)
     {
-        $this->metastaz_fields[] = $metastazFields;
+        $this->metastaz_field[] = $metastazField;
     }
 
     /**
@@ -91,13 +88,13 @@ class HiddenFieldType extends MetastazFieldType
     }
 
     /**
-     * Add fields
+     * Add field
      *
-     * @param Bundle\MetastazBundle\Entity\MetastazField $fields
+     * @param  MetastazField $field
      */
-    public function addFields(Bundle\MetastazBundle\Entity\MetastazField $fields)
+    public function addField(MetastazField $field)
     {
-        $this->fields[] = $fields;
+        $this->fields[] = $field;
     }
 
     /**
