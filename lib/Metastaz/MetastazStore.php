@@ -85,4 +85,11 @@ abstract class MetastazStore
      * @param string $key
      */
     abstract public function delete($dimension, $namespace, $key);
+
+    /**
+     * Remove all Metastaz for an object
+     *
+     * @param string $dimension
+     */
+    abstract public function deleteAll($dimension);
 }

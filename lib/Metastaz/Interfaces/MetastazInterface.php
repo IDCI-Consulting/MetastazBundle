@@ -18,4 +18,5 @@ interface MetastazInterface
     function putMetastaz($namespace, $key, $value, $culture = null);
     function getAllMetastaz($namespace);
     function deleteMetastaz($namespace, $key);
+    function deleteAllMetastaz();
 }

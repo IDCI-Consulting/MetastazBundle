@@ -146,6 +146,23 @@ class DoctrineMetastazStore extends MetastazStore
 
     /**
      * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
+     * @throw NotFoundHttpException
+     */
+    public function deleteAll($dimension)
+    {
+        $em = $this->getEntityManager();
+        $entities = $em->getRepository('MetastazBundle:Metastaz')->findBy(
+            array('meta_dimension' => $dimension)
+        );
+
+        foreach($entities as $entity) {
+            $em->remove($entity);
+        }
+        $em->flush();
+    }
+
+    /**
+     * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
      */
     protected static function _serialize($data)
     {
