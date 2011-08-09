@@ -20,12 +20,15 @@ Installation
 ------------
 
 First get the source code and put it under a folder name "metastaz" in your Symfony2 vendor directory
+
     git clone git@github.com:idciconsulting/MetastazBundle.git vendor/metastaz
 
 Add the 'Metastaz' namespace in registerNamespaces (app/autoload.php):
+
     'Metastaz'         => array(__DIR__.'/../vendor/metastaz/src', __DIR__.'/../vendor/metastaz/lib'),
 
 Add 'MetastazBundle' and 'MetastazTemplateBundle' in registerBundles (app/AppKernel.php):
+
     new Metastaz\Bundle\MetastazBundle\MetastazBundle(),
     new Metastaz\Bundle\MetastazTemplateBundle\MetastazTemplateBundle(),
 
