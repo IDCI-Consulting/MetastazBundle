@@ -14,6 +14,7 @@ Installation requirements
 
 * Symfony2 
 * Doctrine2
+* DoctrineFixturesBundle (http://symfony.com/doc/current/cookbook/doctrine/doctrine_fixtures.html)
 
 
 Installation
