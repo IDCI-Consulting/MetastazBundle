@@ -227,4 +227,13 @@ class MetastazContainer
             $key
         );
     }
+
+    /**
+     * Delete all Metastaz for a specified Metastaz dimension
+     *
+     */
+    public function deleteAll()
+    {
+        $this->getMetastazStoreService()->deleteAll($this->getMetastazId());
+    }
 }
