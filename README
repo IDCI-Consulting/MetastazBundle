@@ -17,7 +17,7 @@ Installation requirements
 Installation
 ------------
 
-git clone this project to your symfony2 vendor directory.
+git clone git@github.com:idciconsulting/MetastazBundle.git vendor/metastaz
 
 add this to the registerNamespaces in autoload.php:
 
@@ -25,9 +25,8 @@ add this to the registerNamespaces in autoload.php:
 
 add this to the registerBundles in AppKernel.php:
 
-    new Metastaz\MetastazTemplateBundle\MetastazBundle(),
-    new Metastaz\MetastazTemplateBundle\MetastazTemplateBundle(),
-
+    new Metastaz\Bundle\MetastazBundle\MetastazBundle(),
+    new Metastaz\Bundle\MetastazTemplateBundle\MetastazTemplateBundle(),
 
 Configuration
 -------------
@@ -35,6 +34,74 @@ Configuration
 To activate or not Template verification:
 
 
+Configure connection in app/config/config.yml:
+
+# Doctrine Configuration
+
+doctrine:
+    dbal:
+        connections:
+            default:
+                ...
+
+            metastaz:
+                driver:   %metastaz_database_driver%
+                host:     %metastaz_database_host%
+                port:     %metastaz_database_port%
+                dbname:   %metastaz_database_name%
+                user:     %metastaz_database_user%
+                password: %metastaz_database_password%
+                charset:  UTF8
+
+            metastaz_template:
+                driver:   %metastaz_template_database_driver%
+                host:     %metastaz_template_database_host%
+                port:     %metastaz_template_database_port%
+                dbname:   %metastaz_template_database_name%
+                user:     %metastaz_template_database_user%
+                password: %metastaz_template_database_password%
+                charset:  UTF8
+
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        default_entity_manager:   default
+
+        entity_managers:
+            default:
+                connection:       default
+                mappings:
+                    ...
+
+            metastaz:
+                connection:       metastaz
+                mappings:
+                    MetastazBundle: ~
+
+            metastaz_template:
+                connection:       metastaz_template
+                mappings:
+                    MetastazTemplateBundle: ~
+
+Set connection parameters in app/config/parameters.ini:
+
+    metastaz_database_driver   = pdo_mysql
+    metastaz_database_host     = localhost
+    metastaz_database_port     = 3306
+    metastaz_database_name     = ...
+    metastaz_database_user     = ...
+    metastaz_database_password = ...
+
+    metastaz_template_database_driver   = pdo_mysql
+    metastaz_template_database_host     = localhost
+    metastaz_template_database_port     = 3306
+    metastaz_template_database_name     = ...
+    metastaz_template_database_user     = ...
+    metastaz_template_database_password = ...
+
+Build table:
+
+php app/console doctrine:schema:create --em="metastaz"
+php app/console doctrine:schema:create --em="metastaz_template"
 
 To use the template manager, add routes to your routing.yml like this:
 
