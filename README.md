@@ -133,6 +133,14 @@ You must see this routes:
     metastaz_template_delete        POST   /metastaz/template/{id}/delete
     metastaz_template_field_delete  POST   /metastaz/template/delete_field/{id}
 
+Load Fixtures
+-------------
+
+If you have well added DoctrineFixturesBundle, load default MetastazTemplateFieldType:
+
+    php app/console doctrine:fixtures:load --em="metastaz_template"
+
+
 How to use Metastaz
 -------------------
 
