@@ -152,12 +152,14 @@ In the class within you would like to use Metastaz:
     class YourClass implements MetastazInterface
     {
         ...
+
         /**
          * MetastazContainer Objects
          * This is a class variable
          */
         protected static $metastaz_containers = null;
 
+        ...
 
         /**
          * @see Metastaz\Interfaces\MetastazInterface
@@ -229,6 +231,14 @@ In the class within you would like to use Metastaz:
         public function deleteMetastaz($namespace, $key)
         {
             return $this->getMetastazContainer()->delete($namespace, $key);
+        }
+
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function deleteAllMetastaz()
+        {
+            return $this->getMetastazContainer()->deleteAll();
         }
     }
 
