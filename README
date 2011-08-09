@@ -17,7 +17,7 @@ Installation requirements
 Installation
 ------------
 
-git clone git@github.com:idciconsulting/MetastazBundle.git vendor/metastaz
+    git clone git@github.com:idciconsulting/MetastazBundle.git vendor/metastaz
 
 add this to the registerNamespaces in autoload.php:
 
@@ -36,51 +36,51 @@ To activate or not Template verification:
 
 Configure connection in app/config/config.yml:
 
-# Doctrine Configuration
+    # Doctrine Configuration
 
-doctrine:
-    dbal:
-        connections:
-            default:
-                ...
-
-            metastaz:
-                driver:   %metastaz_database_driver%
-                host:     %metastaz_database_host%
-                port:     %metastaz_database_port%
-                dbname:   %metastaz_database_name%
-                user:     %metastaz_database_user%
-                password: %metastaz_database_password%
-                charset:  UTF8
-
-            metastaz_template:
-                driver:   %metastaz_template_database_driver%
-                host:     %metastaz_template_database_host%
-                port:     %metastaz_template_database_port%
-                dbname:   %metastaz_template_database_name%
-                user:     %metastaz_template_database_user%
-                password: %metastaz_template_database_password%
-                charset:  UTF8
-
-    orm:
-        auto_generate_proxy_classes: %kernel.debug%
-        default_entity_manager:   default
-
-        entity_managers:
-            default:
-                connection:       default
-                mappings:
+    doctrine:
+        dbal:
+            connections:
+                default:
                     ...
 
-            metastaz:
-                connection:       metastaz
-                mappings:
-                    MetastazBundle: ~
+                metastaz:
+                    driver:   %metastaz_database_driver%
+                    host:     %metastaz_database_host%
+                    port:     %metastaz_database_port%
+                    dbname:   %metastaz_database_name%
+                    user:     %metastaz_database_user%
+                    password: %metastaz_database_password%
+                    charset:  UTF8
 
-            metastaz_template:
-                connection:       metastaz_template
-                mappings:
-                    MetastazTemplateBundle: ~
+                metastaz_template:
+                    driver:   %metastaz_template_database_driver%
+                    host:     %metastaz_template_database_host%
+                    port:     %metastaz_template_database_port%
+                    dbname:   %metastaz_template_database_name%
+                    user:     %metastaz_template_database_user%
+                    password: %metastaz_template_database_password%
+                    charset:  UTF8
+
+        orm:
+            auto_generate_proxy_classes: %kernel.debug%
+            default_entity_manager:   default
+
+            entity_managers:
+                default:
+                    connection:       default
+                    mappings:
+                        ...
+
+                metastaz:
+                    connection:       metastaz
+                    mappings:
+                        MetastazBundle: ~
+
+                metastaz_template:
+                    connection:       metastaz_template
+                    mappings:
+                        MetastazTemplateBundle: ~
 
 Set connection parameters in app/config/parameters.ini:
 
@@ -100,15 +100,15 @@ Set connection parameters in app/config/parameters.ini:
 
 Build table:
 
-php app/console doctrine:schema:create --em="metastaz"
-php app/console doctrine:schema:create --em="metastaz_template"
+    php app/console doctrine:schema:create --em="metastaz"
+    php app/console doctrine:schema:create --em="metastaz_template"
 
 To use the template manager, add routes to your routing.yml like this:
 
-_metastaz_template:
-    resource: "@MetastazTemplateBundle/Controller/MetastazTemplateController.php"
-    type:     annotation
-    prefix:   /metastaz/template
+    _metastaz_template:
+        resource: "@MetastazTemplateBundle/Controller/MetastazTemplateController.php"
+        type:     annotation
+        prefix:   /metastaz/template
 
 
 How use Metastaz
@@ -119,102 +119,102 @@ In the class which you would like to use Metastaz:
 use Metastaz\Interfaces\MetastazInterface;
 use Metastaz\MetastazContainer;
 
-class YourClass implements MetastazInterface
-{
-...
-    /**
-     * MetastazContainer Objects
-     * This is a class variable
-     */
-    protected static $metastaz_containers = null;
-
-
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function getMetastazDimension()
+    class YourClass implements MetastazInterface
     {
-        return $this->getId();
-    }
+    ...
+        /**
+         * MetastazContainer Objects
+         * This is a class variable
+         */
+        protected static $metastaz_containers = null;
 
-    /**
-     * Get metastaz_template_name
-     *
-     * @return string 
-     */
-    public function getMetastazTemplateName()
-    {
-        return $this->getType()->getTemplateName();
-    }
 
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function getMetastazContainer()
-    {
-        if(!isset(self::$metastaz_containers[$this->getMetastazDimension()]))
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function getMetastazDimension()
         {
-            self::$metastaz_containers[$this->getMetastazDimension()] = new MetastazContainer(
-                array(
-                    'metastaz.object' => $this,
-                    'metastaz.store_class' => 'DoctrineMetastazStore',
-                    'metastaz_store_parameters' => array(
-                        'database_driver' => 'pdo_mysql',
-                        'database_host' => 'localhost',
-                        'database_port' => '3306',
-                        'database_name' => 'allopneus',
-                        'database_user' => 'allopneus',
-                        'database_password' => 'allopneus'
-                    )
-                )
-            );
+            return $this->getId();
         }
-        return self::$metastaz_containers[$this->getMetastazDimension()];
-    }
 
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function getMetastaz($namespace, $key, $culture = null)
-    {
-        return $this->getMetastazContainer()->get($namespace, $key, $culture);
-    }
+        /**
+         * Get metastaz_template_name
+         *
+         * @return string 
+         */
+        public function getMetastazTemplateName()
+        {
+            return $this->getType()->getTemplateName();
+        }
 
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function putMetastaz($namespace, $key, $value, $culture = null)
-    {
-        return $this->getMetastazContainer()->put($namespace, $key, $value, $culture);
-    }
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function getMetastazContainer()
+        {
+            if(!isset(self::$metastaz_containers[$this->getMetastazDimension()]))
+            {
+                self::$metastaz_containers[$this->getMetastazDimension()] = new MetastazContainer(
+                    array(
+                        'metastaz.object' => $this,
+                        'metastaz.store_class' => 'DoctrineMetastazStore',
+                        'metastaz_store_parameters' => array(
+                            'database_driver' => 'pdo_mysql',
+                            'database_host' => 'localhost',
+                            'database_port' => '3306',
+                            'database_name' => 'allopneus',
+                            'database_user' => 'allopneus',
+                            'database_password' => 'allopneus'
+                        )
+                    )
+                );
+            }
+            return self::$metastaz_containers[$this->getMetastazDimension()];
+        }
 
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function getAllMetastaz($namespace)
-    {
-        return $this->getMetastazContainer()->getAll($namespace);
-    }
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function getMetastaz($namespace, $key, $culture = null)
+        {
+            return $this->getMetastazContainer()->get($namespace, $key, $culture);
+        }
 
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function deleteMetastaz($namespace, $key)
-    {
-        return $this->getMetastazContainer()->delete($namespace, $key);
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function putMetastaz($namespace, $key, $value, $culture = null)
+        {
+            return $this->getMetastazContainer()->put($namespace, $key, $value, $culture);
+        }
+
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function getAllMetastaz($namespace)
+        {
+            return $this->getMetastazContainer()->getAll($namespace);
+        }
+
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function deleteMetastaz($namespace, $key)
+        {
+            return $this->getMetastazContainer()->delete($namespace, $key);
+        }
     }
-}
 
 Now you can use metastazed class like this:
 
 
-$YourClassObj = new $YourClass();
+    $YourClassObj = new $YourClass();
 
-// To put a metadata on your class object 
-$YourClassObj->putMetastaz('ns', 'key', 'value');
+    // To put a metadata on your class object 
+    $YourClassObj->putMetastaz('ns', 'key', 'value');
 
-// To retrieve a metadata by its namespace and key
-$YourClassObj->getMetastaz('ns', 'key');
+    // To retrieve a metadata by its namespace and key
+    $YourClassObj->getMetastaz('ns', 'key');
 
 
 Licence
