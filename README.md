@@ -4,9 +4,9 @@ Welcome to the MetastazBundle
 What is MetastazBundle?
 -----------------------
 
-This bundle provide an interface which once implemented allow you to add 
-metadata on your model objects. You can define 'Template' which you can use to 
-specify metadata set. This 'Templates' are store with Doctrine2.
+This bundle provides an interface which once implemented allows you to add 
+metadata on your model objects. You can define 'Templates' that you can use to 
+specify metadata set. These 'Templates' are stored with Doctrine2.
 
 
 Installation requirements
@@ -19,7 +19,7 @@ Installation requirements
 Installation
 ------------
 
-First get the source code and put it under a folder name "metastaz" in your Symfony2 vendor directory
+First, get the source code and put it under a folder name "metastaz" in your Symfony2 vendor directory
 
     git clone git@github.com:idciconsulting/MetastazBundle.git vendor/metastaz
 
@@ -114,10 +114,10 @@ To use the template manager, add routes to your routing.yml like this:
         prefix:   /metastaz/template
 
 
-How use Metastaz
-----------------
+How to use Metastaz
+-------------------
 
-In the class which you would like to use Metastaz:
+In the class within you would like to use Metastaz:
 
     use Metastaz\Interfaces\MetastazInterface;
     use Metastaz\MetastazContainer;
