@@ -75,7 +75,7 @@ class MetastazContainer
     public function getParameter($name)
     {
         if (!$this->hasParameter($name))
-            throw new Exception(sprintf('Missing %s parameter', $name));
+            throw new NotFoundHttpException(sprintf('Missing %s parameter', $name));
         return $this->parameters[$name];
     }
 
