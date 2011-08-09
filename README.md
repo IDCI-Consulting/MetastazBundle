@@ -113,6 +113,24 @@ To use the template manager, add routes to your routing.yml like this:
         type:     annotation
         prefix:   /metastaz/template
 
+To check if this controller is well loaded, you can execute the following command:
+
+    php app/console router:debug
+
+You must see this routes:
+
+    metastaz_template               ANY    /metastaz/template/
+    metastaz_template_show          ANY    /metastaz/template/{id}/show
+    metastaz_template_new           ANY    /metastaz/template/new
+    metastaz_template_field_new     ANY    /metastaz/template/{id}/new_field
+    metastaz_template_field_edit    ANY    /metastaz/template/edit_field/{id}
+    metastaz_template_field_update  POST   /metastaz/template/update_field/{id}
+    metastaz_template_create        POST   /metastaz/template/create
+    metastaz_template_field_create  POST   /metastaz/template/{id}/create_field
+    metastaz_template_edit          ANY    /metastaz/template/{id}/edit
+    metastaz_template_update        POST   /metastaz/template/{id}/update
+    metastaz_template_delete        POST   /metastaz/template/{id}/delete
+    metastaz_template_field_delete  POST   /metastaz/template/delete_field/{id}
 
 How to use Metastaz
 -------------------
