@@ -64,10 +64,16 @@ class MetastazTemplateController extends Controller
         $entity = new MetastazTemplate();
         $form = $this->createForm(new MetastazTemplateType(), $entity);
 
-        return array(
+        $params = array(
             'entity' => $entity,
             'form'   => $form->createView()
         );
+        
+        if ($this->getRequest()->isXmlHttpRequest())
+            return $this->render('MetastazTemplateBundle:MetastazTemplate:templateForm.html.twig', $params);
+        
+        return $params;
+        
     }
     
     /**

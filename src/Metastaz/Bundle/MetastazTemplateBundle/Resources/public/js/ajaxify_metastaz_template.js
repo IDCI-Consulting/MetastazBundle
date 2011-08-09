@@ -1,18 +1,16 @@
 $(document).ready(function(){
-    $('#new_field_link').click(function(event){
+    $('.create_link').click(function(event){
 
+        var link = $(this);
         event.preventDefault();
 
         $.ajax({
           url: $(this).attr('href'),
           context: document.body,
           success: function(data){
-            $('.form_container').append(data).live();
+            $('.form_container').append(data);
+            link.hide();
           }
         });
-    });
-    
-    $('.cancel').click(function(event){
-        // remove form content
     });
 });

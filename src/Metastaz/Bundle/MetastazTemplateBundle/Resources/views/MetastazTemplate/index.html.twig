@@ -1,5 +1,10 @@
 {% extends 'MetastazTemplateBundle::base.html.twig' %}
 
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript" src="{{ asset('bundles/metastaztemplate/js/ajaxify_metastaz_template.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 <div id="header">
     <h1>MetastazTemplate list</h1>
@@ -30,9 +35,12 @@
     </tbody>
 </table>
 
+<div class="form_container">
+</div>
+
 <ul>
     <li>
-        <a class="action new" href="{{ path('metastaz_template_new') }}">
+        <a class="action new create_link" href="{{ path('metastaz_template_new') }}">
             Create a new template
         </a>
     </li>

@@ -36,6 +36,6 @@
     
     <p>
         <button type="submit">Create</button>
-        <button class="cancel" type="button">Cancel</button>
+        <a href="{{ path('metastaz_template_edit', { 'id': entity.getMetastazTemplateId() }) }}">Cancel</a>
     </p>
 </form>
