@@ -182,7 +182,7 @@ In the class within you would like to use Metastaz:
                         'metastaz.object' => $this,
                         'metastaz.store_class' => 'DoctrineMetastazStore',
                         'metastaz.store_parameters' => array(
-                            'connexion_name' => 'matestaz'
+                            'connexion_name' => 'metastaz'
                         )
                     )
                 );
