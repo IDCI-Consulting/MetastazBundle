@@ -143,3 +143,34 @@ table#fields_list td.actions ul li {
     padding: 3px;
     
 }
+
+.clear {
+    clear: both;
+    height: 1px;
+    font-size: 0px;
+}
+
+.height5 {
+    height: 5px;
+}
+
+form#new_field_form {
+    border: 1px solid #f60;
+}
+
+form div.label {
+    float: left;
+    width: 120px;
+    height: 20px;
+    padding: 0 20px 0 0;
+    line-height: 20px;
+    text-align: right;
+}
+
+form div.input {
+    float: left;
+}
+
+.form_container {
+    
+}

@@ -2,6 +2,7 @@
 
 namespace Metastaz\Bundle\MetastazTemplateBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -89,10 +90,15 @@ class MetastazTemplateController extends Controller
         $entity->setMetastazTemplate($template);
         $form   = $this->createForm(new MetastazTemplateFieldType(), $entity);
 
-        return array(
+        $params = array(
             'entity' => $entity,
             'form'   => $form->createView()
         );
+        
+        if ($this->getRequest()->isXmlHttpRequest())
+            return $this->render('MetastazTemplateBundle:MetastazTemplate:templateFieldForm.html.twig', $params);
+        
+        return $params;
     }
 
     /**

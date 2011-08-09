@@ -1,5 +1,10 @@
 {% extends 'MetastazTemplateBundle::base.html.twig' %}
 
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript" src="{{ asset('bundles/metastaztemplate/js/ajaxify_metastaz_template.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 <div id="header">
     <h1>MetastazTemplate edit</h1>
@@ -48,7 +53,9 @@
         {% endfor %}
     </table>
     {% endif %}
-    <a class="action new" href="{{ path('metastaz_template_field_new', { 'id': entity.id }) }}">Create new field</a>
+    <div class="form_container">
+    </div>
+    <a class="action new" id="new_field_link" href="{{ path('metastaz_template_field_new', { 'id': entity.id }) }}">Create new field</a>
 
     
 

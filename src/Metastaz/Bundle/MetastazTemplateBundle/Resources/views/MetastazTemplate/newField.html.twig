@@ -3,35 +3,7 @@
 {% block content %}
 <h1>MetastazTemplate Field creation</h1>
 
-<form action="{{ path('metastaz_template_field_create', { 'id': entity.getMetastazTemplateId() }) }}" method="post" {{ form_enctype(form) }}>
-    
-    
-    {{ form_widget(form._token) }}
-    
-    {{ form_errors(form) }}
-    
-    {{ form_label(form.meta_namespace) }}
-    {{ form_widget(form.meta_namespace) }}
-    
-    {{ form_label(form.meta_key) }}
-    {{ form_widget(form.meta_key) }}
-    
-    {{ form_label(form.is_indexed) }}
-    {{ form_widget(form.is_indexed) }}
-    
-    {{ form_label(form.options) }}
-    {{ form_widget(form.options) }}
-    
-    
-    <input type="hidden" name="{{ form.metastaz_template.vars.full_name }}" value="{{ entity.getMetastazTemplateId() }}" />
-    
-    {{ form_label(form.metastaz_field_type) }}
-    {{ form_widget(form.metastaz_field_type) }}
-    
-    <p>
-        <button type="submit">Create</button>
-    </p>
-</form>
+{% include 'MetastazTemplateBundle:MetastazTemplate:templateFieldForm.html.twig' with {'entity': entity, 'form': form} %}
 
 <ul class="record_actions">
     <li>
