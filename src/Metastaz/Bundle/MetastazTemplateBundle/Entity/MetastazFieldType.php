@@ -3,6 +3,7 @@ namespace Metastaz\Bundle\MetastazTemplateBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * MetastazFieldType
@@ -38,6 +39,7 @@ class MetastazFieldType
 
     /**
      * @ORM\Column(type="string", length="128")
+     * @Assert\NotBlank()
      */
     protected $name;
 

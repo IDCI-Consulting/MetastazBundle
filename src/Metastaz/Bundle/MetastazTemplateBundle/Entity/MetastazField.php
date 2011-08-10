@@ -2,6 +2,7 @@
 namespace Metastaz\Bundle\MetastazTemplateBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * MetastazField define a field aggregate by a MetastazTemplate
@@ -22,11 +23,13 @@ class MetastazField
 
     /**
      * @ORM\Column(type="string", length="128")
+     * @Assert\NotBlank()
      */
     protected $meta_namespace;
 
     /**
      * @ORM\Column(type="string", length="128")
+     * @Assert\NotBlank()
      */
     protected $meta_key;
 

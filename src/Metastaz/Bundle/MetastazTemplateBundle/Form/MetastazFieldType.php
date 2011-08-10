@@ -14,8 +14,8 @@ class MetastazFieldType extends AbstractType
             ->add('meta_key')
             ->add('is_indexed')
             ->add('options')
-            ->add('metastaz_template')
             ->add('metastaz_field_type')
+            ->add('metastaz_template')
         ;
     }
 

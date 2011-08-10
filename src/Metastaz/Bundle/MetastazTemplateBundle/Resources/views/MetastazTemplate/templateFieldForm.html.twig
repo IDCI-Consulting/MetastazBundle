@@ -1,40 +1,17 @@
+{% form_theme form 'MetastazTemplateBundle:Form:fields.html.twig' %}
+
 <form id="new_field_form" action="{{ path('metastaz_template_field_create', { 'id': entity.getMetastazTemplateId() }) }}" method="post" {{ form_enctype(form) }}>
-    
-    
-    {{ form_widget(form._token) }}
-    
     {{ form_errors(form) }}
-    
-    <div class="clear height5"></div>
-    
-    <div class="label">{{ form_label(form.meta_namespace) }}</div>
-    <div class="input">{{ form_widget(form.meta_namespace) }}</div>
-    
-    <div class="clear height5"></div>
-    
-    <div class="label">{{ form_label(form.meta_key) }}</div>
-    <div class="input">{{ form_widget(form.meta_key) }}</div>
-    
-    <div class="clear height5"></div>
-    
-    <div class="label">{{ form_label(form.is_indexed) }}</div>
-    <div class="input">{{ form_widget(form.is_indexed) }}</div>
-    
-    <div class="clear height5"></div>
-    
-    <div class="label">{{ form_label(form.options) }}</div>
-    <div class="input">{{ form_widget(form.options) }}</div>
-    
-    <div class="clear height5"></div>
-    
-    <input type="hidden" name="{{ form.metastaz_template.vars.full_name }}" value="{{ entity.getMetastazTemplateId() }}" />
-    
-    <div class="label">{{ form_label(form.metastaz_field_type) }}</div>
-    <div class="input">{{ form_widget(form.metastaz_field_type) }}</div>
-    
-    <div class="clear height5"></div>
-    
+
+    {{ form_row(form.meta_namespace) }}
+    {{ form_row(form.meta_key) }}
+    {{ form_row(form.is_indexed) }}
+    {{ form_row(form.options) }}
+    {{ form_row(form.metastaz_field_type) }}
+
     <p>
+        <input type="hidden" name="{{ form.metastaz_template.vars.full_name }}" value="{{ entity.getMetastazTemplateId() }}" />
+        {{ form_row(form._token) }}
         <button type="submit">Create</button>
         <a href="{{ path('metastaz_template_edit', { 'id': entity.getMetastazTemplateId() }) }}">Cancel</a>
     </p>
