@@ -11,13 +11,13 @@ use Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping\Driver\YamlDriver;
 
 /**
- * DoctrineMetastazStore is a concrete provider to store Metastazs throw 
+ * DoctrineORMMetastazStore is a concrete provider to store Metastazs throw 
  * Doctrine ORM.
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
  * @licence: LGPL
  */
-class DoctrineMetastazStore extends MetastazStore
+class DoctrineORMMetastazStore extends MetastazStore
 {
     protected $em = null;
 
