@@ -3,6 +3,7 @@ namespace Metastaz\Bundle\MetastazTemplateBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * MetastazField define a field aggregate by a MetastazTemplate
@@ -94,7 +95,7 @@ class MetastazField
      */
     public function setMetaNamespace($metaNamespace)
     {
-        $this->meta_namespace = $metaNamespace;
+        $this->meta_namespace = Container::camelize(str_replace(' ', '_', $metaNamespace));
     }
 
     /**
@@ -114,7 +115,7 @@ class MetastazField
      */
     public function setMetaKey($metaKey)
     {
-        $this->meta_key = $metaKey;
+        $this->meta_key = Container::camelize(str_replace(' ', '_', $metaKey));
     }
 
     /**

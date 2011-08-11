@@ -3,6 +3,7 @@ namespace Metastaz\Bundle\MetastazTemplateBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * MetastazTemplate define the metadata fields that can use a metastaz object
@@ -58,7 +59,7 @@ class MetastazTemplate extends MetastazFieldType
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->name = Container::camelize(str_replace(' ', '_', $name));
     }
 
     /**
@@ -128,5 +129,22 @@ class MetastazTemplate extends MetastazFieldType
             }
         }
         return false;
+    }
+
+    /**
+     * Get an array of field types
+     *
+     * @return array 
+     */
+    public function getFormFields()
+    {
+        $ret = array();
+        foreach($this->getMetastazFields() as $field) {
+            $ret[] = array(
+                $field->getMetaNamespace().'_'.$field->getMetaKey(),
+                $field->getMetastazFieldType()
+            );
+        }
+        return $ret;
     }
 }

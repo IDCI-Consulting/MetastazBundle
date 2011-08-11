@@ -33,7 +33,7 @@ class DoctrineMetastazStore extends MetastazStore
             $params = $this->getMetastazContainer()->getParameter('metastaz.store_parameters');
             $this->em = MetastazBundle::getContainer()
                 ->get('doctrine')
-                ->getEntityManager($params['connexion_name'])
+                ->getEntityManager($params['connection_name'])
             ;
         }
         return $this->em;
