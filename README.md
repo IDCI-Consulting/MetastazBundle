@@ -204,7 +204,7 @@ You can generate template forms by running the following command with the consol
 
     php app/console metastaz:generate:form
 
-Take a look in app/Application/Forms
+Take a look in app/Application/Form
 
 How to use Metastaz
 -------------------
