@@ -140,6 +140,22 @@ Set connection parameters (app/config/parameters.ini):
     metastaz_template_database_user     = ...
     metastaz_template_database_password = ...
 
+If you have install MongoDB and install the doctrine bundles, define metastaz doctrine_mongodb connection:
+
+    doctrine_mongodb:
+        connections:
+            metastaz:
+                server: mongodb://localhost:27017
+                options:
+                    connect: true
+
+        document_managers:
+            metastaz:
+                connection:           metastaz
+                database:             metastaz_db
+                mappings:
+                    MetastazBundle: ~
+
 Build table:
 
     php app/console doctrine:schema:create --em="metastaz"
