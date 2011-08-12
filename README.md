@@ -12,9 +12,14 @@ specify metadata set. These 'Templates' are stored with Doctrine2.
 Installation requirements
 -------------------------
 
-* Symfony2 
+* Symfony2
 * Doctrine2
 * DoctrineFixturesBundle (http://symfony.com/doc/current/cookbook/doctrine/doctrine_fixtures.html)
+
+Installation options
+--------------------
+
+* MongoDB (http://symfony.com/doc/current/cookbook/doctrine/mongodb.html)
 
 
 Installation
@@ -36,9 +41,42 @@ Add 'MetastazBundle' and 'MetastazTemplateBundle' in registerBundles (app/AppKer
 Configuration
 -------------
 
-To activate or not Template verification:
+Add this in your configuration (app/config/config.yml):
 
-Configure connection (app/config/config.yml):
+    # Metastaz Configuration
+    metastaz:
+        container:
+            use_template: false
+            instance_pool: false
+        store:
+            class: DoctrineORMMetastazStore
+            parameters:
+                connection: metastaz
+
+To activate or not Template verification just set to true the use_tempate parameter:
+
+    # Metastaz Configuration
+    metastaz:
+        container:
+            use_template: true
+
+Metastaz container can act like an active records.
+To enable this feature active the instance_pool:
+
+    # Metastaz Configuration
+    metastaz:
+        container:
+            instance_pool: true
+
+You can define different store or create yours. Metastaz bundle provide an ORM and an ODM.
+To use them set the class store parameters (DoctrineORMMetastazStore or DoctrineODMMetastazStore)
+
+    # Metastaz Configuration
+    metastaz:
+        store:
+            class: DoctrineORMMetastazStore
+
+Configure connections (app/config/config.yml):
 
     # Doctrine Configuration
 
@@ -164,7 +202,7 @@ In the class within you would like to use Metastaz:
         /**
          * @see Metastaz\Interfaces\MetastazInterface
          */
-        public function getMetastazDimension()
+        public function getMetastazDimensionId()
         {
             return $this->getId();
         }
@@ -189,16 +227,9 @@ In the class within you would like to use Metastaz:
             if(!isset(self::$metastaz_containers[$this->getMetastazDimension()]))
             {
                 self::$metastaz_containers[$this->getMetastazDimension()] = new MetastazContainer(
-                    array(
-                        'metastaz.object' => $this,
-                        'metastaz.store_class' => 'DoctrineMetastazStore',
-                        'metastaz.store_parameters' => array(
-                            'connexion_name' => 'metastaz'
-                        )
-                    )
+                    array('object' => $this)
                 );
             }
-            return self::$metastaz_containers[$this->getMetastazDimension()];
         }
 
         /**
@@ -242,6 +273,31 @@ In the class within you would like to use Metastaz:
         }
     }
 
+You can override the Metastaz configuration for each Metastazed Objects by passing more parameters
+when instanciate the MetastazContainer
+
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function getMetastazContainer()
+        {
+            if(!isset(self::$metastaz_containers[$this->getMetastazDimension()]))
+            {
+                self::$metastaz_containers[$this->getMetastazDimension()] = new MetastazContainer(
+                    array(
+                        'object' => $this,
+                        'container' => array(
+                            'use_template' => true,
+                            'instance_pool' => true
+                        ),
+                        'store' => array(
+                            'class' => 'DoctrineODMMetastazStore',
+                            'parameters' => array('connection' => 'metastaz')
+                        )
+                    )
+                );
+            }
+        }
 
 Now you can use metastazed class like this:
 
@@ -253,6 +309,12 @@ Now you can use metastazed class like this:
     // To retrieve a metadata by its namespace and key
     $YourClassObj->getMetastaz('ns', 'key');
 
+If you have activated the instance pool, you must call the flushMetastaz methode
+
+    $YourClassObj->flushMetastaz();
+
+Note:
+A lister is comming soon to automaticaly flush metastaz data on an Doctrine Entity Manager flush call
 
 Licence
 -------

@@ -21,22 +21,21 @@ class DoctrineODMMetastazStore extends MetastazStore
     protected $dm = null;
 
     /**
-     * Get the Entity Manager
+     * Get the Document Manager
      *
-     * 
+     * @return DocumentManager
      */
     protected function getDocumentManager()
     {
-        if(!$this->em)
+        if(!$this->dm)
         {
-            $params = $this->getMetastazContainer()->getParameter('metastaz.store_parameters');
-            
-            $this->em = MetastazBundle::getContainer()
-                ->get('doctrine.odm.mongodb.document_manager')               
+            $store = $this->getMetastazContainer()->getParameter('store');
+            $this->dm = MetastazBundle::getContainer()
+                ->get('doctrine.odm.mongodb.'.$store['parameters']['connection'].'_document_manager')
             ;
         }
-       
-        return $this->em;
+
+        return $this->dm;
     }
 
     /**
@@ -46,8 +45,8 @@ class DoctrineODMMetastazStore extends MetastazStore
     public function get($dimension, $namespace, $key, $culture = null)
     {
         $dm = $this->getDocumentManager();
-        
-        $entity = $dm->getRepository('MetastazBundle:Metastaz')->findOneBy(
+
+        $document = $dm->getRepository('MetastazBundle:Metastaz')->findOneBy(
             array(
                 'meta_dimension' => $dimension,
                 'meta_namespace' => $namespace,
@@ -55,7 +54,7 @@ class DoctrineODMMetastazStore extends MetastazStore
             )
         );
 
-        if (!$entity) {
+        if (!$document) {
             throw new NotFoundHttpException(
                 sprintf('Unable to find Metastaz entity with the following parameter: %s %s %s.',
                     $dimension,
@@ -65,34 +64,34 @@ class DoctrineODMMetastazStore extends MetastazStore
             );
         }
 
-        //TODO: Return data in function of the culture parameter   
-        return $entity->getMetaValue();
+        //TODO: Return data in function of the culture parameter
+        return $document->getMetaValue();
     }
 
     /**
      * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
      */
     public function put($dimension, $namespace, $key, $value, $culture = null)
-    {               
+    {
         $dm = $this->getDocumentManager();
-        $entity = $dm->getRepository('MetastazBundle:Metastaz')->findOneBy(
+        $document = $dm->getRepository('MetastazBundle:Metastaz')->findOneBy(
             array(
                 'meta_dimension' => $dimension,
                 'meta_namespace' => $namespace,
                 'meta_key' => $key
             )
-        );              
+        );
 
-        if (!$entity) {
-            $entity = new Metastaz();
-            $entity->setMetaDimension($dimension);
-            $entity->setMetaNamespace($namespace);
-            $entity->setMetaKey($key);
+        if (!$document) {
+            $document = new Metastaz();
+            $document->setMetaDimension($dimension);
+            $document->setMetaNamespace($namespace);
+            $document->setMetaKey($key);
         }
 
         //TODO: Save data in function of the culture parameter
-        $entity->setMetaValue($value);
-        $dm->persist($entity);        
+        $document->setMetaValue($value);
+        $dm->persist($document);
         $dm->flush();
     }
 
@@ -102,7 +101,7 @@ class DoctrineODMMetastazStore extends MetastazStore
     public function getAll($dimension, $namespace)
     {
         $dm = $this->getDocumentManager();
-        $entities = $dm->getRepository('MetastazBundle:Metastaz')->findBy(
+        $documents = $dm->getRepository('MetastazBundle:Metastaz')->findBy(
             array(
                 'meta_dimension' => $dimension,
                 'meta_namespace' => $namespace
@@ -110,8 +109,8 @@ class DoctrineODMMetastazStore extends MetastazStore
         );
 
         $ret = array();
-        foreach($entities as $entity) {
-            $ret[$entity->getMetaKey()] = $entity->getMetaValue();
+        foreach($documents as $document) {
+            $ret[$document->getMetaKey()] = $document->getMetaValue();
         }
         return $ret;
     }
@@ -123,7 +122,7 @@ class DoctrineODMMetastazStore extends MetastazStore
     public function delete($dimension, $namespace, $key)
     {
         $dm = $this->getDocumentManager();
-        $entity = $dm->getRepository('MetastazBundle:Metastaz')->findOneBy(
+        $document = $dm->getRepository('MetastazBundle:Metastaz')->findOneBy(
             array(
                 'meta_dimension' => $dimension,
                 'meta_namespace' => $namespace,
@@ -131,7 +130,7 @@ class DoctrineODMMetastazStore extends MetastazStore
             )
         );
 
-        if (!$entity) {
+        if (!$document) {
             throw new NotFoundHttpException(
                 sprintf('Unable to find Metastaz entity with the following parameter: %s %s %s.',
                     $dimension,
@@ -141,7 +140,7 @@ class DoctrineODMMetastazStore extends MetastazStore
             );
         }
 
-        $dm->remove($entity);
+        $dm->remove($document);
         $dm->flush();
     }
 
@@ -152,12 +151,12 @@ class DoctrineODMMetastazStore extends MetastazStore
     public function deleteAll($dimension)
     {
         $dm = $this->getDocumentManager();
-        $entities = $dm->getRepository('MetastazBundle:Metastaz')->findBy(
+        $documents = $dm->getRepository('MetastazBundle:Metastaz')->findBy(
             array('meta_dimension' => $dimension)
         );
 
-        foreach($entities as $entity) {
-            $dm->remove($entity);
+        foreach($documents as $document) {
+            $dm->remove($document);
         }
         $dm->flush();
     }

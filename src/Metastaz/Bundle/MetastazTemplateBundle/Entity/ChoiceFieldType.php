@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * ChoiceFieldType
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
- * @licence: LGPL
+ * @licence: GPL
  * @ORM\Entity
  */
 class ChoiceFieldType extends MetastazFieldType

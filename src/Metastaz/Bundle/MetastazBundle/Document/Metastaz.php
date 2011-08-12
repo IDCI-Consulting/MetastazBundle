@@ -8,14 +8,14 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
  * @author:  Michel ROTTA <michel.r@allopneus.com>
- * @licence: LGPL
+ * @licence: GPL
  * @MongoDB\Document
  * 
  */
 class Metastaz
 {
     /**
-     * @MongoDB\Id 
+     * @MongoDB\Id
      */
     protected $id;
 
@@ -46,9 +46,6 @@ class Metastaz
      * @MongoDB\String
      */
     protected $meta_value;
-
-    
-    
 
     /**
      * Get id

@@ -24,18 +24,19 @@ class DoctrineORMMetastazStore extends MetastazStore
     /**
      * Get the Entity Manager
      *
-     * 
+     * @return EntityManager
      */
     protected function getEntityManager()
     {
         if(!$this->em)
         {
-            $params = $this->getMetastazContainer()->getParameter('metastaz.store_parameters');
+            $store = $this->getMetastazContainer()->getParameter('store');
             $this->em = MetastazBundle::getContainer()
                 ->get('doctrine')
-                ->getEntityManager($params['connection_name'])
+                ->getEntityManager($store['parameters']['connection'])
             ;
         }
+
         return $this->em;
     }
 
@@ -112,6 +113,7 @@ class DoctrineORMMetastazStore extends MetastazStore
         foreach($entities as $entity) {
             $ret[$entity->getMetaKey()] = self::_deserialize($entity->getMetaValue());
         }
+
         return $ret;
     }
 

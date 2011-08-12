@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * HiddenFieldType define scalar type
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
- * @licence: LGPL
+ * @licence: GPL
  * @ORM\Entity
  */
 class HiddenFieldType extends MetastazFieldType

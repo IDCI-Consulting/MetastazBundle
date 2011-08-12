@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Container;
  * MetastazField define a field aggregate by a MetastazTemplate
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
- * @licence: LGPL
+ * @licence: GPL
  * @ORM\Entity
  * @ORM\Table(name="metastaz_field")
  */

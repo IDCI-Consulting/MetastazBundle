@@ -5,6 +5,12 @@ namespace Metastaz\Bundle\MetastazTemplateBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 
+/**
+ * MetastazFieldType
+ * 
+ * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
+ * @licence: GPL
+ */
 class MetastazFieldType extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)

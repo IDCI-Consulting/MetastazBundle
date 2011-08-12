@@ -15,6 +15,9 @@ use Metastaz\Bundle\MetastazTemplateBundle\Form\MetastazTemplateType;
 
 /**
  * MetastazTemplate controller.
+ * 
+ * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
+ * @licence: GPL
  */
 class MetastazTemplateController extends Controller
 {

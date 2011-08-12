@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Container;
  * MetastazTemplate define the metadata fields that can use a metastaz object
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
- * @licence: LGPL
+ * @licence: GPL
  * @ORM\Entity
  */
 class MetastazTemplate extends MetastazFieldType

@@ -9,8 +9,17 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Metastaz\Bundle\MetastazTemplateBundle\Generator\MetastazTemplateFormGenerator;
 
+/**
+ * GenerateMetastazTemplateFormCommand.
+ * 
+ * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
+ * @licence: GPL
+ */
 class GenerateMetastazTemplateFormCommand extends ContainerAwareCommand
 {
+    /**
+     * @see ContainerAwareCommand
+     */
     protected function configure()
     {
         $this
@@ -21,6 +30,9 @@ class GenerateMetastazTemplateFormCommand extends ContainerAwareCommand
         ;
     }
 
+    /**
+     * @see ContainerAwareCommand
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $connection = $input->getOption('connection') ? $input->getOption('connection') : 'metastaz_template';

@@ -10,6 +10,12 @@ use Metastaz\Bundle\MetastazTemplateBundle\Entity\MetastazFieldType,
     Metastaz\Bundle\MetastazTemplateBundle\Entity\OtherFieldType,
     Metastaz\Bundle\MetastazTemplateBundle\Entity\TextFieldType;
 
+/**
+ * LoadMetastazTemplateData
+ * 
+ * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
+ * @licence: GPL
+ */
 class LoadMetastazTemplateData implements FixtureInterface
 {
     public function load($em)

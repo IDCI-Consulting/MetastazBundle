@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * DateAndTimeFieldType
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
- * @licence: LGPL
+ * @licence: GPL
  * @ORM\Entity
  */
 class DateAndTimeFieldType extends MetastazFieldType

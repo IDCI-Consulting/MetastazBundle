@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * MetastazFieldType
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
- * @licence: LGPL
+ * @licence: GPL
  * @ORM\Entity
  * @ORM\Table(
  *   name="metastaz_field_type",

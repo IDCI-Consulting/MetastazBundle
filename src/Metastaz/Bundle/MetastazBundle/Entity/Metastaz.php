@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
  * @author:  Michel ROTTA <michel.r@allopneus.com>
- * @licence: LGPL
+ * @licence: GPL
  * @ORM\Entity
  * @ORM\Table(name="metastaz")
  */

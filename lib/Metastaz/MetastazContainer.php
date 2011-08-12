@@ -31,7 +31,8 @@ class MetastazContainer
      */
     public function __construct(array $parameters = array())
     {
-        $this->setParameters($parameters);
+        $configParams = MetastazTemplateBundle::getContainer()->getParameter('metastaz.parameters');
+        $this->setParameters(array_merge($configParams, $parameters));
     }
 
     /**
@@ -86,7 +87,7 @@ class MetastazContainer
      */
     public function getMetastazId()
     {
-        $obj = $this->getParameter('metastaz.object');
+        $obj = $this->getParameter('object');
         return get_class($obj).$obj->getMetastazDimension();
     }
 
@@ -98,25 +99,29 @@ class MetastazContainer
      */
     public function getMetastazTemplate()
     {
-        $obj = $this->getParameter('metastaz.object');
+        $obj = $this->getParameter('object');
         $share_key = 'template.'.strtolower($obj->getMetastazTemplateName());
         if (isset(self::$shared[$share_key]))
         {
             return self::$shared[$share_key];
         }
 
-        // Retrieve MetastazTemplate by its name
-        $em = MetastazTemplateBundle::getContainer()->get('doctrine')->getEntityManager('metastaz_template');
-        $re = $em->getRepository('MetastazTemplateBundle:MetastazTemplate');
-        $template = $re->findOneByName($obj->getMetastazTemplateName());
+        $container = $this->getParameter('container');
+        if($container['use_template'])
+        {
+            // Retrieve MetastazTemplate by its name
+            $em = MetastazTemplateBundle::getContainer()->get('doctrine')->getEntityManager('metastaz_template');
+            $re = $em->getRepository('MetastazTemplateBundle:MetastazTemplate');
+            $template = $re->findOneByName($obj->getMetastazTemplateName());
 
-        if ($template) {
-            return self::$shared[$share_key] = $template;
-        }
-        else {
-            throw new NotFoundHttpException(
-                sprintf('Unable to find the following MetastazTemplate: %s.', $obj->getMetastazTemplateName())
-            );
+            if ($template) {
+                return self::$shared[$share_key] = $template;
+            }
+            else {
+                throw new NotFoundHttpException(
+                    sprintf('Unable to find the following MetastazTemplate: %s.', $obj->getMetastazTemplateName())
+                );
+            }
         }
     }
 
@@ -128,7 +133,8 @@ class MetastazContainer
      */
     public function getMetastazStoreService()
     {
-        $class = $this->getParameter('metastaz.store_class');
+        $store = $this->getParameter('store');
+        $class = $store['class'];
         $share_key = 'store.'.strtolower($class);
         if (isset(self::$shared[$share_key]))
         {
@@ -177,7 +183,8 @@ class MetastazContainer
     public function put($namespace, $key, $value, $culture = null)
     {
         $template = $this->getMetastazTemplate();
-        if(!$template->hasField($namespace, $key))
+        $container = $this->getParameter('container');
+        if($container['use_template'] && !$template->hasField($namespace, $key))
         {
             throw new NotFoundHttpException(
                 sprintf('The MetastazTemplate "%s" doesn\'t contain the following field {namespace: "%s", key: "%s"}.',
