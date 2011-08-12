@@ -194,6 +194,17 @@ If you have well added DoctrineFixturesBundle, load default MetastazTemplateFiel
 
     php app/console doctrine:fixtures:load --em="metastaz_template"
 
+You can now, throw your web browser, add templates and define theirs fields.
+Go here http://your_vhost/[app_dev.php]/metastaz/template/ and configure your templates as you like.
+
+Builds Templates forms
+----------------------
+
+You can generate template forms by running the following command with the console:
+
+    php app/console metastaz:generate:form
+
+Take a look in app/Application/Forms
 
 How to use Metastaz
 -------------------
