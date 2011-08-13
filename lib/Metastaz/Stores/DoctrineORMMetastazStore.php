@@ -41,7 +41,7 @@ class DoctrineORMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
+     * @see Metastaz\Stores\MetastazStore
      * @throw NotFoundHttpException
      */
     public function get($dimension, $namespace, $key, $culture = null)
@@ -70,7 +70,7 @@ class DoctrineORMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
+     * @see Metastaz\Stores\MetastazStore
      */
     public function put($dimension, $namespace, $key, $value, $culture = null)
     {
@@ -97,28 +97,27 @@ class DoctrineORMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
+     * @see Metastaz\Stores\MetastazStore
      */
-    public function getAll($dimension, $namespace)
+    public function getAll($dimension)
     {
         $em = $this->getEntityManager();
         $entities = $em->getRepository('MetastazBundle:Metastaz')->findBy(
             array(
-                'meta_dimension' => $dimension,
-                'meta_namespace' => $namespace
+                'meta_dimension' => $dimension
             )
         );
 
         $ret = array();
         foreach($entities as $entity) {
-            $ret[$entity->getMetaKey()] = self::_deserialize($entity->getMetaValue());
+            $ret[$entity->getMetaNamespace()][$entity->getMetaKey()] = self::_deserialize($entity->getMetaValue());
         }
 
         return $ret;
     }
 
     /**
-     * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
+     * @see Metastaz\Stores\MetastazStore
      * @throw NotFoundHttpException
      */
     public function delete($dimension, $namespace, $key)
@@ -147,7 +146,7 @@ class DoctrineORMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
+     * @see Metastaz\Stores\MetastazStore
      * @throw NotFoundHttpException
      */
     public function deleteAll($dimension)
@@ -164,7 +163,51 @@ class DoctrineORMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
+     * @see Metastaz\Stores\MetastazStore
+     */
+    public function putMany($dimension, array $metastazs)
+    {
+        $em = $this->getEntityManager();
+
+        foreach($metastazs as $namespace => $keys) {
+            foreach($keys as $key => $value) {
+                $entity = new Metastaz();
+                $entity->setMetaDimension($dimension);
+                $entity->setMetaNamespace($namespace);
+                $entity->setMetaKey($key);
+                $entity->setMetaValue(self::_serialize($value));
+                $em->persist($entity);
+            }
+        }
+
+        $em->flush();
+    }
+
+    /**
+     * @see Metastaz\Stores\MetastazStore
+     */
+    public function deleteMany($dimension, array $metastazs)
+    {
+        $em = $this->getEntityManager();
+
+        foreach($metastazs as $namespace => $keys) {
+            foreach($keys as $key => $value) {
+                $entity = $em->getRepository('MetastazBundle:Metastaz')->findOneBy(
+                    array(
+                        'meta_dimension' => $dimension,
+                        'meta_namespace' => $namespace,
+                        'meta_key' => $key
+                    )
+                );
+                $em->remove($entity);
+            }
+        }
+
+        $em->flush();
+    }
+
+    /**
+     * Serialize
      */
     protected static function _serialize($data)
     {
@@ -172,7 +215,7 @@ class DoctrineORMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
+     * Deserialize
      */
     protected static function _deserialize($data)
     {

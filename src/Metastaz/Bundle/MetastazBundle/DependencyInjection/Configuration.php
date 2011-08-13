@@ -17,6 +17,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('container')
                     ->children()
                         ->booleanNode('use_template')->defaultValue('true')->end()
+                        ->booleanNode('instance_pooling')->defaultValue('true')->end()
                     ->end()
                 ->arrayNode('store')
                     ->children()

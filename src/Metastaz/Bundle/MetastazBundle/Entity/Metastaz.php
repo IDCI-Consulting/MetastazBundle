@@ -10,7 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @author:  Michel ROTTA <michel.r@allopneus.com>
  * @licence: GPL
  * @ORM\Entity
- * @ORM\Table(name="metastaz")
+ * @ORM\Table(
+ *  name="metastaz",
+ *  uniqueConstraints={@ORM\UniqueConstraint(name="UNIQUE_KEY", columns={"meta_dimension", "meta_namespace", "meta_key"})})
  */
 class Metastaz
 {

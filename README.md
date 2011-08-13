@@ -47,7 +47,7 @@ Add this in your configuration (app/config/config.yml):
     metastaz:
         container:
             use_template: false
-            instance_pool: false
+            instance_pooling: false
         store:
             class: DoctrineORMMetastazStore
             parameters:
@@ -66,7 +66,7 @@ To enable this feature active the instance_pool:
     # Metastaz Configuration
     metastaz:
         container:
-            instance_pool: true
+            instance_pooling: true
 
 You can define different store or create yours. Metastaz bundle provide an ORM and an ODM.
 To use them set the class store parameters (DoctrineORMMetastazStore or DoctrineODMMetastazStore)
@@ -251,12 +251,13 @@ In the class within you would like to use Metastaz:
          */
         public function getMetastazContainer()
         {
-            if(!isset(self::$metastaz_containers[$this->getMetastazDimension()]))
+            if(!isset(self::$metastaz_containers[$this->getMetastazDimensionId()]))
             {
-                self::$metastaz_containers[$this->getMetastazDimension()] = new MetastazContainer(
+                self::$metastaz_containers[$this->getMetastazDimensionId()] = new MetastazContainer(
                     array('object' => $this)
                 );
             }
+            return self::$metastaz_containers[$this->getMetastazDimensionId()];
         }
 
         /**
@@ -308,14 +309,14 @@ when instanciate the MetastazContainer
          */
         public function getMetastazContainer()
         {
-            if(!isset(self::$metastaz_containers[$this->getMetastazDimension()]))
+            if(!isset(self::$metastaz_containers[$this->getMetastazDimensionId()]))
             {
-                self::$metastaz_containers[$this->getMetastazDimension()] = new MetastazContainer(
+                self::$metastaz_containers[$this->getMetastazDimensionId()] = new MetastazContainer(
                     array(
                         'object' => $this,
                         'container' => array(
                             'use_template' => true,
-                            'instance_pool' => true
+                            'instance_pooling' => true
                         ),
                         'store' => array(
                             'class' => 'DoctrineODMMetastazStore',
@@ -324,6 +325,7 @@ when instanciate the MetastazContainer
                     )
                 );
             }
+            return self::$metastaz_containers[$this->getMetastazDimensionId()];
         }
 
 Now you can use metastazed class like this:

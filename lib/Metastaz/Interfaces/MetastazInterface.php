@@ -11,12 +11,14 @@ namespace Metastaz\Interfaces;
  */
 interface MetastazInterface
 {
-    function getMetastazDimension();
+    function getMetastazDimensionId();
     function getMetastazTemplateName();
     function getMetastazContainer();
     function getMetastaz($namespace, $key, $culture = null);
     function putMetastaz($namespace, $key, $value, $culture = null);
-    function getAllMetastaz($namespace);
     function deleteMetastaz($namespace, $key);
+    function getAllMetastaz();
     function deleteAllMetastaz();
+    function loadMetastaz();
+    function flushMetastaz();
 }

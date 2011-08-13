@@ -10,8 +10,7 @@ use Metastaz\Bundle\MetastazBundle\Document\Metastaz;
 use Metastaz\MetastazStore;
 
 /**
- * DoctrineMetastazStore is a concrete provider to store Metastazs throw 
- * Doctrine ODM.
+ * DoctrineMetastazStore is a concrete provider to store Metastazs throw Doctrine ODM.
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
  * @licence: LGPL
@@ -98,19 +97,18 @@ class DoctrineODMMetastazStore extends MetastazStore
     /**
      * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
      */
-    public function getAll($dimension, $namespace)
+    public function getAll($dimension)
     {
         $dm = $this->getDocumentManager();
         $documents = $dm->getRepository('MetastazBundle:Metastaz')->findBy(
             array(
-                'meta_dimension' => $dimension,
-                'meta_namespace' => $namespace
+                'meta_dimension' => $dimension
             )
         );
 
         $ret = array();
         foreach($documents as $document) {
-            $ret[$document->getMetaKey()] = $document->getMetaValue();
+            $ret[$document->getMetaNamespace()][$document->getMetaKey()] = $document->getMetaValue();
         }
         return $ret;
     }
@@ -158,6 +156,50 @@ class DoctrineODMMetastazStore extends MetastazStore
         foreach($documents as $document) {
             $dm->remove($document);
         }
+        $dm->flush();
+    }
+
+    /**
+     * @see Metastaz\Stores\MetastazStore
+     */
+    public function putMany($dimension, array $metastazs)
+    {
+        $dm = $this->getDocumentManager();
+
+        foreach($metastazs as $namespace => $keys) {
+            foreach($keys as $key => $value) {
+                $document = new Metastaz();
+                $document->setMetaDimension($dimension);
+                $document->setMetaNamespace($namespace);
+                $document->setMetaKey($key);
+                $document->setMetaValue($value);
+                $dm->persist($document);
+            }
+        }
+
+        $dm->flush();
+    }
+
+    /**
+     * @see Metastaz\Stores\MetastazStore
+     */
+    public function deleteMany($dimension, array $metastazs)
+    {
+        $dm = $this->getDocumentManager();
+
+        foreach($metastazs as $namespace => $keys) {
+            foreach($keys as $key => $value) {
+                $document = $dm->getRepository('MetastazBundle:Metastaz')->findOneBy(
+                    array(
+                        'meta_dimension' => $dimension,
+                        'meta_namespace' => $namespace,
+                        'meta_key' => $key
+                    )
+                );
+                $dm->remove($document);
+            }
+        }
+
         $dm->flush();
     }
 }
