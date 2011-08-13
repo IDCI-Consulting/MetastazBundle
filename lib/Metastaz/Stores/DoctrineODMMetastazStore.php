@@ -38,7 +38,7 @@ class DoctrineODMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
+     * @see Metastaz\Stores\MetastazStore
      * @throw NotFoundHttpException
      */
     public function get($dimension, $namespace, $key, $culture = null)
@@ -68,7 +68,7 @@ class DoctrineODMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
+     * @see Metastaz\Stores\MetastazStore
      */
     public function put($dimension, $namespace, $key, $value, $culture = null)
     {
@@ -95,7 +95,7 @@ class DoctrineODMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
+     * @see Metastaz\Stores\MetastazStore
      */
     public function getAll($dimension)
     {
@@ -114,7 +114,7 @@ class DoctrineODMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
+     * @see Metastaz\Stores\MetastazStore
      * @throw NotFoundHttpException
      */
     public function delete($dimension, $namespace, $key)
@@ -143,7 +143,7 @@ class DoctrineODMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Hevea\Bundle\MetastazBundle\Stores\MetastazStore
+     * @see Metastaz\Stores\MetastazStore
      * @throw NotFoundHttpException
      */
     public function deleteAll($dimension)
