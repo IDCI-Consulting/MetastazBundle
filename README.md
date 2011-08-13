@@ -4,9 +4,11 @@ Welcome to the MetastazBundle
 What is MetastazBundle?
 -----------------------
 
-This bundle provides an interface which once implemented allows you to add 
-metadata on your model objects. You can define 'Templates' that you can use to 
-specify metadata set. These 'Templates' are stored with Doctrine2.
+This bundle provides an interface with which you can manipulate
+metadata tied to arbitrary model objects. You can also define
+'Templates' (optional dynamic schemas) in order to enable
+automatic constraints and form generation.
+Templates are stored in a database using Doctrine2.
 
 
 Installation requirements
@@ -14,9 +16,10 @@ Installation requirements
 
 * Symfony2
 * Doctrine2
-* DoctrineFixturesBundle (http://symfony.com/doc/current/cookbook/doctrine/doctrine_fixtures.html)
+* DoctrineFixturesBundle
+  (http://symfony.com/doc/current/cookbook/doctrine/doctrine_fixtures.html)
 
-Installation options
+Optional dependencies
 --------------------
 
 * MongoDB (http://symfony.com/doc/current/cookbook/doctrine/mongodb.html)
@@ -25,15 +28,28 @@ Installation options
 Installation
 ------------
 
-First, get the source code and put it under a folder name "metastaz" in your Symfony2 vendor directory
+If your project uses the *git* versioning system,
+add a submodule for metastaz:
 
-    git clone git@github.com:idciconsulting/MetastazBundle.git vendor/metastaz
+    git submodule add git://github.com/idciconsulting/MetastazBundle.git vendor/metastaz
+
+
+Alternatively, clone the repository and put it under a folder named "metastaz"
+in your Symfony2 vendor directory
+
+    git clone git://github.com/idciconsulting/MetastazBundle.git vendor/metastaz
+
+If you do **not** have git installed nor are you willing to install it,
+You can install Metastaz from a snapshot (we would **not** recommend it though):
+
+    wget https://github.com/idciconsulting/MetastazBundle/tarball/master -O- |tar xz --transform 's|^[^/]\+/|vendor/metastaz/|'
 
 Add the 'Metastaz' namespace in registerNamespaces (app/autoload.php):
 
     'Metastaz'         => array(__DIR__.'/../vendor/metastaz/src', __DIR__.'/../vendor/metastaz/lib'),
 
-Add 'MetastazBundle' and 'MetastazTemplateBundle' in registerBundles (app/AppKernel.php):
+Add 'MetastazBundle' and 'MetastazTemplateBundle' in registerBundles
+(app/AppKernel.php):
 
     new Metastaz\Bundle\MetastazBundle\MetastazBundle(),
     new Metastaz\Bundle\MetastazTemplateBundle\MetastazTemplateBundle(),
@@ -53,30 +69,35 @@ Add this in your configuration (app/config/config.yml):
             parameters:
                 connection: metastaz
 
-To activate or not Template verification just set to true the use_tempate parameter:
+In order to activate update constraints based on Templates,
+set the *use_tempate* parameter to true:
 
     # Metastaz Configuration
     metastaz:
         container:
             use_template: true
 
-Metastaz container can act like an active records.
-To enable this feature active the instance_pool:
+Metastaz container can hold records in memory until you
+manually flush them to the database. In order to enable
+this feature, set the *instance_pool* parameter to true:
 
     # Metastaz Configuration
     metastaz:
         container:
             instance_pooling: true
 
-You can define different store or create yours. Metastaz bundle provide an ORM and an ODM.
-To use them set the class store parameters (DoctrineORMMetastazStore or DoctrineODMMetastazStore)
+You can select different stores or create yours.
+MetastazBundle provide an ORM and an ODM store.
+
+In order to use them, set the store *class* parameter to
+*DoctrineORMMetastazStore* or *DoctrineODMMetastazStore*
 
     # Metastaz Configuration
     metastaz:
         store:
             class: DoctrineORMMetastazStore
 
-Configure connections (app/config/config.yml):
+Configure database connections (app/config/config.yml):
 
     # Doctrine Configuration
 
@@ -140,7 +161,8 @@ Set connection parameters (app/config/parameters.ini):
     metastaz_template_database_user     = ...
     metastaz_template_database_password = ...
 
-If you have install MongoDB and install the doctrine bundles, define metastaz doctrine_mongodb connection:
+If you are using MongoDB along with the doctrine bundles,
+define a *doctrine_mongodb* connection in metastaz:
 
     doctrine_mongodb:
         connections:
@@ -161,18 +183,20 @@ Build table:
     php app/console doctrine:schema:create --em="metastaz"
     php app/console doctrine:schema:create --em="metastaz_template"
 
-To use the template manager, add routes to your routing.yml like this:
+In order to use the template manager, add routes to your routing.yml
+like this one:
 
     _metastaz_template:
         resource: "@MetastazTemplateBundle/Controller/MetastazTemplateController.php"
         type:     annotation
         prefix:   /metastaz/template
 
-To check if this controller is well loaded, you can execute the following command:
+In order to check if this controller is well loaded,
+you can execute the following command:
 
     php app/console router:debug
 
-You must see this routes:
+You should see these routes:
 
     metastaz_template               ANY    /metastaz/template/
     metastaz_template_show          ANY    /metastaz/template/{id}/show
@@ -187,40 +211,42 @@ You must see this routes:
     metastaz_template_delete        POST   /metastaz/template/{id}/delete
     metastaz_template_field_delete  POST   /metastaz/template/delete_field/{id}
 
-Load Fixtures
+Loading Fixtures
 -------------
 
-If you have well added DoctrineFixturesBundle, load default MetastazTemplateFieldType:
+If you have well added DoctrineFixturesBundle,
+load default MetastazTemplateFieldType:
 
     php app/console doctrine:fixtures:load --em="metastaz_template"
 
-You can now, throw your web browser, add templates and define theirs fields.
-Go here http://your_vhost/[app_dev.php]/metastaz/template/ and configure your templates as you like.
+You can now add templates and define their fields by pointing your web browser
+to http://your_vhost/[app_dev.php]/metastaz/template/ and configure your
+templates as you like.
 
-Builds Templates forms
+Building Template forms
 ----------------------
 
-You can generate template forms by running the following command with the console:
+You can generate template forms by running
+the following command with the console:
 
     php app/console metastaz:generate:form
 
 Take a look in app/Application/Form
 
-How to use Metastaz
--------------------
+Using Metastaz
+--------------
 
-In the class within you would like to use Metastaz:
+In the class within which you would like to use Metastaz:
 
     use Metastaz\Interfaces\MetastazInterface;
     use Metastaz\MetastazContainer;
 
-    class YourClass implements MetastazInterface
+    class MyClass implements MetastazInterface
     {
         ...
 
         /**
-         * MetastazContainer Objects
-         * This is a class variable
+         * Holds MetastazContainer Objects
          */
         protected static $metastaz_containers = null;
 
@@ -228,6 +254,9 @@ In the class within you would like to use Metastaz:
 
         /**
          * @see Metastaz\Interfaces\MetastazInterface
+         *
+         * Generates an identifier referring to this
+         * model object within Metastaz
          */
         public function getMetastazDimensionId()
         {
@@ -235,13 +264,14 @@ In the class within you would like to use Metastaz:
         }
 
         /**
-         * Get metastaz_template_name
+         * Generates an identifier referring to this
+         * model class within Metastaz
          *
          * @return string 
          */
         public function getMetastazTemplateName()
         {
-            // You have to set the Template Name that correspond to this object
+            /* You must define a Template Name for this object */
             // return get_class($this);
             return 'TemplateName'; 
         }
@@ -301,8 +331,9 @@ In the class within you would like to use Metastaz:
         }
     }
 
-You can override the Metastaz configuration for each Metastazed Objects by passing more parameters
-when instanciate the MetastazContainer
+You can override the Metastaz configuration for each
+Metastazed Object by passing additional parameters
+while instanciating the MetastazContainer
 
         /**
          * @see Metastaz\Interfaces\MetastazInterface
@@ -328,22 +359,25 @@ when instanciate the MetastazContainer
             return self::$metastaz_containers[$this->getMetastazDimensionId()];
         }
 
-Now you can use metastazed class like this:
+Now you can use metastazed classes this way:
 
-    $YourClassObj = new $YourClass();
+    $myObj = new MyClass();
 
-    // To put a metadata on your class object 
-    $YourClassObj->putMetastaz('ns', 'key', 'value');
+    // Store a metadata entry
+    $myObj->putMetastaz('ns', 'key', 'value');
 
-    // To retrieve a metadata by its namespace and key
+    // Retrieve a metadata by its namespace and key
     $YourClassObj->getMetastaz('ns', 'key');
 
-If you have activated the instance pool, you must call the flushMetastaz methode
+If the instance pool is enabled,
+you must call the flushMetastaz method
+in order to process write operations.
 
     $YourClassObj->flushMetastaz();
 
 Note:
-A lister is comming soon to automaticaly flush metastaz data on an Doctrine Entity Manager flush call
+Metastaz will soon be able to automatically flush
+its data on a Doctrine Entity Manager flush call
 
 Licence
 -------
