@@ -77,7 +77,7 @@ set the *use_tempate* parameter to true:
         container:
             use_template: true
 
-Metastaz container can hold records in memory until you
+Metastaz containers can hold records in memory until you
 manually flush them to the database. In order to enable
 this feature, set the *instance_pool* parameter to true:
 
