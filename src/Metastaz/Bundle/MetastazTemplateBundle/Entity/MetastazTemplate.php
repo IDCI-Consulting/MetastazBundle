@@ -140,10 +140,13 @@ class MetastazTemplate extends MetastazFieldType
     {
         $ret = array();
         foreach($this->getMetastazFields() as $field) {
-            $ret[] = array(
-                $field->getMetaNamespace().'_'.$field->getMetaKey(),
-                $field->getMetastazFieldType()
+            $tmp = array(
+                '\''.$field->getMetaNamespace().'_'.$field->getMetaKey().'\'',
+                '\''.$field->getMetastazFieldType().'\''
             );
+            if ($field->getOptions())
+                $tmp[] = $field->getOptions();
+            $ret[] = $tmp;
         }
         return $ret;
     }

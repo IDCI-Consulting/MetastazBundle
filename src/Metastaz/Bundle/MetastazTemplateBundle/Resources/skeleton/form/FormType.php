@@ -12,7 +12,7 @@ class {{ form_class }} extends AbstractType
         $builder
         {%- for field in fields %}
 
-            ->add('{{ field | join("\', \'") }}')
+            ->add({{ field | join(", ") }})
 
         {%- endfor %}
 

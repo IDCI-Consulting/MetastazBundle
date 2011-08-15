@@ -338,6 +338,36 @@ class MetastazTemplateController extends Controller
         return $this->redirect($this->generateUrl('metastaz_template_edit', array('id' => $entity->getMetastazTemplateId())));
     }
 
+    /**
+     * Displays a MetastazTemplate form.
+     *
+     * @Route("/{id}/form/show", name="metastaz_template_form_show")
+     * @Template("MetastazTemplateBundle:MetastazTemplate:showForm.html.twig")
+     */
+    public function showFormAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getEntityManager('metastaz_template');
+        $entity = $em->getRepository('MetastazTemplateBundle:MetastazTemplate')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find MetastazTemplate entity.');
+        }
+
+        $class_name = sprintf('%s\\%sMetastazTemplateType',
+            'Application\\Form',
+            $entity->getName()
+        );
+
+        $class_form = new $class_name(); 
+        $form = $this->createForm($class_form);
+
+        return array(
+            'entity'    => $entity,
+            'form'      => $form->createView()
+        );
+
+    }
+
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder(array('id' => $id))

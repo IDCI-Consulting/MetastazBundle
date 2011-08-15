@@ -51,12 +51,20 @@
 
     <div class="form_container"></div>
 
-    <a class="action new create_link" href="{{ path('metastaz_template_field_new', { 'id': entity.id }) }}">Create new field</a>
-
     <ul class="record_actions">
         <li>
             <a class="action back" href="{{ path('metastaz_template') }}">
                 Back to the list
+            </a>
+        </li>
+        <li>
+            <a class="action new create_link" href="{{ path('metastaz_template_field_new', { 'id': entity.id }) }}">
+                Create new field
+            </a>
+        </li>
+        <li>
+            <a class="action show" href="{{ path('metastaz_template_form_show', { 'id': entity.id }) }}">
+                Show form
             </a>
         </li>
         <li>

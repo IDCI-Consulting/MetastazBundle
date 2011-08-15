@@ -1,7 +1,7 @@
 {% form_theme form 'MetastazTemplateBundle:Form:fields.html.twig' %}
 
 <form action="{{ path('metastaz_template_create') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_errors(form) }}
+
     {{ form_row(form.name) }}
 
     <p>
