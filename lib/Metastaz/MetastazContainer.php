@@ -228,6 +228,7 @@ class MetastazContainer
     {
         $template = $this->getMetastazTemplate();
 
+        // TODO: Use Custom Repository to optimize the request to fields and prevent the lazy loading on field type
         if($template && !$template->hasField($namespace, $key))
         {
             throw new NotFoundHttpException(
@@ -313,6 +314,16 @@ class MetastazContainer
                 $this->getMetastazDimension()
             );
         }
+    }
+
+    /**
+     * Load Metastaz in the pool
+     */
+    public function load()
+    {
+        $this->getMetastazStoreService()->load(
+            $this->getMetastazDimension()
+        );
     }
 
     /**
