@@ -22,12 +22,17 @@ class MetastazContainer
     /**
      * Template
      */
-    static protected $template = null;
+    static protected $template = array();
 
     /**
-     * Store
+     * Storeif ($this->isInstancePoolingEnabled()) {
      */
-    static protected $store = null;
+    static protected $store = array();
+
+    /**
+     * Metastaz Pool
+     */
+    protected $metastaz_pool = null;
 
     /**
      * Constructor
@@ -38,6 +43,10 @@ class MetastazContainer
     {
         $configParams = MetastazTemplateBundle::getContainer()->getParameter('metastaz.parameters');
         $this->setParameters(array_merge($configParams, $parameters));
+        $this->metastaz_pool = new MetastazPool($this->getMetastazDimension());
+        if ($this->isInstancePoolingEnabled()) {
+            $this->load();
+        }
     }
 
     /**
@@ -140,25 +149,25 @@ class MetastazContainer
             return null;
         }
 
-        if (!self::$template && !self::$template[$this->getMetastazDimension()])
-        {
-            $obj = $this->getParameter('object');
-            // Retrieve MetastazTemplate by its name
-            $em = MetastazTemplateBundle::getContainer()->get('doctrine')->getEntityManager('metastaz_template');
-            $re = $em->getRepository('MetastazTemplateBundle:MetastazTemplate');
-            $template = $re->findOneByName($obj->getMetastazTemplateName());
+        $obj = $this->getParameter('object');
 
-            if ($template) {
-                self::$template[$this->getMetastazDimension()] = $template;
-            }
-            else {
-                throw new NotFoundHttpException(
-                    sprintf('Unable to find the following MetastazTemplate: %s.', $obj->getMetastazTemplateName())
-                );
-            }
+        if (isset(self::$template[$obj->getMetastazTemplateName()]))
+        {
+            return self::$template[$obj->getMetastazTemplateName()];
         }
 
-        return self::$template[$this->getMetastazDimension()];
+        // Retrieve MetastazTemplate by its name
+        $em = MetastazTemplateBundle::getContainer()->get('doctrine')->getEntityManager('metastaz_template');
+        $re = $em->getRepository('MetastazTemplateBundle:MetastazTemplate');
+        $template = $re->findOneByName($obj->getMetastazTemplateName());
+
+        if (!$template) {
+            throw new NotFoundHttpException(
+                sprintf('Unable to find the following MetastazTemplate: %s.', $obj->getMetastazTemplateName())
+            );
+        }
+
+        return self::$template[$obj->getMetastazTemplateName()] = $template;
     }
 
     /**
@@ -169,23 +178,23 @@ class MetastazContainer
      */
     public function getMetastazStoreService()
     {
-        if (!self::$store && !self::$store[$this->getMetastazDimension()])
-        {
-            $store = $this->getParameter('store');
-            $class = $store['class'];
-            $_class = 'Metastaz\\Stores\\'.$class;
-            if(class_exists($_class)) {
-                $store = new $_class($this);
-                self::$store[$this->getMetastazDimension()] = $store;
-            }
-            else {
-                throw new NotFoundHttpException(
-                    sprintf('Unable to find the following MetastazStore: %s.', $_class)
-                );
-            }
+        $store = $this->getParameter('store');
+        $class = $store['class'];
+        $_class = 'Metastaz\\Stores\\'.$class;
+
+        if(!class_exists($_class)) {
+            throw new NotFoundHttpException(
+                sprintf('Unable to find the following MetastazStore: %s.', $_class)
+            );
         }
-        
-        return self::$store[$this->getMetastazDimension()];
+
+        if (!isset(self::$store[$_class]))
+        {
+            $store = new $_class($store['parameters']);
+            self::$store[$_class] = $store;
+        }
+
+        return self::$store[$_class];
     }
 
     /**
@@ -199,12 +208,7 @@ class MetastazContainer
     public function get($namespace, $key, $culture = null)
     {
         if ($this->isInstancePoolingEnabled()) {
-            return $this->getMetastazStoreService()->getFromPool(
-                $this->getMetastazDimension(),
-                $namespace,
-                $key,
-                $culture
-            );
+            return $this->metastaz_pool->get($namespace, $key, $culture);
         }
 
         return $this->getMetastazStoreService()->get(
@@ -241,13 +245,7 @@ class MetastazContainer
         }
 
         if ($this->isInstancePoolingEnabled()) {
-            $this->getMetastazStoreService()->putInPool(
-                $this->getMetastazDimension(),
-                $namespace,
-                $key,
-                $value,
-                $culture
-            );
+            $this->metastaz_pool->add($namespace, $key, $value, $culture);
         } else {
             $this->getMetastazStoreService()->put(
                 $this->getMetastazDimension(),
@@ -267,9 +265,7 @@ class MetastazContainer
     public function getAll()
     {
         if ($this->isInstancePoolingEnabled()) {
-            return $this->getMetastazStoreService()->getAllFromPool(
-                $this->getMetastazDimension()
-            );
+            return $this->metastaz_pool->getAll();
         }
 
         return $this->getMetastazStoreService()->getAll(
@@ -286,11 +282,7 @@ class MetastazContainer
     public function delete($namespace, $key)
     {
         if ($this->isInstancePoolingEnabled()) {
-            return $this->getMetastazStoreService()->deleteFromPool(
-                $this->getMetastazDimension(),
-                $namespace,
-                $key
-            );
+            $this->metastaz_pool->delete($namespace, $key);
         } else {
             $this->getMetastazStoreService()->delete(
                 $this->getMetastazDimension(),
@@ -306,9 +298,7 @@ class MetastazContainer
     public function deleteAll()
     {
         if ($this->isInstancePoolingEnabled()) {
-             $this->getMetastazStoreService()->deleteAllFromPool(
-                $this->getMetastazDimension()
-            );
+             $this->metastaz_pool->deleteAll();
         } else {
             $this->getMetastazStoreService()->deleteAll(
                 $this->getMetastazDimension()
@@ -321,8 +311,8 @@ class MetastazContainer
      */
     public function load()
     {
-        $this->getMetastazStoreService()->load(
-            $this->getMetastazDimension()
+        $this->metastaz_pool->load(
+            $this->getMetastazStoreService()->getAll($this->getMetastazDimension())
         );
     }
 
@@ -331,8 +321,19 @@ class MetastazContainer
      */
     public function flush()
     {
-        $this->getMetastazStoreService()->flush(
-            $this->getMetastazDimension()
+        $this->getMetastazStoreService()->addMany(
+            $this->getMetastazDimension(),
+            $this->metastaz_pool->getInserts()
+        );
+
+        $this->getMetastazStoreService()->updateMany(
+            $this->getMetastazDimension(),
+            $this->metastaz_pool->getUpdates()
+        );
+
+        $this->getMetastazStoreService()->deleteMany(
+            $this->getMetastazDimension(),
+            $this->metastaz_pool->getDeletes()
         );
     }
 }

@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Metastaz\Bundle\MetastazBundle\MetastazBundle;
 use Metastaz\Bundle\MetastazBundle\Document\Metastaz;
-use Metastaz\MetastazStore;
+use Metastaz\Interfaces\MetastazStoreInterface;
 
 /**
  * DoctrineMetastazStore is a concrete provider to store Metastazs throw Doctrine ODM.
@@ -15,8 +15,9 @@ use Metastaz\MetastazStore;
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
  * @licence: LGPL
  */
-class DoctrineODMMetastazStore extends MetastazStore
+class DoctrineODMMetastazStore implements MetastazStoreInterface
 {
+    protected $parameters = array();
     protected $dm = null;
 
     /**
@@ -28,17 +29,21 @@ class DoctrineODMMetastazStore extends MetastazStore
     {
         if(!$this->dm)
         {
-            $store = $this->getMetastazContainer()->getParameter('store');
             $this->dm = MetastazBundle::getContainer()
-                ->get('doctrine.odm.mongodb.'.$store['parameters']['connection'].'_document_manager')
+                ->get('doctrine.odm.mongodb.'.$this->parameters['connection'].'_document_manager')
             ;
         }
 
         return $this->dm;
     }
 
+    public function __construct($parameters)
+    {
+        $this->parameters = $parameters;
+    }
+
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      * @throw NotFoundHttpException
      */
     public function get($dimension, $namespace, $key, $culture = null)
@@ -68,7 +73,7 @@ class DoctrineODMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      */
     public function put($dimension, $namespace, $key, $value, $culture = null)
     {
@@ -95,7 +100,7 @@ class DoctrineODMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      */
     public function getAll($dimension)
     {
@@ -114,7 +119,7 @@ class DoctrineODMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      * @throw NotFoundHttpException
      */
     public function delete($dimension, $namespace, $key)
@@ -143,7 +148,7 @@ class DoctrineODMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      * @throw NotFoundHttpException
      */
     public function deleteAll($dimension)
@@ -160,9 +165,9 @@ class DoctrineODMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      */
-    public function putMany($dimension, array $metastazs)
+    public function addMany($dimension, array $metastazs)
     {
         $dm = $this->getDocumentManager();
 
@@ -181,7 +186,38 @@ class DoctrineODMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
+     */
+    public function updateMany($dimension, array $metastazs)
+    {
+        $dm = $this->getDocumentManager();
+
+        foreach($metastazs as $namespace => $keys) {
+            foreach($keys as $key => $value) {
+                $document = $dm->getRepository('MetastazBundle:Metastaz')->findOneBy(
+                    array(
+                        'meta_dimension' => $dimension,
+                        'meta_namespace' => $namespace,
+                        'meta_key' => $key
+                    )
+                );
+
+                if (!$document) {
+                    $document = new Metastaz();
+                    $document->setMetaDimension($dimension);
+                    $document->setMetaNamespace($namespace);
+                    $document->setMetaKey($key);
+                }
+                $document->setMetaValue($value);
+                $dm->persist($document);
+            }
+        }
+
+        $dm->flush();
+    }
+
+    /**
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      */
     public function deleteMany($dimension, array $metastazs)
     {

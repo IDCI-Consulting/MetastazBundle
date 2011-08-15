@@ -5,7 +5,7 @@ namespace Metastaz\Stores;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Metastaz\Bundle\MetastazBundle\MetastazBundle;
 use Metastaz\Bundle\MetastazBundle\Entity\Metastaz;
-use Metastaz\MetastazStore;
+use Metastaz\Interfaces\MetastazStoreInterface;
 use Doctrine\ORM\EntityManager,
     Doctrine\ORM\Configuration,
     Doctrine\ORM\Mapping\Driver\YamlDriver;
@@ -17,8 +17,9 @@ use Doctrine\ORM\EntityManager,
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
  * @licence: LGPL
  */
-class DoctrineORMMetastazStore extends MetastazStore
+class DoctrineORMMetastazStore implements MetastazStoreInterface
 {
+    protected $parameters = array();
     protected $em = null;
 
     /**
@@ -30,18 +31,22 @@ class DoctrineORMMetastazStore extends MetastazStore
     {
         if(!$this->em)
         {
-            $store = $this->getMetastazContainer()->getParameter('store');
             $this->em = MetastazBundle::getContainer()
                 ->get('doctrine')
-                ->getEntityManager($store['parameters']['connection'])
+                ->getEntityManager($this->parameters['connection'])
             ;
         }
 
         return $this->em;
     }
 
+    public function __construct($parameters)
+    {
+        $this->parameters = $parameters;
+    }
+
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      * @throw NotFoundHttpException
      */
     public function get($dimension, $namespace, $key, $culture = null)
@@ -70,7 +75,7 @@ class DoctrineORMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      */
     public function put($dimension, $namespace, $key, $value, $culture = null)
     {
@@ -97,7 +102,7 @@ class DoctrineORMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      */
     public function getAll($dimension)
     {
@@ -117,7 +122,7 @@ class DoctrineORMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      * @throw NotFoundHttpException
      */
     public function delete($dimension, $namespace, $key)
@@ -146,7 +151,7 @@ class DoctrineORMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      * @throw NotFoundHttpException
      */
     public function deleteAll($dimension)
@@ -163,9 +168,9 @@ class DoctrineORMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      */
-    public function putMany($dimension, array $metastazs)
+    public function addMany($dimension, array $metastazs)
     {
         $em = $this->getEntityManager();
 
@@ -184,7 +189,38 @@ class DoctrineORMMetastazStore extends MetastazStore
     }
 
     /**
-     * @see Metastaz\Stores\MetastazStore
+     * @see Metastaz\Interfaces\MetastazStoreInterface
+     */
+    public function updateMany($dimension, array $metastazs)
+    {
+        $em = $this->getEntityManager();
+
+        foreach($metastazs as $namespace => $keys) {
+            foreach($keys as $key => $value) {
+                $entity = $em->getRepository('MetastazBundle:Metastaz')->findOneBy(
+                    array(
+                        'meta_dimension' => $dimension,
+                        'meta_namespace' => $namespace,
+                        'meta_key' => $key
+                    )
+                );
+
+                if (!$entity) {
+                    $entity = new Metastaz();
+                    $entity->setMetaDimension($dimension);
+                    $entity->setMetaNamespace($namespace);
+                    $entity->setMetaKey($key);
+                }
+                $entity->setMetaValue(self::_serialize($value));
+                $em->persist($entity);
+            }
+        }
+
+        $em->flush();
+    }
+
+    /**
+     * @see Metastaz\Interfaces\MetastazStoreInterface
      */
     public function deleteMany($dimension, array $metastazs)
     {
