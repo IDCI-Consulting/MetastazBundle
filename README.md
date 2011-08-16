@@ -309,9 +309,9 @@ In the class within which you would like to use Metastaz:
         /**
          * @see Metastaz\Interfaces\MetastazInterface
          */
-        public function getAllMetastaz($namespace)
+        public function getAllMetastaz()
         {
-            return $this->getMetastazContainer()->getAll($namespace);
+            return $this->getMetastazContainer()->getAll();
         }
 
         /**
@@ -328,6 +328,30 @@ In the class within which you would like to use Metastaz:
         public function deleteAllMetastaz()
         {
             return $this->getMetastazContainer()->deleteAll();
+        }
+
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function loadMetastaz()
+        {
+            return $this->getMetastazContainer()->load();
+        }
+
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        function persistMetastaz()
+        {
+            return $this->getMetastazContainer()->persist();
+        }
+
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function flushMetastaz()
+        {
+            return $this->getMetastazContainer()->flush();
         }
     }
 
@@ -370,9 +394,10 @@ Now you can use metastazed classes this way:
     $YourClassObj->getMetastaz('ns', 'key');
 
 If the instance pool is enabled,
-you must call the flushMetastaz method
+you must call the persistMetastaz and flushMetastaz method
 in order to process write operations.
 
+    $YourClassObj->persistMetastaz();
     $YourClassObj->flushMetastaz();
 
 Note:

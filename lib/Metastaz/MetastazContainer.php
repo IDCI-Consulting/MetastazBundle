@@ -317,9 +317,9 @@ class MetastazContainer
     }
 
     /**
-     * Flush Metastaz from the pool
+     * Persist Metastaz in the pool
      */
-    public function flush()
+    public function persist()
     {
         $this->getMetastazStoreService()->addMany(
             $this->getMetastazDimension(),
@@ -335,5 +335,14 @@ class MetastazContainer
             $this->getMetastazDimension(),
             $this->metastaz_pool->getDeletes()
         );
+    }
+    
+    /**
+     * Flush Metastaz from the pool
+     */
+    public function flush()
+    {
+        $store = $this->getMetastazStoreService();
+        $store::getEntityManager()->flush();
     }
 }
