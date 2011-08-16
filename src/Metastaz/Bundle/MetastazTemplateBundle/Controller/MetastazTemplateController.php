@@ -4,6 +4,7 @@ namespace Metastaz\Bundle\MetastazTemplateBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -357,6 +358,12 @@ class MetastazTemplateController extends Controller
             'Application\\Form',
             $entity->getName()
         );
+
+        if (!class_exists($class_name)) {
+            throw new NotFoundHttpException(
+                sprintf('Unable to find the following MetastazTemplateType: %s.', $class_name)
+            );
+        }
 
         $class_form = new $class_name(); 
         $form = $this->createForm($class_form);
