@@ -5,7 +5,6 @@ namespace Metastaz\Listener;
 use Metastaz\MetastazContainer;
 use Metastaz\Interfaces\MetastazInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\OnFlushEventArgs;
 
 class MetastazListener
 {
