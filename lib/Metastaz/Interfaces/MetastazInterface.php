@@ -22,4 +22,5 @@ interface MetastazInterface
     function loadMetastaz();
     function persistMetastaz();
     function flushMetastaz();
+    function getMetastazIndexes();
 }

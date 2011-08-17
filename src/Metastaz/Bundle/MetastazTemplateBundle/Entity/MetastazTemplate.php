@@ -123,12 +123,28 @@ class MetastazTemplate extends MetastazFieldType
     {
         foreach($this->getMetastazFields() as $field)
         {
-            if($field->getMetaNamespace() == $namespace &&
+            if ($field->getMetaNamespace() == $namespace &&
                $field->getMetaKey() == $key) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Get metastaz indexed fields
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getMetastazIndexedFields()
+    {
+        $ret = array();
+        foreach ($this->getMetastazFields() as $field) {
+            if ($field->getIsIndexed()) {
+                $ret[] = $field;
+            }
+        }
+        return $ret;
     }
 
     /**
@@ -139,7 +155,7 @@ class MetastazTemplate extends MetastazFieldType
     public function getFormFields()
     {
         $ret = array();
-        foreach($this->getMetastazFields() as $field) {
+        foreach ($this->getMetastazFields() as $field) {
             $tmp = array(
                 '\''.$field->getMetaNamespace().'_'.$field->getMetaKey().'\'',
                 '\''.$field->getMetastazFieldType().'\''
