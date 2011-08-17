@@ -106,9 +106,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
     {
         $dm = self::getDocumentManager();
         $documents = $dm->getRepository('MetastazBundle:Metastaz')->findBy(
-            array(
-                'meta_dimension' => $dimension
-            )
+            array('meta_dimension' => $dimension)
         );
 
         $ret = array();

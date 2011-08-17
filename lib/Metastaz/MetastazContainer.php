@@ -4,6 +4,7 @@ namespace Metastaz;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Metastaz\Bundle\MetastazTemplateBundle\MetastazTemplateBundle;
+use Metastaz\Bundle\MetastazTemplateBundle\Entity\MetastazTemplate;
 
 /**
  * MetastazContainer manage Metastaz (MetastazStore, MetastazTemplate)
@@ -152,6 +153,17 @@ class MetastazContainer
     }
 
     /**
+     * Get Metastaz Template name
+     *
+     * @return string
+     */
+    public function getMetastazTemplateName()
+    {
+        $obj = $this->getParameter('object');
+        return $obj->getMetastazTemplateName();
+    }
+
+    /**
      * Get MetastazTemplate
      * If the templating is not enable, this function return a null object
      *
@@ -165,11 +177,9 @@ class MetastazContainer
             return null;
         }
 
-        $obj = $this->getParameter('object');
-
-        if (isset(self::$templates[$obj->getMetastazTemplateName()]))
+        if (isset(self::$templates[$this->getMetastazTemplateName()]))
         {
-            return self::$templates[$obj->getMetastazTemplateName()];
+            return self::$templates[$this->getMetastazTemplateName()];
         }
 
         // Retrieve MetastazTemplate by its name
@@ -179,11 +189,11 @@ class MetastazContainer
 
         if (!$template) {
             throw new NotFoundHttpException(
-                sprintf('Unable to find the following MetastazTemplate: %s.', $obj->getMetastazTemplateName())
+                sprintf('Unable to find the following MetastazTemplate: %s.', $this->getMetastazTemplateName())
             );
         }
 
-        return self::$templates[$obj->getMetastazTemplateName()] = $template;
+        return self::$templates[$this->getMetastazTemplateName()] = $template;
     }
     
     /**
@@ -269,7 +279,6 @@ class MetastazContainer
                 )
             );
         }
-
         if ($this->isInstancePoolingEnabled()) {
             $this->metastaz_pool->add($namespace, $key, $value, $culture);
         } else {
@@ -376,5 +385,13 @@ class MetastazContainer
         
         $store = $this->getMetastazStoreService();
         $store::flush();
+    }
+
+    /**
+     *
+     */
+    public function getIndexedFields()
+    {
+        return MetastazTemplate::getIndexedFields($this->getMetastazTemplateName());
     }
 }

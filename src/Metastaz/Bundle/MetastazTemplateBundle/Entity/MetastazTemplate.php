@@ -4,13 +4,14 @@ namespace Metastaz\Bundle\MetastazTemplateBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\Container;
+use Metastaz\Bundle\MetastazTemplateBundle\MetastazTemplateBundle;
 
 /**
  * MetastazTemplate define the metadata fields that can use a metastaz object
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
  * @licence: GPL
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Metastaz\Bundle\MetastazTemplateBundle\Repository\MetastazTemplateRepository")
  */
 class MetastazTemplate extends MetastazFieldType
 {
@@ -132,22 +133,6 @@ class MetastazTemplate extends MetastazFieldType
     }
 
     /**
-     * Get metastaz indexed fields
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getMetastazIndexedFields()
-    {
-        $ret = array();
-        foreach ($this->getMetastazFields() as $field) {
-            if ($field->getIsIndexed()) {
-                $ret[] = $field;
-            }
-        }
-        return $ret;
-    }
-
-    /**
      * Get an array of field types
      *
      * @return array 
@@ -165,5 +150,17 @@ class MetastazTemplate extends MetastazFieldType
             $ret[] = $tmp;
         }
         return $ret;
+    }
+
+    /**
+     * Get an array of indexed fields for a specified template
+     *
+     * @param string $template_name
+     * @return array
+     */
+    public static function getIndexedFields($template_name)
+    {
+        $em = MetastazTemplateBundle::getContainer()->get('doctrine')->getEntityManager('metastaz_template');
+        return $em->getRepository('MetastazTemplateBundle:MetastazTemplate')->getIndexedFields($template_name);
     }
 }
