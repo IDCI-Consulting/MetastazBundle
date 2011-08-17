@@ -70,11 +70,12 @@ class MetastazPool
     /**
      * Get
      */
-    public function get($namespace, $key, $culture)
+    public function get($namespace, $key, $culture = null)
     {
         return isset($this->pool[$namespace]) && isset($this->pool[$namespace][$key]) ?
             $this->pool[$namespace][$key] :
-            null;
+            null
+        ;
     }
 
     /**
@@ -158,11 +159,7 @@ class MetastazPool
             $this->pool
         );
 
-        unset(
-            $this->pool,
-            $this->insert_pool,
-            $this->update_pool
-        );
+        $this->pool = $this->insert_pool = $this->update_pool = array();
     }
 
     /**
