@@ -20,5 +20,6 @@ interface MetastazInterface
     function getAllMetastaz();
     function deleteAllMetastaz();
     function loadMetastaz();
+    function persistMetastaz();
     function flushMetastaz();
 }

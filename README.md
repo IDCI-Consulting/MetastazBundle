@@ -59,6 +59,9 @@ Configuration
 
 Add this in your configuration (app/config/config.yml):
 
+    imports:
+        - { resource: "@MetastazBundle/Resources/config/config.yml" }
+
     # Metastaz Configuration
     metastaz:
         container:
@@ -309,9 +312,9 @@ In the class within which you would like to use Metastaz:
         /**
          * @see Metastaz\Interfaces\MetastazInterface
          */
-        public function getAllMetastaz($namespace)
+        public function getAllMetastaz()
         {
-            return $this->getMetastazContainer()->getAll($namespace);
+            return $this->getMetastazContainer()->getAll();
         }
 
         /**
@@ -328,6 +331,30 @@ In the class within which you would like to use Metastaz:
         public function deleteAllMetastaz()
         {
             return $this->getMetastazContainer()->deleteAll();
+        }
+
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function loadMetastaz()
+        {
+            return $this->getMetastazContainer()->load();
+        }
+
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        function persistMetastaz()
+        {
+            return $this->getMetastazContainer()->persist();
+        }
+
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function flushMetastaz()
+        {
+            return $this->getMetastazContainer()->flush();
         }
     }
 

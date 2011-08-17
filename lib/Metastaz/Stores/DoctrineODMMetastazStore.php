@@ -17,29 +17,29 @@ use Metastaz\Interfaces\MetastazStoreInterface;
  */
 class DoctrineODMMetastazStore implements MetastazStoreInterface
 {
-    protected $parameters = array();
-    protected $dm = null;
+    protected static $parameters = array();
+    protected static $dm         = null;
 
     /**
      * Get the Document Manager
      *
      * @return DocumentManager
      */
-    protected function getDocumentManager()
+    protected static function getDocumentManager()
     {
-        if(!$this->dm)
+        if(null === self::$dm)
         {
-            $this->dm = MetastazBundle::getContainer()
-                ->get('doctrine.odm.mongodb.'.$this->parameters['connection'].'_document_manager')
+            self::$dm = MetastazBundle::getContainer()
+                ->get('doctrine.odm.mongodb.'.self::$parameters['connection'].'_document_manager')
             ;
         }
 
-        return $this->dm;
+        return self::$dm;
     }
 
     public function __construct($parameters)
     {
-        $this->parameters = $parameters;
+        self::$parameters = $parameters;
     }
 
     /**
@@ -48,7 +48,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
      */
     public function get($dimension, $namespace, $key, $culture = null)
     {
-        $dm = $this->getDocumentManager();
+        $dm = self::getDocumentManager();
 
         $document = $dm->getRepository('MetastazBundle:Metastaz')->findOneBy(
             array(
@@ -77,7 +77,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
      */
     public function put($dimension, $namespace, $key, $value, $culture = null)
     {
-        $dm = $this->getDocumentManager();
+        $dm = self::getDocumentManager();
         $document = $dm->getRepository('MetastazBundle:Metastaz')->findOneBy(
             array(
                 'meta_dimension' => $dimension,
@@ -104,7 +104,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
      */
     public function getAll($dimension)
     {
-        $dm = $this->getDocumentManager();
+        $dm = self::getDocumentManager();
         $documents = $dm->getRepository('MetastazBundle:Metastaz')->findBy(
             array(
                 'meta_dimension' => $dimension
@@ -115,6 +115,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
         foreach($documents as $document) {
             $ret[$document->getMetaNamespace()][$document->getMetaKey()] = $document->getMetaValue();
         }
+
         return $ret;
     }
 
@@ -124,7 +125,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
      */
     public function delete($dimension, $namespace, $key)
     {
-        $dm = $this->getDocumentManager();
+        $dm = self::getDocumentManager();
         $document = $dm->getRepository('MetastazBundle:Metastaz')->findOneBy(
             array(
                 'meta_dimension' => $dimension,
@@ -153,7 +154,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
      */
     public function deleteAll($dimension)
     {
-        $dm = $this->getDocumentManager();
+        $dm = self::getDocumentManager();
         $documents = $dm->getRepository('MetastazBundle:Metastaz')->findBy(
             array('meta_dimension' => $dimension)
         );
@@ -161,6 +162,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
         foreach($documents as $document) {
             $dm->remove($document);
         }
+
         $dm->flush();
     }
 
@@ -169,7 +171,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
      */
     public function addMany($dimension, array $metastazs)
     {
-        $dm = $this->getDocumentManager();
+        $dm = self::getDocumentManager();
 
         foreach($metastazs as $namespace => $keys) {
             foreach($keys as $key => $value) {
@@ -181,8 +183,6 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
                 $dm->persist($document);
             }
         }
-
-        $dm->flush();
     }
 
     /**
@@ -190,7 +190,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
      */
     public function updateMany($dimension, array $metastazs)
     {
-        $dm = $this->getDocumentManager();
+        $dm = self::getDocumentManager();
 
         foreach($metastazs as $namespace => $keys) {
             foreach($keys as $key => $value) {
@@ -212,8 +212,6 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
                 $dm->persist($document);
             }
         }
-
-        $dm->flush();
     }
 
     /**
@@ -221,7 +219,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
      */
     public function deleteMany($dimension, array $metastazs)
     {
-        $dm = $this->getDocumentManager();
+        $dm = self::getDocumentManager();
 
         foreach($metastazs as $namespace => $keys) {
             foreach($keys as $key => $value) {
@@ -235,7 +233,13 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
                 $dm->remove($document);
             }
         }
-
-        $dm->flush();
+    }
+    
+    /**
+     * @see Metastaz\Interfaces\MetastazStoreInterface
+     */
+    public static function flush()
+    {
+        self::getDocumentManager()->flush();
     }
 }

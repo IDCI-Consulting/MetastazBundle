@@ -22,13 +22,18 @@ class MetastazContainer
     /**
      * Template
      */
-    static protected $template = array();
+    static protected $templates = array();
 
     /**
-     * Storeif ($this->isInstancePoolingEnabled()) {
+     * Store
      */
-    static protected $store = array();
+    static protected $stores = array();
 
+    /**
+     * Is persisted
+     */
+    protected $is_persisted = false;
+    
     /**
      * Metastaz Pool
      */
@@ -123,6 +128,17 @@ class MetastazContainer
         }
         return true;
     }
+    
+    /**
+     * Is persisted
+     *
+     * @return boolean
+     */
+    public function isPersisted()
+    {
+        return $this->is_persisted;
+    }
+    
 
     /**
      * Get Metastaz Object Dimension
@@ -151,9 +167,9 @@ class MetastazContainer
 
         $obj = $this->getParameter('object');
 
-        if (isset(self::$template[$obj->getMetastazTemplateName()]))
+        if (isset(self::$templates[$obj->getMetastazTemplateName()]))
         {
-            return self::$template[$obj->getMetastazTemplateName()];
+            return self::$templates[$obj->getMetastazTemplateName()];
         }
 
         // Retrieve MetastazTemplate by its name
@@ -167,7 +183,17 @@ class MetastazContainer
             );
         }
 
-        return self::$template[$obj->getMetastazTemplateName()] = $template;
+        return self::$templates[$obj->getMetastazTemplateName()] = $template;
+    }
+    
+    /**
+     * Get stores
+     * 
+     * @return array 
+     */
+    public static function getStores()
+    {
+        return self::$stores;
     }
 
     /**
@@ -188,13 +214,13 @@ class MetastazContainer
             );
         }
 
-        if (!isset(self::$store[$_class]))
+        if (!isset(self::$stores[$_class]))
         {
             $store = new $_class($store['parameters']);
-            self::$store[$_class] = $store;
+            self::$stores[$_class] = $store;
         }
 
-        return self::$store[$_class];
+        return self::$stores[$_class];
     }
 
     /**
@@ -317,9 +343,9 @@ class MetastazContainer
     }
 
     /**
-     * Flush Metastaz from the pool
+     * Persist Metastaz in the pool
      */
-    public function flush()
+    public function persist()
     {
         $this->getMetastazStoreService()->addMany(
             $this->getMetastazDimension(),
@@ -335,5 +361,20 @@ class MetastazContainer
             $this->getMetastazDimension(),
             $this->metastaz_pool->getDeletes()
         );
+        
+        $this->is_persisted = true;
+    }
+    
+    /**
+     * Flush Metastaz from the pool
+     */
+    public function flush()
+    {
+        if (!$this->isPersisted()) {
+            $this->persist();
+        }
+        
+        $store = $this->getMetastazStoreService();
+        $store::flush();
     }
 }

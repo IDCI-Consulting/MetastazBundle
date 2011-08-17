@@ -19,30 +19,32 @@ use Doctrine\ORM\EntityManager,
  */
 class DoctrineORMMetastazStore implements MetastazStoreInterface
 {
-    protected $parameters = array();
-    protected $em = null;
+    protected static $parameters = array();
+    protected static $em         = null;
 
     /**
      * Get the Entity Manager
      *
      * @return EntityManager
      */
-    protected function getEntityManager()
+    protected static function getEntityManager()
     {
-        if(!$this->em)
+        if(null === self::$em)
         {
-            $this->em = MetastazBundle::getContainer()
+            self::$em = MetastazBundle::getContainer()
                 ->get('doctrine')
-                ->getEntityManager($this->parameters['connection'])
+                ->getEntityManager(self::$parameters['connection'])
             ;
         }
 
-        return $this->em;
+        return self::$em;
     }
 
     public function __construct($parameters)
     {
-        $this->parameters = $parameters;
+        if(empty(self::$parameters)) {
+            self::$parameters = $parameters;
+        }
     }
 
     /**
@@ -51,7 +53,7 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
      */
     public function get($dimension, $namespace, $key, $culture = null)
     {
-        $em = $this->getEntityManager();
+        $em = self::getEntityManager();
         $entity = $em->getRepository('MetastazBundle:Metastaz')->findOneBy(
             array(
                 'meta_dimension' => $dimension,
@@ -79,7 +81,7 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
      */
     public function put($dimension, $namespace, $key, $value, $culture = null)
     {
-        $em = $this->getEntityManager();
+        $em = self::getEntityManager();
         $entity = $em->getRepository('MetastazBundle:Metastaz')->findOneBy(
             array(
                 'meta_dimension' => $dimension,
@@ -106,7 +108,7 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
      */
     public function getAll($dimension)
     {
-        $em = $this->getEntityManager();
+        $em = self::getEntityManager();
         $entities = $em->getRepository('MetastazBundle:Metastaz')->findBy(
             array(
                 'meta_dimension' => $dimension
@@ -127,7 +129,7 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
      */
     public function delete($dimension, $namespace, $key)
     {
-        $em = $this->getEntityManager();
+        $em = self::getEntityManager();
         $entity = $em->getRepository('MetastazBundle:Metastaz')->findOneBy(
             array(
                 'meta_dimension' => $dimension,
@@ -156,7 +158,7 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
      */
     public function deleteAll($dimension)
     {
-        $em = $this->getEntityManager();
+        $em = self::getEntityManager();
         $entities = $em->getRepository('MetastazBundle:Metastaz')->findBy(
             array('meta_dimension' => $dimension)
         );
@@ -164,6 +166,7 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
         foreach($entities as $entity) {
             $em->remove($entity);
         }
+
         $em->flush();
     }
 
@@ -172,7 +175,7 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
      */
     public function addMany($dimension, array $metastazs)
     {
-        $em = $this->getEntityManager();
+        $em = self::getEntityManager();
 
         foreach($metastazs as $namespace => $keys) {
             foreach($keys as $key => $value) {
@@ -184,8 +187,6 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
                 $em->persist($entity);
             }
         }
-
-        $em->flush();
     }
 
     /**
@@ -193,7 +194,7 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
      */
     public function updateMany($dimension, array $metastazs)
     {
-        $em = $this->getEntityManager();
+        $em = self::getEntityManager();
 
         foreach($metastazs as $namespace => $keys) {
             foreach($keys as $key => $value) {
@@ -215,8 +216,6 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
                 $em->persist($entity);
             }
         }
-
-        $em->flush();
     }
 
     /**
@@ -224,7 +223,7 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
      */
     public function deleteMany($dimension, array $metastazs)
     {
-        $em = $this->getEntityManager();
+        $em = self::getEntityManager();
 
         foreach($metastazs as $namespace => $keys) {
             foreach($keys as $key => $value) {
@@ -238,8 +237,14 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
                 $em->remove($entity);
             }
         }
-
-        $em->flush();
+    }
+    
+    /**
+     * @see Metastaz\Interfaces\MetastazStoreInterface
+     */
+    public static function flush()
+    {
+        self::getEntityManager()->flush();
     }
 
     /**
