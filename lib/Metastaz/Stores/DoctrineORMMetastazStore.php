@@ -27,7 +27,7 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
      *
      * @return EntityManager
      */
-    public static function getEntityManager()
+    protected static function getEntityManager()
     {
         if(null === self::$em)
         {
@@ -166,6 +166,7 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
         foreach($entities as $entity) {
             $em->remove($entity);
         }
+
         $em->flush();
     }
 
@@ -236,6 +237,14 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
                 $em->remove($entity);
             }
         }
+    }
+    
+    /**
+     * @see Metastaz\Interfaces\MetastazStoreInterface
+     */
+    public static function flush()
+    {
+        self::getEntityManager()->flush();
     }
 
     /**

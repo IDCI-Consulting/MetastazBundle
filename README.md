@@ -59,6 +59,9 @@ Configuration
 
 Add this in your configuration (app/config/config.yml):
 
+    imports:
+        - { resource: "@MetastazBundle/Resources/config/config.yml" }
+
     # Metastaz Configuration
     metastaz:
         container:
@@ -394,10 +397,9 @@ Now you can use metastazed classes this way:
     $YourClassObj->getMetastaz('ns', 'key');
 
 If the instance pool is enabled,
-you must call the persistMetastaz and flushMetastaz method
+you must call the flushMetastaz method
 in order to process write operations.
 
-    $YourClassObj->persistMetastaz();
     $YourClassObj->flushMetastaz();
 
 Note:
