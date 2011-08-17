@@ -251,7 +251,7 @@ In the class within which you would like to use Metastaz:
         /**
          * Holds MetastazContainer Objects
          */
-        protected static $metastaz_containers = null;
+        protected $metastaz_container = null;
 
         ...
 
@@ -284,13 +284,13 @@ In the class within which you would like to use Metastaz:
          */
         public function getMetastazContainer()
         {
-            if(!isset(self::$metastaz_containers[$this->getMetastazDimensionId()]))
+            if(null === $this->metastaz_container)
             {
-                self::$metastaz_containers[$this->getMetastazDimensionId()] = new MetastazContainer(
+                $this->metastaz_container = new MetastazContainer(
                     array('object' => $this)
-                );
+                ;
             }
-            return self::$metastaz_containers[$this->getMetastazDimensionId()];
+            return $this->metastaz_container;
         }
 
         /**
@@ -312,17 +312,17 @@ In the class within which you would like to use Metastaz:
         /**
          * @see Metastaz\Interfaces\MetastazInterface
          */
-        public function getAllMetastaz()
+        public function deleteMetastaz($namespace, $key)
         {
-            return $this->getMetastazContainer()->getAll();
+            return $this->getMetastazContainer()->delete($namespace, $key);
         }
 
         /**
          * @see Metastaz\Interfaces\MetastazInterface
          */
-        public function deleteMetastaz($namespace, $key)
+        public function getAllMetastaz()
         {
-            return $this->getMetastazContainer()->delete($namespace, $key);
+            return $this->getMetastazContainer()->getAll();
         }
 
         /**
@@ -344,7 +344,7 @@ In the class within which you would like to use Metastaz:
         /**
          * @see Metastaz\Interfaces\MetastazInterface
          */
-        function persistMetastaz()
+        public function persistMetastaz()
         {
             return $this->getMetastazContainer()->persist();
         }
@@ -355,6 +355,14 @@ In the class within which you would like to use Metastaz:
         public function flushMetastaz()
         {
             return $this->getMetastazContainer()->flush();
+        }
+
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function getMetastazIndexes()
+        {
+            return $this->getMetastazContainer()->getIndexedFields();
         }
     }
 
@@ -397,14 +405,13 @@ Now you can use metastazed classes this way:
     $YourClassObj->getMetastaz('ns', 'key');
 
 If the instance pool is enabled,
-you must call the flushMetastaz method
+you must call the *flushMetastaz* method
 in order to process write operations.
 
     $YourClassObj->flushMetastaz();
 
 Note:
-Metastaz will soon be able to automatically flush
-its data on a Doctrine Entity Manager flush call
+Metastaz automatically persist data on a Doctrine Entity Manager persist call
 
 Licence
 -------
