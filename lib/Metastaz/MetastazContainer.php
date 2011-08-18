@@ -185,7 +185,7 @@ class MetastazContainer
         // Retrieve MetastazTemplate by its name
         $em = MetastazTemplateBundle::getContainer()->get('doctrine')->getEntityManager('metastaz_template');
         $re = $em->getRepository('MetastazTemplateBundle:MetastazTemplate');
-        $template = $re->findOneByName($obj->getMetastazTemplateName());
+        $template = $re->findOneByName($this->getMetastazTemplateName());
 
         if (!$template) {
             throw new NotFoundHttpException(
@@ -388,7 +388,9 @@ class MetastazContainer
     }
 
     /**
+     * getIndexedFields related to the object template
      *
+     * @return array
      */
     public function getIndexedFields()
     {
