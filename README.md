@@ -223,6 +223,7 @@ You should see these routes:
     metastaz_template_update        POST   /metastaz/template/{id}/update
     metastaz_template_delete        POST   /metastaz/template/{id}/delete
     metastaz_template_field_delete  POST   /metastaz/template/delete_field/{id}
+    metastaz_template_form_show     ANY    /metastaz/template/{id}/form/show
 
 Loading Fixtures
 -------------
