@@ -175,7 +175,7 @@ In order to use them, set the store *class* parameter to
     metastaz_store_class                = DoctrineORMMetastazStore
 
 If you are using MongoDB along with the doctrine bundles,
-define a *doctrine_mongodb* connection (app/config/config.yml):
+you can define a *doctrine_mongodb* connection to store metastaz (app/config/config.yml):
 
     doctrine_mongodb:
         connections:
