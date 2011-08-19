@@ -381,14 +381,21 @@ You can override the Metastaz configuration for each
 Metastazed Object by passing additional parameters
 while instanciating the MetastazContainer
 
+    use Metastaz\Interfaces\MetastazInterface;
+    use Metastaz\MetastazContainer;
+
+    class MyClass implements MetastazInterface
+    {
+        ...
+
         /**
          * @see Metastaz\Interfaces\MetastazInterface
          */
         public function getMetastazContainer()
         {
-            if(!isset(self::$metastaz_containers[$this->getMetastazDimensionId()]))
+            if(null === $this->metastaz_container)
             {
-                self::$metastaz_containers[$this->getMetastazDimensionId()] = new MetastazContainer(
+                $this->metastaz_container = new MetastazContainer(
                     array(
                         'object' => $this,
                         'container' => array(
@@ -399,11 +406,13 @@ while instanciating the MetastazContainer
                             'class' => 'DoctrineODMMetastazStore',
                             'parameters' => array('connection' => 'metastaz')
                         )
-                    )
-                );
+                    );
             }
-            return self::$metastaz_containers[$this->getMetastazDimensionId()];
+            return $this->metastaz_container;
         }
+
+        ...
+    }
 
 Now you can use metastazed classes this way:
 
