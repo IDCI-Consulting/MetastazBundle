@@ -162,14 +162,14 @@ set the *metastaz_container_use_template* parameter to true:
 
 Metastaz containers can hold records in memory until you
 manually flush them to the database. In order to enable
-this feature, set the *instance_pool* parameter to true:
+this feature, set the *metastaz_container_instance_pooling* parameter to true:
 
     metastaz_container_instance_pooling = true
 
 You can select different stores or create yours.
 MetastazBundle provide an ORM and an ODM store.
 
-In order to use them, set the store *class* parameter to
+In order to use them, set the store *metastaz_store_class* parameter to
 *DoctrineORMMetastazStore* or *DoctrineODMMetastazStore*
 
     metastaz_store_class                = DoctrineORMMetastazStore
