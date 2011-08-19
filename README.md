@@ -28,6 +28,15 @@ Optional dependencies
 Installation
 ------------
 
+If you have install symfony without vendors, simply add a dependencies in the *deps* file:
+
+    [metastaz]
+        git=http://github.com/idciconsulting/MetastazBundle.git
+
+Then just run the vendors installation command:
+
+    php bin/vendors install
+
 If your project uses the *git* versioning system,
 add a submodule for metastaz:
 
@@ -62,53 +71,20 @@ Add this in your configuration (app/config/config.yml):
     imports:
         - { resource: "@MetastazBundle/Resources/config/config.yml" }
 
-    # Metastaz Configuration
-    metastaz:
-        container:
-            use_template: false
-            instance_pooling: false
-        store:
-            class: DoctrineORMMetastazStore
-            parameters:
-                connection: metastaz
-
-In order to activate update constraints based on Templates,
-set the *use_tempate* parameter to true:
-
-    # Metastaz Configuration
-    metastaz:
-        container:
-            use_template: true
-
-Metastaz containers can hold records in memory until you
-manually flush them to the database. In order to enable
-this feature, set the *instance_pool* parameter to true:
-
-    # Metastaz Configuration
-    metastaz:
-        container:
-            instance_pooling: true
-
-You can select different stores or create yours.
-MetastazBundle provide an ORM and an ODM store.
-
-In order to use them, set the store *class* parameter to
-*DoctrineORMMetastazStore* or *DoctrineODMMetastazStore*
-
-    # Metastaz Configuration
-    metastaz:
-        store:
-            class: DoctrineORMMetastazStore
-
-Configure database connections (app/config/config.yml):
+    ...
 
     # Doctrine Configuration
-
     doctrine:
         dbal:
             connections:
                 default:
-                    ...
+                    driver:   %database_driver%
+                    host:     %database_host%
+                    port:     %database_port%
+                    dbname:   %database_name%
+                    user:     %database_user%
+                    password: %database_password%
+                    charset:  UTF8
 
                 metastaz:
                     driver:   %metastaz_database_driver%
@@ -135,8 +111,7 @@ Configure database connections (app/config/config.yml):
             entity_managers:
                 default:
                     connection:       default
-                    mappings:
-                        ...
+                    mappings: ~
 
                 metastaz:
                     connection:       metastaz
@@ -148,7 +123,19 @@ Configure database connections (app/config/config.yml):
                     mappings:
                         MetastazTemplateBundle: ~
 
-Set connection parameters (app/config/parameters.ini):
+    ...
+
+    # Metastaz Configuration
+    metastaz:
+        container:
+            use_template: %metastaz_container_use_template%
+            instance_pooling: %metastaz_container_instance_pooling%
+        store:
+            class: %metastaz_store_class%
+            parameters:
+                connection: metastaz
+
+Set parameters (app/config/parameters.ini):
 
     metastaz_database_driver   = pdo_mysql
     metastaz_database_host     = localhost
@@ -164,8 +151,31 @@ Set connection parameters (app/config/parameters.ini):
     metastaz_template_database_user     = ...
     metastaz_template_database_password = ...
 
+    metastaz_container_use_template     = false
+    metastaz_container_instance_pooling = false
+    metastaz_store_class                = DoctrineORMMetastazStore
+
+In order to activate update constraints based on Templates,
+set the *metastaz_container_use_template* parameter to true:
+
+    metastaz_container_use_template     = true
+
+Metastaz containers can hold records in memory until you
+manually flush them to the database. In order to enable
+this feature, set the *instance_pool* parameter to true:
+
+    metastaz_container_instance_pooling = true
+
+You can select different stores or create yours.
+MetastazBundle provide an ORM and an ODM store.
+
+In order to use them, set the store *class* parameter to
+*DoctrineORMMetastazStore* or *DoctrineODMMetastazStore*
+
+    metastaz_store_class                = DoctrineORMMetastazStore
+
 If you are using MongoDB along with the doctrine bundles,
-define a *doctrine_mongodb* connection in metastaz:
+define a *doctrine_mongodb* connection (app/config/config.yml):
 
     doctrine_mongodb:
         connections:
