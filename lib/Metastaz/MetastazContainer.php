@@ -31,14 +31,14 @@ class MetastazContainer
     static protected $stores = array();
 
     /**
-     * Is persisted
-     */
-    protected $is_persisted = false;
-    
-    /**
      * Metastaz Pool
      */
     protected $metastaz_pool = null;
+
+    /**
+     * Is persisted
+     */
+    protected $is_persisted = false;
 
     /**
      * Constructor
@@ -76,17 +76,6 @@ class MetastazContainer
     }
 
     /**
-     * Has parameter
-     *
-     * @param string $name
-     * @return boolean
-     */
-    public function hasParameter($name)
-    {
-        return isset($this->parameters[$name]);
-    }
-
-    /**
      * Get parameter
      *
      * @param string $name
@@ -98,6 +87,32 @@ class MetastazContainer
         if (!$this->hasParameter($name))
             throw new NotFoundHttpException(sprintf('Missing %s parameter', $name));
         return $this->parameters[$name];
+    }
+
+    /**
+     * Has parameter
+     *
+     * @param string $name
+     * @return boolean
+     */
+    public function hasParameter($name)
+    {
+        return isset($this->parameters[$name]);
+    }
+
+    /**
+     * Is templating enable
+     *
+     * @return boolean
+     */
+    public function isTemplatingEnabled()
+    {
+        if ($this->hasParameter('container'))
+        {
+            $container = $this->getParameter('container');
+            return isset($container['use_template']) && $container['use_template'];
+        }
+        return true;
     }
 
     /**
@@ -116,21 +131,6 @@ class MetastazContainer
     }
 
     /**
-     * Is templating enable
-     *
-     * @return boolean
-     */
-    public function isTemplatingEnabled()
-    {
-        if ($this->hasParameter('container'))
-        {
-            $container = $this->getParameter('container');
-            return isset($container['use_template']) && $container['use_template'];
-        }
-        return true;
-    }
-    
-    /**
      * Is persisted
      *
      * @return boolean
@@ -139,7 +139,6 @@ class MetastazContainer
     {
         return $this->is_persisted;
     }
-    
 
     /**
      * Get Metastaz Object Dimension
@@ -195,7 +194,7 @@ class MetastazContainer
 
         return self::$templates[$this->getMetastazTemplateName()] = $template;
     }
-    
+
     /**
      * Get stores
      * 
@@ -231,6 +230,16 @@ class MetastazContainer
         }
 
         return self::$stores[$_class];
+    }
+
+    /**
+     * getIndexedFields related to the object template
+     *
+     * @return array
+     */
+    public function getIndexedFields()
+    {
+        return MetastazTemplate::getIndexedFields($this->getMetastazTemplateName());
     }
 
     /**
@@ -293,22 +302,6 @@ class MetastazContainer
     }
 
     /**
-     * To get all Metastaz value group by namespaces for a metastazed object
-     *
-     * @return array
-     */
-    public function getAll()
-    {
-        if ($this->isInstancePoolingEnabled()) {
-            return $this->metastaz_pool->getAll();
-        }
-
-        return $this->getMetastazStoreService()->getAll(
-            $this->getMetastazDimension()
-        );
-    }
-
-    /**
      * Delete a Metastaz for a specified metastaz namespace and key
      *
      * @param string $namespace
@@ -325,6 +318,22 @@ class MetastazContainer
                 $key
             );
         }
+    }
+
+    /**
+     * To get all Metastaz value group by namespaces for a metastazed object
+     *
+     * @return array
+     */
+    public function getAll()
+    {
+        if ($this->isInstancePoolingEnabled()) {
+            return $this->metastaz_pool->getAll();
+        }
+
+        return $this->getMetastazStoreService()->getAll(
+            $this->getMetastazDimension()
+        );
     }
 
     /**
@@ -370,7 +379,7 @@ class MetastazContainer
             $this->getMetastazDimension(),
             $this->metastaz_pool->getDeletes()
         );
-        
+
         $this->is_persisted = true;
     }
     
@@ -382,18 +391,8 @@ class MetastazContainer
         if (!$this->isPersisted()) {
             $this->persist();
         }
-        
+
         $store = $this->getMetastazStoreService();
         $store::flush();
-    }
-
-    /**
-     * getIndexedFields related to the object template
-     *
-     * @return array
-     */
-    public function getIndexedFields()
-    {
-        return MetastazTemplate::getIndexedFields($this->getMetastazTemplateName());
     }
 }

@@ -50,7 +50,7 @@ class MetastazTemplateFormGenerator extends Generator
         }
 
         $this->renderFile($this->skeletonDir, 'FormType.php', $this->classPath, array(
-            'fields'           => $template->getFormFields(),
+            'fields'           => $template->getForm(),
             'namespace'        => 'Application\\Form',
             'form_class'       => $this->className,
             'form_type_name'   => 'application_'.strtolower($this->className),

@@ -135,7 +135,7 @@ interface MetastazStoreInterface
      * @param array $metastazs
      */
     public function deleteMany($dimension, array $metastazs);
-    
+
     /**
      * Flush persisted metastaz
      */

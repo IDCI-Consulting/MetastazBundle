@@ -14,6 +14,7 @@ interface MetastazInterface
     function getMetastazDimensionId();
     function getMetastazTemplateName();
     function getMetastazContainer();
+    function getMetastazIndexes();
     function getMetastaz($namespace, $key, $culture = null);
     function putMetastaz($namespace, $key, $value, $culture = null);
     function deleteMetastaz($namespace, $key);
@@ -22,5 +23,4 @@ interface MetastazInterface
     function loadMetastaz();
     function persistMetastaz();
     function flushMetastaz();
-    function getMetastazIndexes();
 }

@@ -23,10 +23,16 @@ class MetastazPool
      */
     protected $is_loaded = false;
 
+    /**
+     * Dimension
+     */
     protected $dimension = null;
 
     /**
-     * Load
+     * Constructor
+     *
+     * @param string $dimension
+     * @param array $metastazs
      */
     public function __construct($dimension, $metastazs = array())
     {
@@ -41,16 +47,31 @@ class MetastazPool
             $this->load($metastazs);
     }
 
+    /**
+     * Set Dimension
+     *
+     * @param string $dimension
+     */
     public function setDimension($dimension)
     {
         $this->dimension = $dimension;
     }
 
+    /**
+     * Get Dimension
+     *
+     * @return string $dimension
+     */
     public function getDimension()
     {
         return $this->dimension;
     }
 
+    /**
+     * Load metastazs data in pool
+     *
+     * @param array $metastazs
+     */
     public function load($metastazs)
     {
         $this->pool = $metastazs;
@@ -69,6 +90,10 @@ class MetastazPool
 
     /**
      * Get
+     *
+     * @param string $namespace
+     * @param string $key
+     * @param string $culture
      */
     public function get($namespace, $key, $culture = null)
     {
@@ -80,6 +105,11 @@ class MetastazPool
 
     /**
      * Add
+     *
+     * @param string $namespace
+     * @param string $key
+     * @param mixed $value
+     * @param string $culture
      */
     public function add($namespace, $key, $value, $culture = null)
     {
@@ -127,6 +157,9 @@ class MetastazPool
 
     /**
      * Delete
+     *
+     * @param string $namespace
+     * @param string $key
      */
     public function delete($namespace, $key)
     {
@@ -164,6 +197,8 @@ class MetastazPool
 
     /**
      * Get all
+     *
+     * @return array $pool
      */
     public function getAll()
     {
@@ -172,6 +207,8 @@ class MetastazPool
 
     /**
      * Get inserts
+     *
+     * @return array $insert_pool
      */
     public function getInserts()
     {
@@ -180,6 +217,8 @@ class MetastazPool
 
     /**
      * Get updates
+     *
+     * @return array update_pool
      */
     public function getUpdates()
     {
@@ -188,6 +227,8 @@ class MetastazPool
 
     /**
      * Get deletes
+     *
+     * @return delete_pool
      */
     public function getDeletes()
     {

@@ -137,7 +137,7 @@ class MetastazTemplate extends MetastazFieldType
      *
      * @return array 
      */
-    public function getFormFields()
+    public function getForm()
     {
         $ret = array();
         foreach ($this->getMetastazFields() as $field) {
