@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>{% block title %}Metastaz{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/metastazdashboard/css/reset.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/metastazdashboard/css/main.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/metastazdashboard/css/list.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/metastazdashboard/css/action.css') }}" />
+        {% block stylesheets %}{% endblock %}
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+
+        {% block head_javascripts %}{% endblock %}
+    </head>
+    <body>
+        <div class="wrap">
+            <div id="header">
+                <h1>Metastaz: {% block header_title %}{% endblock %}</h1>
+
+                <div class="menu">
+                    {% render "MetastazDashboardBundle:MetastazDashboard:menu" with {'current': current is defined ? current : ''} %}
+                </div>
+
+                <div class="panel">
+                    {% render "MetastazDashboardBundle:MetastazDashboard:panel" %}
+                </div>
+
+            </div>
+
+            <div id="main">
+                {% block main %}{% endblock %}
+            </div>
+
+            <div class="push"></div>
+        </div>
+
+        <div id="footer">
+            <p>Metastaz version: <span class="version">beta 1.0</span></p>
+        </div>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

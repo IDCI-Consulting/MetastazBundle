@@ -12,4 +12,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class MetastazProductBundle extends Bundle
 {
+    public function boot()
+    {
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        $evm = $em->getEventManager();
+        // timestampable
+        $evm->addEventSubscriber(new \Gedmo\Timestampable\TimestampableListener());
+    }
 }

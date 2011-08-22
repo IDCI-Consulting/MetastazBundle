@@ -1,13 +1,14 @@
-{% extends 'MetastazTemplateBundle::base.html.twig' %}
+{% extends 'MetastazTemplateBundle::template.html.twig' %}
 
 {% block content %}
-<h1>MetastazTemplate creation</h1>
 
 {% include 'MetastazTemplateBundle:MetastazTemplate:templateForm.html.twig' with {'entity': entity, 'form': form} %}
 
-<ul class="record_actions">
+<hr />
+
+<ul class="actions">
     <li>
-        <a class="action back" href="{{ path('metastaz_template') }}">
+        <a class="back" href="{{ path('metastaz_template') }}">
             Back to the list
         </a>
     </li>

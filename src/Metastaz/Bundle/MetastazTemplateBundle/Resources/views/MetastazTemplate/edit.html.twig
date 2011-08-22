@@ -1,4 +1,4 @@
-{% extends 'MetastazTemplateBundle::base.html.twig' %}
+{% extends 'MetastazTemplateBundle::template.html.twig' %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -6,32 +6,31 @@
 {% endblock %}
 
 {% block content %}
-    <div id="header">
-        <h1>MetastazTemplate edit</h1>
-    </div>
-
     {% form_theme edit_form 'MetastazTemplateBundle:Form:fields.html.twig' %}
 
     <form action="{{ path('metastaz_template_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
         {{ form_errors(edit_form) }}
         {{ form_row(edit_form.name) }}
 
-        <p>
-            {{ form_rest(edit_form) }}
-            <button type="submit">Save</button>
-        </p>
+        {{ form_rest(edit_form) }}
+        <ul class="actions">
+            <li><button type="submit">Save</button></li>
+        </ul>
     </form>
 
     {% if metastaz_fields | length %}
-        <table id="fields_list">
-            <tr>
-                <th>Namespace</th>
-                <th>Key</th>
-                <th>Indexed</th>
-                <th>Type</th>
-                <th>Options</th>
-                <th>Actions</th>
-            </tr>
+        <table class="list">
+            <thead>
+                <tr>
+                    <th>Namespace</th>
+                    <th>Key</th>
+                    <th>Indexed</th>
+                    <th>Type</th>
+                    <th>Options</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
             {% for field in metastaz_fields %}
                 <tr>
                     <td>{{ field.metaNamespace }}</td>
@@ -46,24 +45,27 @@
                     </td>
                 </tr>
             {% endfor %}
+            </tbody>
         </table>
     {% endif %}
 
     <div class="form_container"></div>
 
-    <ul class="record_actions">
+    <hr />
+
+    <ul class="actions">
         <li>
-            <a class="action back" href="{{ path('metastaz_template') }}">
+            <a class="back" href="{{ path('metastaz_template') }}">
                 Back to the list
             </a>
         </li>
         <li>
-            <a class="action new create_link" href="{{ path('metastaz_template_field_new', { 'id': entity.id }) }}">
+            <a class="new create_link" href="{{ path('metastaz_template_field_new', { 'id': entity.id }) }}">
                 Create new field
             </a>
         </li>
         <li>
-            <a class="action show" href="{{ path('metastaz_template_form_show', { 'id': entity.id }) }}">
+            <a class="show" href="{{ path('metastaz_template_form_show', { 'id': entity.id }) }}">
                 Show form
             </a>
         </li>

@@ -1,0 +1,22 @@
+table.list {
+    margin-bottom: 10px;
+}
+
+table.list thead {
+    background: #888;
+}
+
+table.list th,
+table.list td {
+    padding: 2px 5px;
+    border: 1px solid #222;
+}
+
+table.list a {
+    text-decoration: none;
+    color: #555;
+}
+
+table.list a:hover {
+    color: #000;
+}

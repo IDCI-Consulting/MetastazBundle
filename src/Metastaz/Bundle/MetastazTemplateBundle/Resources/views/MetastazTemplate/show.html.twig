@@ -1,8 +1,8 @@
-{% extends 'MetastazTemplateBundle::base.html.twig' %}
-{% block body %}
-<h1>MetastazTemplate</h1>
+{% extends 'MetastazTemplateBundle::template.html.twig' %}
 
-<table class="record_properties">
+{% block body %}
+
+<table class="list">
     <tbody>
         <tr>
             <th>Id</th>                <td>{{ entity.id }}</td>        </tr>
@@ -18,14 +18,16 @@
     </tbody>
 </table>
 
-<ul class="record_actions">
+<hr />
+
+<ul class="actions">
     <li>
-        <a href="{{ path('metastaz_template') }}">
+        <a class="back" href="{{ path('metastaz_template') }}">
             Back to the list
         </a>
     </li>
     <li>
-        <a href="{{ path('metastaz_template_edit', { 'id': entity.id }) }}">
+        <a class="edit" href="{{ path('metastaz_template_edit', { 'id': entity.id }) }}">
             Edit
         </a>
     </li>

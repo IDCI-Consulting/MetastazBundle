@@ -1,0 +1,38 @@
+ul.actions {
+    margin: 5px 0;
+    display: block;
+    overflow: auto;
+}
+
+ul.actions > li {
+    float: left;
+    margin: 0 8px 0 0;
+}
+
+ul.actions > li > a,
+ul.actions > li button {
+    font-size: small;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px outset #222;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    color: #444;
+    background: #EEE;
+    display: block;
+    font-family: Helvetica;
+    line-height: 17px;
+}
+
+ul.actions > li > a:hover,
+ul.actions > li button:hover {
+    color: #000;
+    cursor: pointer;
+    background: #F8F8F8;
+}
+
+ul.actions > li > a:active,
+ul.actions > li button:active {
+    border: 1px inset #000;
+}

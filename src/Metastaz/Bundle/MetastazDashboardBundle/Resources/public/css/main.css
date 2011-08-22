@@ -1,0 +1,116 @@
+html, body {
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body > .wrap {
+    height: auto !important;
+    margin-bottom: -35px;
+    min-height: 100%;
+}
+
+#header {
+    background: #888;
+    height: 96px;
+    border-bottom: 3px solid #555;
+    position: relative;
+}
+
+#header > h1 {
+    padding: 20px;
+    font-weight: bold;
+    font-size: 20px;
+    float: left;
+}
+
+#header > .menu {
+    position: absolute;
+    top: 74px;
+    left: 200px;
+}
+
+#header > .menu > ul > li {
+    float: left;
+    border: 3px solid #555;
+    border-bottom: none;
+    margin: 0 2px;
+    background: #DDD;
+}
+
+#header > .menu > ul > li.current {
+    padding-bottom: 3px;
+    background: #FFF;
+}
+
+#header > .menu > ul > li > a {
+    text-decoration: none;
+    padding: 2px 8px;
+    font-size: small;
+    display: block;
+    color: #888;
+}
+
+#header > .menu > ul > li > a:hover,
+#header > .menu > ul > li.current > a {
+    color: #000;
+}
+
+#header > .panel {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: #888;
+    border: 1px inset #555;
+    padding: 2px;
+}
+
+#header > .panel > ul > li {
+    font-size: small;
+    padding: 4px 10px;
+    margin-top: 2px;
+}
+
+#header > .panel > ul > li:first-child {
+    margin: 0px;
+}
+
+#header > .panel > ul > li.enabled {
+    background: #DDFFCC;
+    color: #22AA22;
+}
+
+#header > .panel > ul > li.disabled {
+    background: #FFDDCC;
+    color: #AA2222;
+}
+
+#main {
+    margin: 20px;
+    min-height: 100%;
+}
+
+#footer,
+.push {
+    clear: both;
+    height: 32px;
+}
+
+#footer {
+    bottom: 0;
+    width: 100%;
+    background: #000;
+    border-top: 3px solid #555;
+}
+
+#footer > p {
+    padding: 5px;
+    color: #CCC;
+    float: right;
+    margin-right: 80px;
+}
+
+#footer > p .version {
+    font-family: serif;
+    color: #FFF;
+    font-size: small;
+}

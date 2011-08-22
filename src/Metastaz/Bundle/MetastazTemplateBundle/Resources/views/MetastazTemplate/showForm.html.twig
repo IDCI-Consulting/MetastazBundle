@@ -1,19 +1,17 @@
-{% extends 'MetastazTemplateBundle::base.html.twig' %}
+{% extends 'MetastazTemplateBundle::template.html.twig' %}
+
 {% block content %}
-<h1>MetastazTemplateForm: {{ entity.name }}</h1>
 
 <form action="#" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
-    <p>
-        {{ form_rest(form) }}
-    </p>
+    {{ form_rest(form) }}
 </form>
 
-<ul class="record_actions">
+<ul class="actions">
     <li>
-        <a href="{{ path('metastaz_template_edit', { 'id': entity.id }) }}">
+        <a class="back" href="{{ path('metastaz_template_edit', { 'id': entity.id }) }}">
             Back to the template
         </a>
     </li>
 </ul>
-{% endblock %}
+{% endblock %

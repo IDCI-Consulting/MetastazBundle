@@ -4,9 +4,9 @@
 
     {{ form_row(form.name) }}
 
-    <p>
-        {{ form_rest(form) }}
-        <button type="submit">Create</button>
-        <a href="{{ path('metastaz_template') }}">Cancel</a>
-    </p>
+    {{ form_rest(form) }}
+    <ul class="actions">
+        <li><button type="submit">Create</button></li>
+        <li><a href="{{ path('metastaz_template') }}">Cancel</a></li>
+    </ul>
 </form>

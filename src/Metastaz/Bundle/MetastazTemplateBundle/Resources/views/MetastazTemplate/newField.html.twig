@@ -1,13 +1,14 @@
-{% extends 'MetastazTemplateBundle::base.html.twig' %}
+{% extends 'MetastazTemplateBundle::template.html.twig' %}
 
 {% block content %}
-<h1>MetastazTemplate Field creation</h1>
 
 {% include 'MetastazTemplateBundle:MetastazTemplate:templateFieldForm.html.twig' with {'entity': entity, 'form': form} %}
 
-<ul class="record_actions">
+<hr />
+
+<ul class="actions">
     <li>
-        <a href="{{ path('metastaz_template_edit', { 'id': entity.getMetastazTemplateId() }) }}">
+        <a class="back" href="{{ path('metastaz_template_edit', { 'id': entity.getMetastazTemplateId() }) }}">
             Back to the template
         </a>
     </li>
