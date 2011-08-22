@@ -1,23 +1,10 @@
 {% extends 'MetastazTemplateBundle::template.html.twig' %}
 
 {% block content %}
-    <h1>MetastazTemplate Field edition</h1>
 
-    {% form_theme edit_form 'MetastazTemplateBundle:Form:fields.html.twig' %}
-    <form action="{{ path('metastaz_template_field_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-        {{ form_errors(edit_form) }}
-        {{ form_row(edit_form.meta_namespace) }}
-        {{ form_row(edit_form.meta_key) }}
-        {{ form_row(edit_form.is_indexed) }}
-        {{ form_row(edit_form.options) }}
-        {{ form_row(edit_form.metastaz_field_type) }}
-
-        <input type="hidden" name="{{ edit_form.metastaz_template.vars.full_name }}" value="{{ entity.getMetastazTemplateId() }}" />
-        {{ form_row(edit_form._token) }}
-        <ul class="actions">
-            <li><button type="submit">Update</button></li>
-        </ul>
-    </form>
+    <div class="form">
+        {% include 'MetastazTemplateBundle:MetastazTemplate:templateFieldForm.html.twig' with params %}
+    </div>
 
     <hr />
 
@@ -34,4 +21,5 @@
             </form>
         </li>
     </ul>
+
 {% endblock %}

@@ -6,17 +6,10 @@
 {% endblock %}
 
 {% block content %}
-    {% form_theme edit_form 'MetastazTemplateBundle:Form:fields.html.twig' %}
 
-    <form action="{{ path('metastaz_template_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-        {{ form_errors(edit_form) }}
-        {{ form_row(edit_form.name) }}
-
-        {{ form_rest(edit_form) }}
-        <ul class="actions">
-            <li><button type="submit">Save</button></li>
-        </ul>
-    </form>
+    <div class="form">
+        {% include 'MetastazTemplateBundle:MetastazTemplate:templateForm.html.twig' with params %}
+    </div>
 
     {% if metastaz_fields | length %}
         <table class="list">
@@ -76,4 +69,5 @@
             </form>
         </li>
     </ul>
+
 {% endblock %}

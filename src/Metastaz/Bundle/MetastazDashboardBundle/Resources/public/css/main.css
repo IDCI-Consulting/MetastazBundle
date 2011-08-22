@@ -89,6 +89,10 @@ body > .wrap {
     min-height: 100%;
 }
 
+#main hr {
+    clear: both;
+}
+
 #footer,
 .push {
     clear: both;

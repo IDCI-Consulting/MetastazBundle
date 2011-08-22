@@ -2,13 +2,15 @@
 
 {% block content %}
 
-{% include 'MetastazTemplateBundle:MetastazTemplate:templateFieldForm.html.twig' with {'entity': entity, 'form': form} %}
+<div class="form_container">
+    {% include 'MetastazTemplateBundle:MetastazTemplate:templateFieldForm.html.twig' with params %}
+</div>
 
 <hr />
 
 <ul class="actions">
     <li>
-        <a class="back" href="{{ path('metastaz_template_edit', { 'id': entity.getMetastazTemplateId() }) }}">
+        <a class="back" href="{{ path('metastaz_template_edit', { 'id': template.getId() }) }}">
             Back to the template
         </a>
     </li>

@@ -2,10 +2,14 @@
 
 {% block content %}
 
-<form action="#" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
-    {{ form_rest(form) }}
-</form>
+<div class="form">
+    <form action="#" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        {{ form_rest(form) }}
+    </form>
+</div>
+
+<hr />
 
 <ul class="actions">
     <li>

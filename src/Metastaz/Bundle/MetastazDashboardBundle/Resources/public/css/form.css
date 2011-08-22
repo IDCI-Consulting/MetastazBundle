@@ -1,0 +1,21 @@
+.form form,
+.form_container form {
+    margin: 0 20px 20px 0;
+    border: 1px solid #000;
+    float: left;
+    display: block;
+    padding: 10px;
+}
+
+.form_container form fieldset {
+
+}
+
+.form_container form fieldset label {
+    float: left;
+    min-width: 200px;
+}
+
+.form_container form fieldset .inputs {
+    float: left;
+}

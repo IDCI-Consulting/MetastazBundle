@@ -2,7 +2,9 @@
 
 {% block content %}
 
-{% include 'MetastazTemplateBundle:MetastazTemplate:templateForm.html.twig' with {'entity': entity, 'form': form} %}
+<div class="form_container">
+    {% include 'MetastazTemplateBundle:MetastazTemplate:templateForm.html.twig' with params %}
+</div>
 
 <hr />
 

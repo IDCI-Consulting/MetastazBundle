@@ -69,15 +69,18 @@ class MetastazTemplateController extends Controller
         $entity = new MetastazTemplate();
         $form = $this->createForm(new MetastazTemplateType(), $entity);
 
+        $action_url = $this->get('router')->generate('metastaz_template_create');
         $params = array(
             'entity' => $entity,
-            'form'   => $form->createView()
+            'form'   => $form->createView(),
+            'action' => 'create',
+            'action_url' => $action_url
         );
 
         if ($request->isXmlHttpRequest())
             return $this->render('MetastazTemplateBundle:MetastazTemplate:templateForm.html.twig', $params);
 
-        return $params;
+        return array('params' => $params);
     }
     
     /**
@@ -100,15 +103,23 @@ class MetastazTemplateController extends Controller
         $entity->setMetastazTemplate($template);
         $form   = $this->createForm(new MetastazTemplateFieldType(), $entity);
 
+        $action_url = $this->get('router')->generate('metastaz_template_field_create', array(
+            'id' => $template->getId()
+        ));
         $params = array(
             'entity' => $entity,
-            'form'   => $form->createView()
+            'form'   => $form->createView(),
+            'action' => 'create',
+            'action_url' => $action_url
         );
 
         if ($this->getRequest()->isXmlHttpRequest())
             return $this->render('MetastazTemplateBundle:MetastazTemplate:templateFieldForm.html.twig', $params);
 
-        return $params;
+        return array(
+            'template' => $template,
+            'params' => $params
+        );
     }
 
     /**
@@ -183,10 +194,20 @@ class MetastazTemplateController extends Controller
         $editForm = $this->createForm(new MetastazTemplateType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
+        $action_url = $this->get('router')->generate('metastaz_template_update', array(
+            'id' => $entity->getId()
+        ));
+        $params = array(
+            'entity'     => $entity,
+            'form'       => $editForm->createView(),
+            'action'     => 'update',
+            'action_url' => $action_url
+        );
+
         return array(
             'entity'          => $entity,
             'metastaz_fields' => $entity->getMetastazFields(),
-            'edit_form'       => $editForm->createView(),
+            'params'          => $params,
             'delete_form'     => $deleteForm->createView(),
         );
     }
@@ -209,9 +230,19 @@ class MetastazTemplateController extends Controller
         $editForm = $this->createForm(new MetastazTemplateFieldType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
+        $action_url = $this->get('router')->generate('metastaz_template_field_update', array(
+            'id' => $entity->getId()
+        ));
+        $params = array(
+            'entity'     => $entity,
+            'form'       => $editForm->createView(),
+            'action'     => 'update',
+            'action_url' => $action_url
+        );
+
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'params'      => $params,
             'delete_form' => $deleteForm->createView(),
         );
     }
