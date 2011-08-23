@@ -27,12 +27,16 @@
             <td>{{ entity.longDescription }}</td>
             <td>{{ entity.getCategory() }}</td>
             <td>
-                <ul>
+                <ul class="actions">
                     <li>
-                        <a href="{{ path('metastaz_product_show', { 'id': entity.id }) }}">show</a>
+                        <a href="{{ path('metastaz_product_show', { 'id': entity.id }) }}">
+                            <span>show</span>
+                        </a>
                     </li>
                     <li>
-                        <a href="{{ path('metastaz_product_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('metastaz_product_edit', { 'id': entity.id }) }}">
+                            <span>edit</span>
+                        </a>
                     </li>
                 </ul>
             </td>

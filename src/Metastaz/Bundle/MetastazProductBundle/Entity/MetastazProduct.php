@@ -317,6 +317,16 @@ class MetastazProduct implements MetastazInterface
     }
 
     /**
+     * Get metastaz_template_fields
+     *
+     * @return array
+     */
+    public function getMetastazTemplateFields()
+    {
+        return $this->getMetastazContainer()->getMetastazTemplateFields();
+    }
+
+    /**
      * @see Metastaz\Interfaces\MetastazInterface
      */
     public function getMetastazContainer()

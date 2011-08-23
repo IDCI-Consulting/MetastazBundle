@@ -2,14 +2,28 @@ table.list {
     margin-bottom: 10px;
 }
 
+table.properties th,
 table.list thead {
     background: #888;
+    color: #FFF;
 }
 
+table.properties th,
+table.properties td,
 table.list th,
 table.list td {
     padding: 2px 5px;
     border: 1px solid #222;
+}
+
+table.list ul.actions,
+table.properties ul.actions {
+    margin: 0;
+}
+
+table.list ul.actions > li > a,
+table.properties ul.actions > li > a {
+    padding: 2px 4px;
 }
 
 table.list a {
@@ -19,4 +33,7 @@ table.list a {
 
 table.list a:hover {
     color: #000;
+}
+
+table.properties {
 }

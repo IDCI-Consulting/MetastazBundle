@@ -49,7 +49,6 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
 
     /**
      * @see Metastaz\Interfaces\MetastazStoreInterface
-     * @throw NotFoundHttpException
      */
     public function get($dimension, $namespace, $key, $culture = null)
     {
@@ -63,13 +62,7 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
         );
 
         if (!$entity) {
-            throw new NotFoundHttpException(
-                sprintf('Unable to find Metastaz entity with the following parameter: %s %s %s.',
-                    $dimension,
-                    $namespace,
-                    $key
-                )
-            );
+            return null;
         }
 
         //TODO: Return data in function of the culture parameter

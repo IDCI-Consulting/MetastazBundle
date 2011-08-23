@@ -66,14 +66,16 @@ class MetastazProductController extends Controller
         //$entity->persistMetastaz();
         //$entity->flushMetastaz();
 
-        $indexes = array();
-        foreach($entity->getMetastazIndexes() as $field) {
-            $indexes[$field->getMetaNamespace()][] = $field->getMetaKey();
+        $fields = array();
+        foreach($entity->getMetastazTemplateFields() as $field) {
+            $fields[$field->getMetaNamespace()][] = $field;
         }
+
+        //var_dump($fields); die;
 
         return array(
             'entity'      => $entity,
-            'indexes'     => $indexes,
+            'fields'      => $fields,
             'delete_form' => $deleteForm->createView(),
         );
     }

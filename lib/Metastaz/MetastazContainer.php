@@ -196,6 +196,23 @@ class MetastazContainer
     }
 
     /**
+     * Get MetastazTemplateFields
+     * If the templating is not enable, this function return a empty array
+     *
+     * @throw NotFoundHttpException
+     * @return array
+     */
+    public function getMetastazTemplateFields()
+    {
+        if(!$template = $this->getMetastazTemplate())
+        {
+            return array();
+        }
+
+        return $template->getMetastazFields();
+    }
+
+    /**
      * Get stores
      * 
      * @return array 

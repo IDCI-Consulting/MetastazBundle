@@ -20,9 +20,11 @@
             <td><a href="{{ path('metastaz_template_edit', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
             <td>{{ entity.name }}</td>
             <td>
-                <ul>
+                <ul class="actions">
                     <li>
-                        <a class="action edit" href="{{ path('metastaz_template_edit', { 'id': entity.id }) }}">edit</a>
+                        <a class="action edit" href="{{ path('metastaz_template_edit', { 'id': entity.id }) }}">
+                            <span>edit</span>
+                        </a>
                     </li>
                 </ul>
             </td>
