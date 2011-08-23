@@ -7,15 +7,18 @@
     padding: 10px;
 }
 
+.form form fieldset,
 .form_container form fieldset {
-
 }
 
+.form form fieldset label,
 .form_container form fieldset label {
     float: left;
-    min-width: 200px;
+    margin-right: 20px;
+    min-width: 120px;
 }
 
+.form form fieldset .inputs,
 .form_container form fieldset .inputs {
     float: left;
 }

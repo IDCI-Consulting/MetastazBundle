@@ -11,8 +11,8 @@ class MetastazProductType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('shortDescription')
-            ->add('longDescription')
+            ->add('shortDescription', null, array('label' => 'Short description'))
+            ->add('longDescription', null, array('label' => 'Long description'))
             ->add('category')
         ;
     }

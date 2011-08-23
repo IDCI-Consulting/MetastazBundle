@@ -10,7 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProduct;
-use Metastaz\Bundle\MetastazProductBundle\Form\MetastazProductType;
+use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProductCategory;
+use Metastaz\Bundle\MetastazProductBundle\Form\MetastazProductWithCategoryType;
 
 /**
  * MetastazProduct controller.
@@ -86,7 +87,7 @@ class MetastazProductController extends Controller
     public function newAction(Request $request)
     {
         $entity = new MetastazProduct();
-        $form   = $this->createForm(new MetastazProductType(), $entity);
+        $form   = $this->createForm(new MetastazProductWithCategoryType(), $entity);
 
         $action_url = $this->get('router')->generate('metastaz_product_create');
         $params = array(
@@ -97,7 +98,7 @@ class MetastazProductController extends Controller
         );
 
         if ($request->isXmlHttpRequest())
-            return $this->render('MetastazProductBundle:MetastazProduct:form.html.twig', $params);
+            return $this->render('MetastazProductBundle:MetastazProduct:productForm.html.twig', $params);
 
         return array('params' => $params);
     }
@@ -113,18 +114,26 @@ class MetastazProductController extends Controller
     {
         $entity  = new MetastazProduct();
         $request = $this->getRequest();
-        $form    = $this->createForm(new MetastazProductType(), $entity);
+        $form    = $this->createForm(new MetastazProductWithCategoryType(), $entity);
 
         if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);
 
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
+
+                if($categorySuggestion = $form->get('categorySuggestion')->getData())
+                {
+                    $category = new MetastazProductCategory();
+                    $category->setName($categorySuggestion);
+                    $category->setTemplateName($categorySuggestion);
+                    $entity->setCategory($category);
+                }
+
                 $em->persist($entity);
                 $em->flush();
 
                 return $this->redirect($this->generateUrl('metastaz_product_show', array('id' => $entity->getId())));
-                
             }
         }
 
@@ -150,7 +159,7 @@ class MetastazProductController extends Controller
             throw $this->createNotFoundException('Unable to find MetastazProduct entity.');
         }
 
-        $editForm = $this->createForm(new MetastazProductType(), $entity);
+        $editForm = $this->createForm(new MetastazProductWithCategoryType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         $action_url = $this->get('router')->generate('metastaz_product_update', array(
@@ -187,7 +196,7 @@ class MetastazProductController extends Controller
             throw $this->createNotFoundException('Unable to find MetastazProduct entity.');
         }
 
-        $editForm   = $this->createForm(new MetastazProductType(), $entity);
+        $editForm   = $this->createForm(new MetastazProductWithCategoryType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         $request = $this->getRequest();

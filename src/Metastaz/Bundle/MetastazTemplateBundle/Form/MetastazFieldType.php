@@ -16,12 +16,12 @@ class MetastazFieldType extends AbstractType
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
-            ->add('meta_namespace')
-            ->add('meta_key')
-            ->add('is_indexed')
-            ->add('options')
+            ->add('meta_namespace', null, array('label' => 'Namespace'))
+            ->add('meta_key', null, array('label' => 'Key'))
+            ->add('is_indexed', null, array('label' => 'Indexed'))
+            ->add('options', null, array('label' => 'Options'))
+            ->add('metastaz_field_type', null, array('label' => 'Field type'))
             ->add('metastaz_template')
-            ->add('metastaz_field_type')
         ;
     }
 

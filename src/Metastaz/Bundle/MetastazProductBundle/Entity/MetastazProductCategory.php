@@ -4,6 +4,7 @@ namespace Metastaz\Bundle\MetastazProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\Container;
+use Metastaz\Bundle\MetastazProductBundle\MetastazProductBundle;
 
 /**
  * MetastazProduct Category just qualify a MetastazProduct
@@ -92,5 +93,16 @@ class MetastazProductCategory
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * Get an array of available category
+     *
+     * @return array
+     */
+    public static function getCategories()
+    {
+        $em = MetastazProductBundle::getContainer()->get('doctrine.orm.entity_manager');
+        return $em->getRepository('MetastazProductBundle:MetastazProductCategory')->findAll();
     }
 }

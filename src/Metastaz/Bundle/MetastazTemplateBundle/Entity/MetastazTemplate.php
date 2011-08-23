@@ -163,4 +163,15 @@ class MetastazTemplate extends MetastazFieldType
         $em = MetastazTemplateBundle::getContainer()->get('doctrine')->getEntityManager('metastaz_template');
         return $em->getRepository('MetastazTemplateBundle:MetastazTemplate')->getIndexedFields($template_name);
     }
+
+    /**
+     * Get an array of available templates
+     *
+     * @return array
+     */
+    public static function getTemplates()
+    {
+        $em = MetastazTemplateBundle::getContainer()->get('doctrine')->getEntityManager('metastaz_template');
+        return $em->getRepository('MetastazTemplateBundle:MetastazTemplate')->findAll();
+    }
 }

@@ -19,12 +19,12 @@ class MetastazTemplateBundle extends Bundle
 
     public function setContainer(ContainerInterface $container = null)
     {
-       parent::setContainer($container);
-       self::$containerInstance = $container;
+        parent::setContainer($container);
+        self::$containerInstance = $container;
     }
 
     public static function getContainer()
     {
-      return self::$containerInstance;
+        return self::$containerInstance;
     }
 }
