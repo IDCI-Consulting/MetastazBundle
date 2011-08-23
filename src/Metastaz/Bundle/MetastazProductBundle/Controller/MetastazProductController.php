@@ -83,15 +83,23 @@ class MetastazProductController extends Controller
      * @Route("/new", name="metastaz_product_new")
      * @Template()
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
         $entity = new MetastazProduct();
         $form   = $this->createForm(new MetastazProductType(), $entity);
 
-        return array(
+        $action_url = $this->get('router')->generate('metastaz_product_create');
+        $params = array(
             'entity' => $entity,
-            'form'   => $form->createView()
+            'form'   => $form->createView(),
+            'action' => 'create',
+            'action_url' => $action_url
         );
+
+        if ($request->isXmlHttpRequest())
+            return $this->render('MetastazProductBundle:MetastazProduct:form.html.twig', $params);
+
+        return array('params' => $params);
     }
 
     /**
@@ -145,9 +153,19 @@ class MetastazProductController extends Controller
         $editForm = $this->createForm(new MetastazProductType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
+        $action_url = $this->get('router')->generate('metastaz_product_update', array(
+            'id' => $entity->getId()
+        ));
+        $params = array(
+            'entity' => $entity,
+            'form'   => $editForm->createView(),
+            'action' => 'update',
+            'action_url' => $action_url
+        );
+
         return array(
+            'params'      => $params,
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }

@@ -3,3 +3,15 @@
 {% block header_title %}Product{% endblock %}
 {% set current = 'product' %}
 
+{% block main %}
+<div id="wrapper">
+    {% block content %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  google.load("jquery", "1.6.2");
+</script>
+{% endblock %}

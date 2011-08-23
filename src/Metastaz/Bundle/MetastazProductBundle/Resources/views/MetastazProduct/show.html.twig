@@ -1,7 +1,6 @@
 {% extends 'MetastazProductBundle::product.html.twig' %}
 
-{% block main %}
-<h1>MetastazProduct</h1>
+{% block content %}
 
 <table class="record_properties">
     <tbody>
@@ -31,15 +30,15 @@
     </tbody>
 </table>
 
-<ul class="record_actions">
+<ul class="actions">
     <li>
-        <a href="{{ path('metastaz_product') }}">
-            Back to the list
+        <a class="back" href="{{ path('metastaz_product') }}">
+            <span>Back to the list</span>
         </a>
     </li>
     <li>
-        <a href="{{ path('metastaz_product_edit', { 'id': entity.id }) }}">
-            Edit
+        <a class="edit" href="{{ path('metastaz_product_edit', { 'id': entity.id }) }}">
+            <span>Edit</span>
         </a>
     </li>
     <li>

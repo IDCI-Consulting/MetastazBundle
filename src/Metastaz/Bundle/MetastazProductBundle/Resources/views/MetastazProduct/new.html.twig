@@ -1,19 +1,17 @@
 {% extends 'MetastazProductBundle::product.html.twig' %}
 
-{% block main %}
-<h1>MetastazProduct creation</h1>
+{% block content %}
 
-<form action="{{ path('metastaz_product_create') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
-    <p>
-        <button type="submit">Create</button>
-    </p>
-</form>
+<div class="form">
+    {% include 'MetastazProductBundle:MetastazProduct:form.html.twig' with params %}
+</div>
 
-<ul class="record_actions">
+<hr />
+
+<ul class="actions">
     <li>
-        <a href="{{ path('metastaz_product') }}">
-            Back to the list
+        <a class="back" href="{{ path('metastaz_product') }}">
+            <span>Back to the list</span>
         </a>
     </li>
 </ul>

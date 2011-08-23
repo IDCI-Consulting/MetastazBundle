@@ -1,15 +1,20 @@
 {% extends 'MetastazProductBundle::product.html.twig' %}
 
-{% block main %}
-<h1>MetastazProduct list</h1>
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript" src="{{ asset('bundles/metastaz/js/ajaxify_metastaz.js') }}"></script>
+{% endblock %}
 
-<table class="records_list">
+{% block content %}
+
+<table class="list">
     <thead>
         <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>Shortdescription</th>
-            <th>Longdescription</th>
+            <th>Short description</th>
+            <th>Long description</th>
+            <th>Template name</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -20,6 +25,7 @@
             <td>{{ entity.name }}</td>
             <td>{{ entity.shortDescription }}</td>
             <td>{{ entity.longDescription }}</td>
+            <td>{{ entity.getCategory() }}</td>
             <td>
                 <ul>
                     <li>
@@ -35,10 +41,15 @@
     </tbody>
 </table>
 
-<ul>
+<div class="form_container">
+</div>
+
+<hr />
+
+<ul class="actions">
     <li>
-        <a href="{{ path('metastaz_product_new') }}">
-            Create a new entry
+        <a class="new create_link" href="{{ path('metastaz_product_new') }}">
+            <span>Create a new entry</span>
         </a>
     </li>
 </ul>
