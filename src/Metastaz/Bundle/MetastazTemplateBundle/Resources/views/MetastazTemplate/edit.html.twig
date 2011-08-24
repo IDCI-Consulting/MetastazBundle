@@ -31,9 +31,11 @@
                     <td>{{ field.isIndexed }}</td>
                     <td>{{ field.getMetastazFieldType() }}</td>
                     <td>{{ field.options }}</td>
-                    <td class="actions">
-                        <ul>
-                            <li><a href="{{ path('metastaz_template_field_edit', { 'id': field.id }) }}">edit</a></li>
+                    <td>
+                        <ul class="actions">
+                            <li>
+                                <a href="{{ path('metastaz_template_field_edit', { 'id': field.id }) }}">edit</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
