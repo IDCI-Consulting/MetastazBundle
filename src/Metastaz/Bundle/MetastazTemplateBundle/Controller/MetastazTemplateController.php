@@ -13,6 +13,7 @@ use Metastaz\Bundle\MetastazTemplateBundle\Entity\MetastazTemplate;
 use Metastaz\Bundle\MetastazTemplateBundle\Entity\MetastazField;
 use Metastaz\Bundle\MetastazTemplateBundle\Form\MetastazTemplateFieldType;
 use Metastaz\Bundle\MetastazTemplateBundle\Form\MetastazTemplateType;
+use Metastaz\Util\MetastazFormFactory;
 
 /**
  * MetastazTemplate controller.
@@ -385,25 +386,12 @@ class MetastazTemplateController extends Controller
             throw $this->createNotFoundException('Unable to find MetastazTemplate entity.');
         }
 
-        $class_name = sprintf('%s\\%sMetastazTemplateType',
-            'Application\\Form',
-            $entity->getName()
-        );
-
-        if (!class_exists($class_name)) {
-            throw new NotFoundHttpException(
-                sprintf('Unable to find the following MetastazTemplateType: %s.', $class_name)
-            );
-        }
-
-        $class_form = new $class_name(); 
-        $form = $this->createForm($class_form);
+        $form = MetastazFormFactory::createForm($this->container, $entity);
 
         return array(
             'entity'    => $entity,
             'form'      => $form->createView()
         );
-
     }
 
     private function createDeleteForm($id)

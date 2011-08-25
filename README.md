@@ -246,6 +246,10 @@ the following command with the console:
     php app/console metastaz:generate:form
 
 Take a look in app/Application/Form
+To show this form in action, register the namespace *Application* (autoload.php)
+
+    'Application'                       => __DIR__.'/',
+
 
 Using Metastaz
 --------------

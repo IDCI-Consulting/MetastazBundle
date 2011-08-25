@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProduct;
 use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProductCategory;
 use Metastaz\Bundle\MetastazProductBundle\Form\MetastazProductWithCategoryType;
+use Metastaz\Util\MetastazFormFactory;
 
 /**
  * MetastazProduct controller.
@@ -55,16 +56,18 @@ class MetastazProductController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         //$entity->loadMetastaz();
-/*
-        $entity->putMetastaz('Infos', 'Largeur', '205');
-        $entity->putMetastaz('Infos', 'Hauteur', '55');
+
+        /*
+        $entity->putMetastaz('Info', 'Gestion', 'interne');
+        $entity->putMetastaz('Info', 'Location', 'fr');
         $entity->putMetastaz('Infos', 'Diametre', 'H');
         $entity->putMetastaz('Infos', 'Poids', '100');
         $entity->putMetastaz('Infos', 'Couleur', 'gris');
         $entity->putMetastaz('Infos', 'Runflat', 200);
-        $entity->putMetastaz('Infos', 'Vitesse', '280');*/
-        //$entity->persistMetastaz();
-        //$entity->flushMetastaz();
+        $entity->putMetastaz('Infos', 'Vitesse', '280');
+        $entity->persistMetastaz();
+        $entity->flushMetastaz();
+        */
 
         $fields = array();
         foreach($entity->getMetastazTemplateFields() as $field) {
@@ -100,7 +103,7 @@ class MetastazProductController extends Controller
         );
 
         if ($request->isXmlHttpRequest())
-            return $this->render('MetastazProductBundle:MetastazProduct:productForm.html.twig', $params);
+            return $this->render('MetastazProductBundle:MetastazProduct:form.html.twig', $params);
 
         return array('params' => $params);
     }
@@ -161,23 +164,36 @@ class MetastazProductController extends Controller
             throw $this->createNotFoundException('Unable to find MetastazProduct entity.');
         }
 
+        $metastazForm = MetastazFormFactory::createForm($this->container, $entity);
         $editForm = $this->createForm(new MetastazProductWithCategoryType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        $action_url = $this->get('router')->generate('metastaz_product_update', array(
-            'id' => $entity->getId()
-        ));
-        $params = array(
+        $form_action_url = $this->get('router')->generate(
+            'metastaz_product_update',
+            array('id' => $entity->getId())
+        );
+        $metastaz_form_action_url = $this->get('router')->generate(
+            'metastaz_product_update_meta',
+            array('id' => $entity->getId())
+        );
+        $form_params = array(
             'entity' => $entity,
             'form'   => $editForm->createView(),
             'action' => 'update',
-            'action_url' => $action_url
+            'action_url' => $form_action_url
+        );
+        $metastaz_form_params = array(
+            'entity' => $entity,
+            'form'   => $metastazForm->createView(),
+            'action' => 'update',
+            'action_url' => $metastaz_form_action_url
         );
 
         return array(
-            'params'      => $params,
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'entity'               => $entity,
+            'form_params'          => $form_params,
+            'metastaz_form_params' => $metastaz_form_params,
+            'delete_form'          => $deleteForm->createView(),
         );
     }
 
@@ -191,16 +207,13 @@ class MetastazProductController extends Controller
     public function updateAction($id)
     {
         $em = $this->getDoctrine()->getEntityManager();
-
         $entity = $em->getRepository('MetastazProductBundle:MetastazProduct')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find MetastazProduct entity.');
         }
 
-        $editForm   = $this->createForm(new MetastazProductWithCategoryType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
-
+        $editForm = $this->createForm(new MetastazProductWithCategoryType(), $entity);
         $request = $this->getRequest();
 
         if ('POST' === $request->getMethod()) {
@@ -215,10 +228,95 @@ class MetastazProductController extends Controller
             }
         }
 
+        $metastazForm = MetastazFormFactory::createForm($this->container, $entity);
+        $deleteForm = $this->createDeleteForm($id);
+
+        $form_action_url = $this->get('router')->generate(
+            'metastaz_product_update',
+            array('id' => $entity->getId())
+        );
+        $metastaz_form_action_url = $this->get('router')->generate(
+            'metastaz_product_update_meta',
+            array('id' => $entity->getId())
+        );
+        $form_params = array(
+            'entity' => $entity,
+            'form'   => $editForm->createView(),
+            'action' => 'update',
+            'action_url' => $form_action_url
+        );
+        $metastaz_form_params = array(
+            'entity' => $entity,
+            'form'   => $metastazForm->createView(),
+            'action' => 'update',
+            'action_url' => $metastaz_form_action_url
+        );
+
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'entity'               => $entity,
+            'form_params'          => $form_params,
+            'metastaz_form_params' => $metastaz_form_params,
+            'delete_form'          => $deleteForm->createView(),
+        );
+    }
+
+    /**
+     * Edits an existing MetastazProduct entity.
+     *
+     * @Route("/{id}/update_meta", name="metastaz_product_update_meta")
+     * @Method("post")
+     * @Template("MetastazProductBundle:MetastazProduct:edit.html.twig")
+     */
+    public function updateMetastazAction($id)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $entity = $em->getRepository('MetastazProductBundle:MetastazProduct')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find MetastazProduct entity.');
+        }
+
+        $metastazForm = MetastazFormFactory::createForm($this->container, $entity);
+        $request = $this->getRequest();
+
+        if ('POST' === $request->getMethod()) {
+            $metastazForm->bindRequest($request);
+
+            if ($metastazForm->isValid()) {
+                $entity->flushMetastaz();
+                return $this->redirect($this->generateUrl('metastaz_product_edit', array('id' => $id)));
+            }
+        }
+
+        $editForm = $this->createForm(new MetastazProductWithCategoryType(), $entity);
+        $deleteForm = $this->createDeleteForm($id);
+
+        $form_action_url = $this->get('router')->generate(
+            'metastaz_product_update',
+            array('id' => $entity->getId())
+        );
+        $metastaz_form_action_url = $this->get('router')->generate(
+            'metastaz_product_update_meta',
+            array('id' => $entity->getId())
+        );
+        $form_params = array(
+            'entity' => $entity,
+            'form'   => $editForm->createView(),
+            'action' => 'update',
+            'action_url' => $form_action_url
+        );
+        $metastaz_form_params = array(
+            'entity' => $entity,
+            'form'   => $metastazForm->createView(),
+            'action' => 'update',
+            'action_url' => $metastaz_form_action_url
+        );
+
+        return array(
+            'entity'               => $entity,
+            'form_params'          => $form_params,
+            'metastaz_form_params' => $metastaz_form_params,
+            'delete_form'          => $deleteForm->createView(),
         );
     }
 

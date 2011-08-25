@@ -421,4 +421,16 @@ class MetastazProduct implements MetastazInterface
     {
         return $this->getMetastazContainer()->getIndexedFields();
     }
+
+    public function __get($name)
+    {
+        list($namespace, $key) = explode('_', $name);
+        return $this->getMetastaz($namespace, $key);
+    }
+
+    public function __set($name, $value)
+    {
+        list($namespace, $key) = explode('_', $name);
+        $this->putMetastaz($namespace, $key, $value);
+    }
 }
