@@ -245,7 +245,7 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
      */
     protected static function _serialize($data)
     {
-        return json_encode($data);
+        return serialize($data);
     }
 
     /**
@@ -253,6 +253,6 @@ class DoctrineORMMetastazStore implements MetastazStoreInterface
      */
     protected static function _deserialize($data)
     {
-        return json_decode($data);
+        return unserialize($data);
     }
 }

@@ -55,20 +55,6 @@ class MetastazProductController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-        //$entity->loadMetastaz();
-
-        /*
-        $entity->putMetastaz('Info', 'Gestion', 'interne');
-        $entity->putMetastaz('Info', 'Location', 'fr');
-        $entity->putMetastaz('Infos', 'Diametre', 'H');
-        $entity->putMetastaz('Infos', 'Poids', '100');
-        $entity->putMetastaz('Infos', 'Couleur', 'gris');
-        $entity->putMetastaz('Infos', 'Runflat', 200);
-        $entity->putMetastaz('Infos', 'Vitesse', '280');
-        $entity->persistMetastaz();
-        $entity->flushMetastaz();
-        */
-
         $fields = array();
         foreach($entity->getMetastazTemplateFields() as $field) {
             $fields[$field->getMetaNamespace()][] = $field;

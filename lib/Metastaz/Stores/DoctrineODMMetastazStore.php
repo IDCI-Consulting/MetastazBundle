@@ -62,7 +62,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
         }
 
         //TODO: Return data in function of the culture parameter
-        return $document->getMetaValue();
+        return self::_deserialize($document->getMetaValue());
     }
 
     /**
@@ -87,7 +87,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
         }
 
         //TODO: Save data in function of the culture parameter
-        $document->setMetaValue($value);
+        $document->setMetaValue(self::_serialize($value));
         $dm->persist($document);
         $dm->flush();
     }
@@ -104,7 +104,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
 
         $ret = array();
         foreach($documents as $document) {
-            $ret[$document->getMetaNamespace()][$document->getMetaKey()] = $document->getMetaValue();
+            $ret[$document->getMetaNamespace()][$document->getMetaKey()] = self::_deserialize($document->getMetaValue());
         }
 
         return $ret;
@@ -170,7 +170,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
                 $document->setMetaDimension($dimension);
                 $document->setMetaNamespace($namespace);
                 $document->setMetaKey($key);
-                $document->setMetaValue($value);
+                $document->setMetaValue(self::_serialize($value));
                 $dm->persist($document);
             }
         }
@@ -199,7 +199,7 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
                     $document->setMetaNamespace($namespace);
                     $document->setMetaKey($key);
                 }
-                $document->setMetaValue($value);
+                $document->setMetaValue(self::_serialize($value));
                 $dm->persist($document);
             }
         }
@@ -225,12 +225,28 @@ class DoctrineODMMetastazStore implements MetastazStoreInterface
             }
         }
     }
-    
+
     /**
      * @see Metastaz\Interfaces\MetastazStoreInterface
      */
     public static function flush()
     {
         self::getDocumentManager()->flush();
+    }
+
+    /**
+     * Serialize
+     */
+    protected static function _serialize($data)
+    {
+        return serialize($data);
+    }
+
+    /**
+     * Deserialize
+     */
+    protected static function _deserialize($data)
+    {
+        return unserialize($data);
     }
 }
