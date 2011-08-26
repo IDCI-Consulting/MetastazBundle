@@ -137,7 +137,7 @@ class MetastazTemplate extends MetastazFieldType
      *
      * @return array 
      */
-    public function getForm()
+    public function getFormFields()
     {
         $ret = array();
         foreach ($this->getMetastazFields() as $field) {
@@ -147,9 +147,14 @@ class MetastazTemplate extends MetastazFieldType
             );
             if ($field->getOptions())
                 $tmp[] = $field->getOptions();
-            $ret[] = $tmp;
+            $ret[$field->getMetaNamespace()][] = $tmp;
         }
-        return $ret;
+
+        $fields = array();
+        foreach($ret as $namespaceFields) {
+            $fields = array_merge($field, $namespaceFields);
+        }
+        return $fields;
     }
 
     /**
