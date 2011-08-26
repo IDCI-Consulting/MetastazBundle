@@ -424,13 +424,38 @@ class MetastazProduct implements MetastazInterface
 
     public function __get($name)
     {
+        if (false === strpos($name, '_')) {
+            return null;
+        }
+
         list($namespace, $key) = explode('_', $name);
         return $this->getMetastaz($namespace, $key);
     }
 
     public function __set($name, $value)
     {
+        if (false === strpos($name, '_')) {
+            return;
+        }
+
         list($namespace, $key) = explode('_', $name);
         $this->putMetastaz($namespace, $key, $value);
+    }
+
+    /**
+     * Get an unique dimension metadata array.
+     *
+     * @return array
+     */
+    public function getIndexedMetadata()
+    {
+        $indexedMetadata = array();
+        foreach ($this->getMetastazIndexes() as $field) {
+            $ns  = $field->getMetaNamespace();
+            $key = $field->getMetaKey();
+            $indexedMetadata[sprintf('%s_%s', $ns, $key)] = $this->getMetastaz($ns, $key);
+        }
+
+        return $indexedMetadata;
     }
 }
