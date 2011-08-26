@@ -50,14 +50,14 @@ class MetastazProduct implements MetastazInterface
     protected $name;
 
     /**
-     * @ORM\Column(name="short_description", type="string", length="255", nullable=true)
+     * @ORM\Column(type="string", length="255", nullable=true)
      */
-    protected $shortDescription;
+    protected $short_description;
 
     /**
-     * @ORM\Column(name="long_description", type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
-    protected $longDescription;
+    protected $long_description;
 
     /**
      * @ORM\ManyToOne(targetEntity="MetastazProductCategory", inversedBy="metastaz_products", cascade={"persist"})
