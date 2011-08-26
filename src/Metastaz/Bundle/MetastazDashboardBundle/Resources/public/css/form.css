@@ -11,14 +11,18 @@
 .form_container form fieldset {
 }
 
-.form form fieldset label,
-.form_container form fieldset label {
+.form form fieldset > label,
+.form_container form fieldset > label {
     float: left;
     margin-right: 20px;
     min-width: 120px;
 }
 
-.form form fieldset .inputs,
-.form_container form fieldset .inputs {
+.form form fieldset > .inputs,
+.form_container form fieldset > .inputs {
     float: left;
+}
+
+.form form > div > fieldset > label {
+    min-width: 300px;
 }
