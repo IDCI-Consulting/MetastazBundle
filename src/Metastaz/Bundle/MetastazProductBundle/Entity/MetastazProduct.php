@@ -12,7 +12,7 @@ use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProductAssociation;
 
 /**
  * MetastazProduct represent any items or item familly
- * 
+ *
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
  * @author:  Michel ROTTA <michel.r@allopneus.com>
  * @licence: LGPL
@@ -50,12 +50,12 @@ class MetastazProduct implements MetastazInterface
     protected $name;
 
     /**
-     * @ORM\Column(type="string", length="255", nullable=true)
+     * @ORM\Column(name="short_description", type="string", length="255", nullable=true)
      */
     protected $shortDescription;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(name="long_description", type="text", nullable=true)
      */
     protected $longDescription;
 
@@ -95,7 +95,7 @@ class MetastazProduct implements MetastazInterface
     /**
      * To String
      *
-     * @return string 
+     * @return string
      */
     public function __toString()
     {
@@ -108,7 +108,7 @@ class MetastazProduct implements MetastazInterface
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -128,7 +128,7 @@ class MetastazProduct implements MetastazInterface
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -148,7 +148,7 @@ class MetastazProduct implements MetastazInterface
     /**
      * Get shortDescription
      *
-     * @return string 
+     * @return string
      */
     public function getShortDescription()
     {
@@ -168,7 +168,7 @@ class MetastazProduct implements MetastazInterface
     /**
      * Get longDescription
      *
-     * @return text 
+     * @return text
      */
     public function getLongDescription()
     {
@@ -188,7 +188,7 @@ class MetastazProduct implements MetastazInterface
     /**
      * Get category
      *
-     * @return string 
+     * @return string
      */
     public function getCategory()
     {
@@ -208,7 +208,7 @@ class MetastazProduct implements MetastazInterface
     /**
      * Get created_at
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getCreatedAt()
     {
@@ -228,7 +228,7 @@ class MetastazProduct implements MetastazInterface
     /**
      * Get updated_at
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getUpdatedAt()
     {
@@ -248,7 +248,7 @@ class MetastazProduct implements MetastazInterface
     /**
      * Get parents
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getParents()
     {
@@ -268,7 +268,7 @@ class MetastazProduct implements MetastazInterface
     /**
      * Get childs
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getChilds()
     {
@@ -288,7 +288,7 @@ class MetastazProduct implements MetastazInterface
     /**
      * Get associations
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getAssociations()
     {
@@ -306,11 +306,11 @@ class MetastazProduct implements MetastazInterface
     /**
      * Get metastaz_template_name
      *
-     * @return string 
+     * @return string
      */
     public function getMetastazTemplateName()
     {
-        return $this->getCategory() ? 
+        return $this->getCategory() ?
             $this->getCategory()->getTemplateName() :
             '';
         ;
