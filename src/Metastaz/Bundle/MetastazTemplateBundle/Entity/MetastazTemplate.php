@@ -152,7 +152,7 @@ class MetastazTemplate extends MetastazFieldType
 
         $fields = array();
         foreach($ret as $namespaceFields) {
-            $fields = array_merge($field, $namespaceFields);
+            $fields = array_merge($fields, $namespaceFields);
         }
         return $fields;
     }
