@@ -399,7 +399,7 @@ class MetastazContainer
 
         $this->is_persisted = true;
     }
-    
+
     /**
      * Flush Metastaz from the pool
      */
@@ -411,5 +411,9 @@ class MetastazContainer
 
         $store = $this->getMetastazStoreService();
         $store::flush();
+
+        // TODO: dispatch event
+        //$evm = MetastazTemplateBundle::getContainer()->get('doctrine')->getEventManager();
+        //$evm->addEventListener('metastaz.flush', $this->getParameter('object')));
     }
 }

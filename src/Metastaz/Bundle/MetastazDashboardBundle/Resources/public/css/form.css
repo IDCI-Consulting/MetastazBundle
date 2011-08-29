@@ -9,13 +9,16 @@
 
 .form form fieldset,
 .form_container form fieldset {
+    font-size: 11px;
+    position: relative;
+    margin: 2px 0;
 }
 
 .form form fieldset > label,
 .form_container form fieldset > label {
     float: left;
     margin-right: 20px;
-    min-width: 120px;
+    min-width: 142px;
 }
 
 .form form fieldset > .inputs,
@@ -23,6 +26,47 @@
     float: left;
 }
 
-.form form > div > fieldset > label {
-    min-width: 300px;
+form fieldset > .inputs input,
+form fieldset > .inputs select,
+form fieldset > .inputs textarea {
+    font-size: 11px;
+    padding: 2px 10px 2px 2px;
+    border: 1px solid #CCC;
+    background: #F0F0F0;
+}
+form fieldset > .inputs select {
+    padding-right: 2px;
+}
+
+form fieldset:hover > .inputs input,
+form fieldset:hover > .inputs select,
+form fieldset:hover > .inputs textarea,
+form fieldset > .inputs input:focus,
+form fieldset > .inputs select:focus,
+form fieldset > .inputs textarea:focus {
+    background: #FFF;
+}
+form fieldset > .inputs input.errors,
+form fieldset > .inputs select.errors,
+form fieldset > .inputs textarea.errors {
+    border: 1px solid #D00;
+    background: #E88;
+}
+form fieldset:hover > .inputs input.errors,
+form fieldset:hover > .inputs select.errors,
+form fieldset:hover > .inputs textarea.errors {
+    background: #FDD;
+}
+
+.form form > div > fieldset > ul.errors {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    background: #000;
+    color: #FFF;
+    padding: 2px 5px;
+    line-height: 14px;
+}
+.form form > div > fieldset:hover > ul.errors {
+    display: none;
 }

@@ -60,8 +60,6 @@ class MetastazProductController extends Controller
             $fields[$field->getMetaNamespace()][] = $field;
         }
 
-        //var_dump($fields); die;
-
         return array(
             'entity'      => $entity,
             'fields'      => $fields,
