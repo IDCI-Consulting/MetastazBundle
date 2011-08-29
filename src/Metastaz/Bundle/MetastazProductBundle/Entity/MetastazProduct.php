@@ -296,6 +296,21 @@ class MetastazProduct implements MetastazInterface
     }
 
     /**
+     * Add associated product
+     *
+     * @param MetastazProduct $product
+     * @param integer $priority
+     */
+    public function addAssociatedProduct(MetastazProduct $product, $priority = null)
+    {
+        $association = new MetastazProductAssociation();
+        $association->setProduct($this);
+        $association->setProductAssociation($product);
+        $association->setPriority($priority);
+        $this->addAssociations($association);
+    }
+
+    /**
      * @see Metastaz\Interfaces\MetastazInterface
      */
     public function getMetastazDimensionId()
