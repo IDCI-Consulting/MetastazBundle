@@ -4,7 +4,6 @@ namespace Metastaz\Bundle\MetastazProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
 
 use Metastaz\Interfaces\MetastazInterface;
 use Metastaz\MetastazContainer;
@@ -64,7 +63,6 @@ class MetastazProduct implements MetastazInterface
     /**
      * @ORM\ManyToOne(targetEntity="MetastazProductCategory", inversedBy="metastaz_products", cascade={"persist"})
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
-     * @Assert\Type(type="MetastazProductCategory")
      */
     protected $category;
 
