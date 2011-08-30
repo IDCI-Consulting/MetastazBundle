@@ -140,9 +140,9 @@ class MetastazProduct implements MetastazInterface
      *
      * @param string $shortDescription
      */
-    public function setShortDescription($shortDescription)
+    public function setShortDescription($short_description)
     {
-        $this->shortDescription = $shortDescription;
+        $this->short_description = $short_description;
     }
 
     /**
@@ -152,7 +152,7 @@ class MetastazProduct implements MetastazInterface
      */
     public function getShortDescription()
     {
-        return $this->shortDescription;
+        return $this->short_description;
     }
 
     /**
@@ -160,9 +160,9 @@ class MetastazProduct implements MetastazInterface
      *
      * @param text $longDescription
      */
-    public function setLongDescription($longDescription)
+    public function setLongDescription($long_description)
     {
-        $this->longDescription = $longDescription;
+        $this->long_description = $long_description;
     }
 
     /**
@@ -172,7 +172,7 @@ class MetastazProduct implements MetastazInterface
      */
     public function getLongDescription()
     {
-        return $this->longDescription;
+        return $this->long_description;
     }
 
     /**
