@@ -113,7 +113,6 @@ class MetastazProductController extends Controller
 
                 if($form->has('categorySuggestion') && $categorySuggestion = $form->get('categorySuggestion')->getData())
                 {
-                    die('test');
                     $category = new MetastazProductCategory();
                     $category->setName($categorySuggestion);
                     $category->setTemplateName($categorySuggestion);
