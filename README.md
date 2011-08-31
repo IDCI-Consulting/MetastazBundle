@@ -464,8 +464,8 @@ Now you can use metastazed classes this way:
     $YourClassObj->getMetastaz('ns', 'key');
 
 If the instance pool is enabled, you must call the *flushMetastaz* method
-in order to process write operations. Else writing operations run when you
-call to putMetastaz method
+in order to process write operations. Else a writing operations is executed
+when you call to putMetastaz method
 
     $YourClassObj->flushMetastaz();
 
