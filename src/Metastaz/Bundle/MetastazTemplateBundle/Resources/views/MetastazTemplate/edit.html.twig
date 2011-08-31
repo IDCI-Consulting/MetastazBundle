@@ -11,7 +11,7 @@
         {% include 'MetastazTemplateBundle:MetastazTemplate:templateForm.html.twig' with params %}
     </div>
 
-    {% if metastaz_fields | length %}
+    {% if metastaz_template_fields | length %}
         <table class="list">
             <thead>
                 <tr>
@@ -24,12 +24,12 @@
                 </tr>
             </thead>
             <tbody>
-            {% for field in metastaz_fields %}
+            {% for field in metastaz_template_fields %}
                 <tr>
                     <td>{{ field.metaNamespace }}</td>
                     <td>{{ field.metaKey }}</td>
                     <td>{{ field.isIndexed }}</td>
-                    <td>{{ field.getMetastazFieldType() }}</td>
+                    <td>{{ field.getMetastazTemplateFieldType() }}</td>
                     <td>{{ field.options }}</td>
                     <td>
                         <ul class="actions">

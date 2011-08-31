@@ -22,8 +22,8 @@ class MetastazTemplateRepository extends EntityRepository
     {
         $query = $this->getEntityManager()
             ->createQuery(
-                'SELECT f, ft FROM MetastazTemplateBundle:MetastazField f
-                JOIN f.metastaz_field_type ft
+                'SELECT f, ft FROM MetastazTemplateBundle:MetastazTemplateField f
+                JOIN f.metastaz_template_field_type ft
                 JOIN f.metastaz_template t
                 WHERE f.is_indexed = true AND t.name = :name'
             );

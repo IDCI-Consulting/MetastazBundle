@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @licence: GPL
  * @ORM\Entity
  */
-class TextFieldType extends MetastazFieldType
+class TextFieldType extends MetastazTemplateFieldType
 {
     /**
      * @var integer $id
@@ -23,18 +23,18 @@ class TextFieldType extends MetastazFieldType
     protected $name;
 
     /**
-     * @var MetastazField
+     * @var MetastazTemplateField
      */
     protected $fields;
 
     /**
-     * @var MetastazField
+     * @var MetastazTemplateField
      */
-    protected $metastaz_fields;
+    protected $metastaz_template_fields;
 
     public function __construct()
     {
-        $this->metastaz_fields = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->metastaz_template_fields = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -68,31 +68,31 @@ class TextFieldType extends MetastazFieldType
     }
 
     /**
-     * Add metastaz_field
+     * Add metastaz_template_field
      *
-     * @param MetastazField $metastazField
+     * @param MetastazTemplateField $MetastazTemplateField
      */
-    public function addMetastazField(MetastazField $metastazField)
+    public function addMetastazTemplateField(MetastazTemplateField $MetastazTemplateField)
     {
-        $this->metastaz_fields[] = $metastazField;
+        $this->metastaz_template_fields[] = $MetastazTemplateField;
     }
 
     /**
-     * Get metastaz_fields
+     * Get metastaz_template_fields
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getMetastazFields()
+    public function getMetastazTemplateFields()
     {
-        return $this->metastaz_fields;
+        return $this->metastaz_template_fields;
     }
 
     /**
      * Add field
      *
-     * @param MetastazField $field
+     * @param MetastazTemplateField $field
      */
-    public function addField(MetastazField $field)
+    public function addField(MetastazTemplateField $field)
     {
         $this->fields[] = $field;
     }

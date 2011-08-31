@@ -9,10 +9,10 @@
         <tr>
             <th>Name</th>                <td>{{ entity.name }}</td>        </tr>
 
-        {% for field in entity.getMetastazFields() %}
+        {% for field in entity.getMetastazTemplateFields() %}
         <tr>
             <th>{{ field.metaNamespace }} - {{ field.metaKey }}</th>
-            <td>{{ field.getMetastazFieldType() }}</td>
+            <td>{{ field.getMetastazTemplateFieldType() }}</td>
         </tr>
         {% endfor %}
     </tbody>

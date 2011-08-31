@@ -6,19 +6,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * MetastazFieldType
+ * MetastazTemplateFieldType
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
  * @licence: GPL
  * @ORM\Entity
  * @ORM\Table(
- *   name="metastaz_field_type",
+ *   name="metastaz_template_field_type",
  *   uniqueConstraints={@ORM\UniqueConstraint(name="TYPE_UNIQUE", columns={"name", "discriminator"})}
  * )
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator", type="string")
  * @ORM\DiscriminatorMap({
- *     "base" = "MetastazFieldType",
+ *     "base" = "MetastazTemplateFieldType",
  *     "template" = "MetastazTemplate",
  *     "choice" = "ChoiceFieldType",
  *     "date_time" = "DateAndTimeFieldType",
@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "text" = "TextFieldType"
  * })
  */
-class MetastazFieldType
+class MetastazTemplateFieldType
 {
     /**
      * @ORM\Id
@@ -44,7 +44,7 @@ class MetastazFieldType
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="MetastazField", mappedBy="metastaz_field_type", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="MetastazTemplateField", mappedBy="metastaz_template_field_type", cascade={"persist"})
      */
     protected $fields;
 
@@ -94,17 +94,17 @@ class MetastazFieldType
     }
     
     /**
-     * Add metastaz_field
+     * Add metastaz_template_field
      *
-     * @param MetastazField $metastazField
+     * @param MetastazTemplateField $MetastazTemplateField
      */
-    public function addField(MetastazField $field)
+    public function addField(MetastazTemplateField $field)
     {
         $this->fields[] = $field;
     }
 
     /**
-     * Get metastaz_fields
+     * Get metastaz_template_fields
      *
      * @return Doctrine\Common\Collections\Collection 
      */

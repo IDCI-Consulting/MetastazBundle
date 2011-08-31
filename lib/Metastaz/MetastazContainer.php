@@ -209,7 +209,7 @@ class MetastazContainer
             return array();
         }
 
-        return $template->getMetastazFields();
+        return $template->getMetastazTemplateFields();
     }
 
     /**

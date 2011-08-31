@@ -6,14 +6,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
- * MetastazField define a field aggregate by a MetastazTemplate
+ * MetastazTemplateField define a field aggregate by a MetastazTemplate
  * 
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
  * @licence: GPL
  * @ORM\Entity
- * @ORM\Table(name="metastaz_field")
+ * @ORM\Table(name="metastaz_template_field")
  */
-class MetastazField
+class MetastazTemplateField
 {
     /**
      * @ORM\Id
@@ -45,16 +45,16 @@ class MetastazField
     protected $options;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MetastazTemplate", inversedBy="metastaz_fields", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="MetastazTemplate", inversedBy="metastaz_template_fields", cascade={"persist"})
      * @ORM\JoinColumn(name="metastaz_template_id", referencedColumnName="id", onDelete="Cascade")
      */
     protected $metastaz_template;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MetastazFieldType", inversedBy="fields", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="MetastazTemplateFieldType", inversedBy="fields", cascade={"persist"})
      * @ORM\JoinColumn(name="metastaz_type_id", referencedColumnName="id", onDelete="Cascade")
      */
-    protected $metastaz_field_type;
+    protected $metastaz_template_field_type;
 
     /**
      * Constructor
@@ -199,22 +199,22 @@ class MetastazField
     }
 
     /**
-     * Set metastaz_field_type
+     * Set metastaz_template_field_type
      *
-     * @param MetastazFieldType $metastazFieldType
+     * @param MetastazTemplateFieldType $MetastazTemplateFieldType
      */
-    public function setMetastazFieldType(MetastazFieldType $metastazFieldType)
+    public function setMetastazTemplateFieldType(MetastazTemplateFieldType $MetastazTemplateFieldType)
     {
-        $this->metastaz_field_type = $metastazFieldType;
+        $this->metastaz_template_field_type = $MetastazTemplateFieldType;
     }
 
     /**
-     * Get metastaz_field_type
+     * Get metastaz_template_field_type
      *
-     * @return MetastazFieldType 
+     * @return MetastazTemplateFieldType 
      */
-    public function getMetastazFieldType()
+    public function getMetastazTemplateFieldType()
     {
-        return $this->metastaz_field_type;
+        return $this->metastaz_template_field_type;
     }
 }
