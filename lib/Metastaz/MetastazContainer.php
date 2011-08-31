@@ -5,10 +5,11 @@ namespace Metastaz;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Metastaz\Bundle\MetastazTemplateBundle\MetastazTemplateBundle;
 use Metastaz\Bundle\MetastazTemplateBundle\Entity\MetastazTemplate;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
  * MetastazContainer manage Metastaz (MetastazStore, MetastazTemplate)
- * 
+ *
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
  * @author:  Mirsal ENNAIME <mirsal@mirsal.fr>
  * @licence: GPL
@@ -209,13 +210,13 @@ class MetastazContainer
             return array();
         }
 
-        return $template->getMetastazFields();
+        return $template->getMetastazTemplateFields();
     }
 
     /**
      * Get stores
-     * 
-     * @return array 
+     *
+     * @return array
      */
     public static function getStores()
     {
@@ -412,8 +413,8 @@ class MetastazContainer
         $store = $this->getMetastazStoreService();
         $store::flush();
 
-        // TODO: dispatch event
-        //$evm = MetastazTemplateBundle::getContainer()->get('doctrine')->getEventManager();
-        //$evm->addEventListener('metastaz.flush', $this->getParameter('object')));
+        $em  = MetastazTemplateBundle::getContainer()->get('doctrine')->getEntityManager();
+        $evm = $em->getEventManager();
+        $evm->dispatchEvent('metastazFlush', new LifecycleEventArgs($this->getParameter('object'), $em));
     }
 }

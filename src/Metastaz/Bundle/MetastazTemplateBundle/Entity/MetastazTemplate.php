@@ -13,7 +13,7 @@ use Metastaz\Bundle\MetastazTemplateBundle\MetastazTemplateBundle;
  * @licence: GPL
  * @ORM\Entity(repositoryClass="Metastaz\Bundle\MetastazTemplateBundle\Repository\MetastazTemplateRepository")
  */
-class MetastazTemplate extends MetastazFieldType
+class MetastazTemplate extends MetastazTemplateFieldType
 {
     /**
      * @var integer $id
@@ -26,14 +26,14 @@ class MetastazTemplate extends MetastazFieldType
     protected $name;
 
     /**
-     * @var MetastazField
+     * @var MetastazTemplateField
      */
     protected $fields;
 
     /**
-     * @ORM\OneToMany(targetEntity="MetastazField", mappedBy="metastaz_template", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="MetastazTemplateField", mappedBy="metastaz_template", cascade={"persist"})
      */
-    protected $metastaz_fields;
+    protected $metastaz_template_fields;
 
     /**
      * Constructor
@@ -74,31 +74,31 @@ class MetastazTemplate extends MetastazFieldType
     }
 
     /**
-     * Add metastaz_fields
+     * Add metastaz_template_fields
      *
-     * @param MetastazField $metastazField
+     * @param MetastazTemplateField $MetastazTemplateField
      */
-    public function addMetastazField(MetastazField $metastazField)
+    public function addMetastazTemplateField(MetastazTemplateField $MetastazTemplateField)
     {
-        $this->metastaz_fields[] = $metastazField;
+        $this->metastaz_template_fields[] = $MetastazTemplateField;
     }
 
     /**
-     * Get metastaz_fields
+     * Get metastaz_template_fields
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getMetastazFields()
+    public function getMetastazTemplateFields()
     {
-        return $this->metastaz_fields;
+        return $this->metastaz_template_fields;
     }
 
     /**
      * Add field
      *
-     * @param MetastazField $field
+     * @param MetastazTemplateField $field
      */
-    public function addField(MetastazField $field)
+    public function addField(MetastazTemplateField $field)
     {
         $this->fields[] = $field;
     }
@@ -122,7 +122,7 @@ class MetastazTemplate extends MetastazFieldType
      */
     public function hasField($namespace, $key)
     {
-        foreach($this->getMetastazFields() as $field)
+        foreach($this->getMetastazTemplateFields() as $field)
         {
             if ($field->getMetaNamespace() == $namespace &&
                $field->getMetaKey() == $key) {
@@ -140,10 +140,10 @@ class MetastazTemplate extends MetastazFieldType
     public function getFormFields()
     {
         $ret = array();
-        foreach ($this->getMetastazFields() as $field) {
+        foreach ($this->getMetastazTemplateFields() as $field) {
             $tmp = array(
                 '\''.$field->getMetaNamespace().'_'.$field->getMetaKey().'\'',
-                '\''.$field->getMetastazFieldType().'\''
+                '\''.$field->getMetastazTemplateFieldType().'\''
             );
             $options = $field->getOptions() ? $field->getOptions().', ' : '';
             $tmp[] = 'array('.$options.'\'property_path\' => \'MetastazPropertyPath\')';

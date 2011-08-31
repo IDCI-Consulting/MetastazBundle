@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Metastaz\Bundle\MetastazTemplateBundle\Entity\MetastazTemplate;
-use Metastaz\Bundle\MetastazTemplateBundle\Entity\MetastazField;
+use Metastaz\Bundle\MetastazTemplateBundle\Entity\MetastazTemplateField;
 use Metastaz\Bundle\MetastazTemplateBundle\Form\MetastazTemplateFieldType;
 use Metastaz\Bundle\MetastazTemplateBundle\Form\MetastazTemplateType;
 use Metastaz\Util\MetastazFormFactory;
@@ -85,7 +85,7 @@ class MetastazTemplateController extends Controller
     }
     
     /**
-     * Displays a form to create a new MetastazField entity for a MetastazTemplate.
+     * Displays a form to create a new MetastazTemplateField entity for a MetastazTemplate.
      *
      * @Route("/{id}/new_field", name="metastaz_template_field_new")
      * @Template()
@@ -100,7 +100,7 @@ class MetastazTemplateController extends Controller
             throw $this->createNotFoundException('Unable to find MetastazTemplate entity.');
         }
 
-        $entity = new MetastazField();
+        $entity = new MetastazTemplateField();
         $entity->setMetastazTemplate($template);
         $form   = $this->createForm(new MetastazTemplateFieldType(), $entity);
 
@@ -151,7 +151,7 @@ class MetastazTemplateController extends Controller
     }
     
     /**
-     * Creates a new MetastazField entity for a MetastazTemplate.
+     * Creates a new MetastazTemplateField entity for a MetastazTemplate.
      *
      * @Route("/{id}/create_field", name="metastaz_template_field_create")
      * @Method("post")
@@ -159,7 +159,7 @@ class MetastazTemplateController extends Controller
      */
     public function createFieldAction(Request $request, $id)
     {
-        $entity  = new MetastazField();
+        $entity  = new MetastazTemplateField();
         $form    = $this->createForm(new MetastazTemplateFieldType(), $entity);
         $form->bindRequest($request);
 
@@ -207,14 +207,14 @@ class MetastazTemplateController extends Controller
 
         return array(
             'entity'          => $entity,
-            'metastaz_fields' => $entity->getMetastazFields(),
+            'metastaz_template_fields' => $entity->getMetastazTemplateFields(),
             'params'          => $params,
             'delete_form'     => $deleteForm->createView(),
         );
     }
 
     /**
-     * Displays a form to edit an existing MetastazField entity for a MetastazTemplate.
+     * Displays a form to edit an existing MetastazTemplateField entity for a MetastazTemplate.
      *
      * @Route("/edit_field/{id}", name="metastaz_template_field_edit")
      * @Template()
@@ -222,7 +222,7 @@ class MetastazTemplateController extends Controller
     public function editFieldAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getEntityManager('metastaz_template');
-        $entity = $em->getRepository('MetastazTemplateBundle:MetastazField')->find($id);
+        $entity = $em->getRepository('MetastazTemplateBundle:MetastazTemplateField')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find MetastazTemplateField entity.');
@@ -278,14 +278,14 @@ class MetastazTemplateController extends Controller
 
         return array(
             'entity'            => $entity,
-            'metastaz_fields'   => $entity->getMetastazFields(),
+            'metastaz_template_fields'   => $entity->getMetastazTemplateFields(),
             'edit_form'         => $editForm->createView(),
             'delete_form'       => $deleteForm->createView(),
         );
     }
 
     /**
-     * Edits an existing MetastazField entity.
+     * Edits an existing MetastazTemplateField entity.
      *
      * @Route("/update_field/{id}", name="metastaz_template_field_update")
      * @Method("post")
@@ -294,10 +294,10 @@ class MetastazTemplateController extends Controller
     public function updateFieldAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getEntityManager('metastaz_template');
-        $entity = $em->getRepository('MetastazTemplateBundle:MetastazField')->find($id);
+        $entity = $em->getRepository('MetastazTemplateBundle:MetastazTemplateField')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find MetastazField entity.');
+            throw $this->createNotFoundException('Unable to find MetastazTemplateField entity.');
         }
 
         $editForm   = $this->createForm(new MetastazTemplateFieldType(), $entity);
@@ -358,7 +358,7 @@ class MetastazTemplateController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager('metastaz_template');
-            $entity = $em->getRepository('MetastazTemplateBundle:MetastazField')->find($id);
+            $entity = $em->getRepository('MetastazTemplateBundle:MetastazTemplateField')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find MetastazTemplateField entity.');

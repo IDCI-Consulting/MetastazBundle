@@ -2,7 +2,7 @@
 namespace Metastaz\Bundle\MetastazTemplateBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Metastaz\Bundle\MetastazTemplateBundle\Entity\MetastazFieldType,
+use Metastaz\Bundle\MetastazTemplateBundle\Entity\MetastazTemplateFieldType,
     Metastaz\Bundle\MetastazTemplateBundle\Entity\ChoiceFieldType,
     Metastaz\Bundle\MetastazTemplateBundle\Entity\DateAndTimeFieldType,
     Metastaz\Bundle\MetastazTemplateBundle\Entity\FieldGroupType,
