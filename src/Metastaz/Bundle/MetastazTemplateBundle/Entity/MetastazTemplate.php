@@ -145,8 +145,8 @@ class MetastazTemplate extends MetastazFieldType
                 '\''.$field->getMetaNamespace().'_'.$field->getMetaKey().'\'',
                 '\''.$field->getMetastazFieldType().'\''
             );
-            if ($field->getOptions())
-                $tmp[] = $field->getOptions();
+            $options = $field->getOptions() ? $field->getOptions().', ' : '';
+            $tmp[] = 'array('.$options.'\'property_path\' => \'MetastazPropertyPath\')';
             $ret[$field->getMetaNamespace()][] = $tmp;
         }
 

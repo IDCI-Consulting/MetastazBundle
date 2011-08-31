@@ -4,6 +4,7 @@ namespace Metastaz\Util;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Metastaz\Bundle\MetastazTemplateBundle\Entity\MetastazTemplate;
+use Metastaz\Bundle\MetastazProductBundle\Form\MetastazProductWithCategoryType;
 use Metastaz\Interfaces\MetastazInterface;
 
 /**
@@ -26,10 +27,7 @@ class MetastazFormFactory
             $data = null;
         }
 
-        $class_name = sprintf('%s\\%sMetastazTemplateType',
-            'Application\\Form',
-            $name
-        );
+        $class_name = self::getFormClassName($name);
 
         if (!class_exists($class_name)) {
             throw new NotFoundHttpException(
@@ -38,6 +36,28 @@ class MetastazFormFactory
         }
 
         $type = new $class_name();
-        return $container->get('form.factory')->create($type, $data, $options);
+        $form = null;
+        if ($object instanceof MetastazInterface) {
+            $form = $container->get('form.factory')->create(new MetastazProductWithCategoryType(), $object);
+            $metastazForm = $container->get('form.factory')->create($type, $data, $options);
+            $form->add($metastazForm);
+/*
+            $formBuilder = $container->get('form.factory')->createBuilder(new MetastazProductWithCategoryType(), $object);
+            $formBuilder->add('metastaz', $type, array('property_path' => null));
+            $form = $formBuilder->getForm();
+*/
+        } elseif ($object instanceof MetastazTemplate) {
+            $form = $container->get('form.factory')->create($type, $data, $options);
+        }
+
+        return $form;
+    }
+
+    public static function getFormClassName($name)
+    {
+        return sprintf('%s\\%sMetastazTemplateType',
+            'Application\\Form',
+            $name
+        );
     }
 }

@@ -148,35 +148,37 @@ class MetastazProductController extends Controller
             throw $this->createNotFoundException('Unable to find MetastazProduct entity.');
         }
 
-        $metastazForm = MetastazFormFactory::createForm($this->container, $entity);
-        $editForm = $this->createForm(new MetastazProductWithCategoryType(), $entity);
+        $editForm = MetastazFormFactory::createForm($this->container, $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         $form_action_url = $this->get('router')->generate(
             'metastaz_product_update',
             array('id' => $entity->getId())
         );
+/*
         $metastaz_form_action_url = $this->get('router')->generate(
             'metastaz_product_update_meta',
             array('id' => $entity->getId())
         );
+*/
         $form_params = array(
             'entity' => $entity,
             'form'   => $editForm->createView(),
             'action' => 'update',
             'action_url' => $form_action_url
         );
+/*
         $metastaz_form_params = array(
             'entity' => $entity,
             'form'   => $metastazForm->createView(),
             'action' => 'update',
             'action_url' => $metastaz_form_action_url
         );
-
+*/
         return array(
             'entity'               => $entity,
             'form_params'          => $form_params,
-            'metastaz_form_params' => $metastaz_form_params,
+//            'metastaz_form_params' => $metastaz_form_params,
             'delete_form'          => $deleteForm->createView(),
         );
     }
@@ -197,7 +199,9 @@ class MetastazProductController extends Controller
             throw $this->createNotFoundException('Unable to find MetastazProduct entity.');
         }
 
+        $metastazForm = MetastazFormFactory::createForm($this->container, $entity);
         $editForm = $this->createForm(new MetastazProductWithCategoryType(), $entity);
+        $editForm->add($metastazForm);
         $request = $this->getRequest();
 
         if ('POST' === $request->getMethod()) {

@@ -12,6 +12,17 @@ use Symfony\Component\Form\Util\PropertyPath;
  */
 class MetastazPropertyPath extends PropertyPath
 {
+
+    public function getValue($objectOrArray)
+    {
+        echo 'get';
+    }
+
+    public function setValue($objectOrArray, $value)
+    {
+        echo 'set';
+    }
+
     /**
      * Reads the value of the property at the given index in the path
      *
@@ -21,7 +32,7 @@ class MetastazPropertyPath extends PropertyPath
      */
     protected function readProperty($object, $currentIndex)
     {
-        die("read");
+        parent::readProperty($object, $currentIndex);
     }
 
     /**
@@ -34,7 +45,7 @@ class MetastazPropertyPath extends PropertyPath
      */
     protected function writeProperty(&$objectOrArray, $currentIndex, $value)
     {
-        die("write");
+        parent::writeProperty(&$objectOrArray, $currentIndex, $value);
     }
 }
 
