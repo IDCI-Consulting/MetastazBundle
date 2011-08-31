@@ -271,7 +271,7 @@ class MetastazContainer
     }
 
     /**
-     * getIndexedFields related to the object template
+     * Get Indexed Fields related to the object template
      *
      * @return array
      */
