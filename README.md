@@ -450,8 +450,8 @@ instanciating the MetastazContainer
         }
 
 
-Retrieve data throw metastaz
-----------------------------
+Manage data with metastaz
+--------------------------
 
 Now you can use metastazed classes this way:
 
