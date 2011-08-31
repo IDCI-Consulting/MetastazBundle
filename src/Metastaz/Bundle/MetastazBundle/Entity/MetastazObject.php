@@ -24,7 +24,7 @@ abstract class MetastazObject implements MetastazInterface
      *
      * @return string
      */
-    abstract public function getMetastazDimensionId();
+    public function getMetastazDimensionId() {}
 
     /**
      * Get the object metastaz template name
@@ -33,7 +33,7 @@ abstract class MetastazObject implements MetastazInterface
      *
      * @return string
      */
-    abstract public function getMetastazTemplateName();
+    public function getMetastazTemplateName() {}
 
     /**
      * Retrieve the metastaz object container
@@ -64,6 +64,42 @@ abstract class MetastazObject implements MetastazInterface
     }
 
     /**************************************************************************/
+    /*                          Magic functions                               */
+    /**************************************************************************/
+
+    /**
+     * Try to get metastaz value
+     *
+     * @see Metastaz\Interfaces\MetastazInterface
+     *
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        if (false === strpos($name, '_')) {
+            return null;
+        }
+
+        list($namespace, $key) = explode('_', $name);
+        return $this->getMetastaz($namespace, $key);
+    }
+
+    /**
+     * Try to set metastaz value
+     *
+     * @see Metastaz\Interfaces\MetastazInterface
+     */
+    public function __set($name, $value)
+    {
+        if (false === strpos($name, '_')) {
+            return;
+        }
+
+        list($namespace, $key) = explode('_', $name);
+        $this->putMetastaz($namespace, $key, $value);
+    }
+
+    /**************************************************************************/
     /*                          Proxy functions                               */
     /**************************************************************************/
 
@@ -77,6 +113,18 @@ abstract class MetastazObject implements MetastazInterface
     public function getMetastazTemplateFields()
     {
         return $this->getMetastazContainer()->getMetastazTemplateFields();
+    }
+
+    /**
+     * Get metastaz indexed fields
+     *
+     * @see Metastaz\Interfaces\MetastazInterface
+     *
+     * @return array
+     */
+    public function getMetastazIndexes()
+    {
+        return $this->getMetastazContainer()->getIndexedFields();
     }
 
     /**
