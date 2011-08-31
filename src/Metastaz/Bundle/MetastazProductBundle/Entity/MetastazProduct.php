@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Metastaz\Bundle\MetastazBundle\Entity\MetastazObject;
+use Metastaz\MetastazObject;
 use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProductParent;
 use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProductAssociation;
 use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProductCategory;

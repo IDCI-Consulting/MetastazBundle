@@ -1,5 +1,5 @@
 <?php
-namespace Metastaz\Bundle\MetastazBundle\Entity;
+namespace Metastaz;
 
 use Metastaz\Interfaces\MetastazInterface;
 use Metastaz\MetastazContainer;
