@@ -19,6 +19,6 @@ class MetastazProductType extends AbstractType
 
     public function getName()
     {
-        return 'metastaz_bundle_metastazproductbundle_metastazproducttype';
+        return 'metastaz_product_type';
     }
 }

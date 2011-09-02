@@ -42,7 +42,7 @@ class MetastazProductWithCategoryType extends MetastazProductType
 
     public function getName()
     {
-        return 'metastaz_bundle_metastazproductbundle_metastazproductwithcategorytype';
+        return 'metastaz_product_withcategory_type';
     }
 }
 

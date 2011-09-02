@@ -27,6 +27,6 @@ class MetastazTemplateFieldType extends AbstractType
 
     public function getName()
     {
-        return 'metastaz_bundle_metastaztemplatebundle_MetastazTemplateFieldtype';
+        return 'metastaz_template_field_type';
     }
 }
