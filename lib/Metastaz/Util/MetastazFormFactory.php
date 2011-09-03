@@ -35,9 +35,10 @@ class MetastazFormFactory
         $class_name = self::getFormClassName($name);
 
         if (!class_exists($class_name)) {
-            throw new NotFoundHttpException(
-                sprintf('Unable to find the following MetastazTemplateType: %s.', $class_name)
-            );
+            throw new NotFoundHttpException(sprintf(
+                'Unable to find the following MetastazTemplateType: %s.',
+                $class_name
+            ));
         }
 
         $type = new $class_name();
