@@ -13,11 +13,6 @@ class MetastazProductWithCategoryType extends MetastazProductType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('association', 'collection', array(
-            'type' => new MetastazProductType(),
-            'allow_add' => true
-        ));
-
         $categoryNames = $templateNames = array();
         foreach(MetastazProductCategory::getCategories() as $category)
         {

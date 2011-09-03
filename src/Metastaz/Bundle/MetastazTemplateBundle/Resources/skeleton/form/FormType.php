@@ -11,10 +11,11 @@ class {{ form_class }} extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->setDataMapper(
-            new MetastazPropertyPathMapper($options['data_class'])
-        );
+        self::addMetastazFields($builder);
+    }
 
+    public static function addMetastazFields(&$builder)
+    {
         $builder
         {%- for field in fields %}
 

@@ -43,14 +43,9 @@ class MetastazFormFactory
         $type = new $class_name();
         $form = null;
         if ($object instanceof MetastazInterface) {
-            $form = $container->get('form.factory')->create(new MetastazProductWithCategoryType(), $object);
-            $metastazForm = $container->get('form.factory')->create($type, $data, $options);
-            $form->add($metastazForm);
-/*
             $formBuilder = $container->get('form.factory')->createBuilder(new MetastazProductWithCategoryType(), $object);
-            $formBuilder->add('metastaz', $type, array('property_path' => null));
+            $class_name::addMetastazFields($formBuilder);
             $form = $formBuilder->getForm();
-*/
         } elseif ($object instanceof MetastazTemplate) {
             $form = $container->get('form.factory')->create($type, $data, $options);
         }

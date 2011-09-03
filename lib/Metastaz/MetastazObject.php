@@ -91,11 +91,18 @@ abstract class MetastazObject implements MetastazInterface
      */
     public function __set($name, $value)
     {
+        echo 'set('.$name.', '.$value.')<br/>'; 
         if (false === strpos($name, '_')) {
             return;
         }
 
         list($namespace, $key) = explode('_', $name);
+
+        if (null == $value or $value === '' ) {
+            // TODO: Have to remove the metadata ?
+            return;
+        }
+
         $this->putMetastaz($namespace, $key, $value);
     }
 
