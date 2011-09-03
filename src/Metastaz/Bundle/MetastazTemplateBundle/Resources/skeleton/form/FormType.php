@@ -4,8 +4,6 @@ namespace {{ namespace }};
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
-use Metastaz\DataMapper\MetastazPropertyPathMapper;
-use Metastaz\Util\MetastazPropertyPath;
 
 class {{ form_class }} extends AbstractType
 {
