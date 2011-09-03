@@ -91,7 +91,6 @@ abstract class MetastazObject implements MetastazInterface
      */
     public function __set($name, $value)
     {
-        echo 'set('.$name.', '.$value.')<br/>'; 
         if (false === strpos($name, '_')) {
             return;
         }
