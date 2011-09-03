@@ -13,8 +13,8 @@ interface MetastazInterface
 {
     function getMetastazDimensionId();
     function getMetastazTemplateName();
-    function getMetastazTemplateFields();
     function getMetastazContainer();
+    function getMetastazTemplateFields();
     function getMetastazIndexes();
     function getMetastaz($namespace, $key, $culture = null);
     function putMetastaz($namespace, $key, $value, $culture = null);

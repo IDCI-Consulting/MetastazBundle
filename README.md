@@ -1,18 +1,21 @@
 Welcome to the MetastazBundle
 =============================
 
-What is MetastazBundle?
------------------------
+What is MetastazBundle ?
+========================
 
-This bundle provides an interface with which you can manipulate
-metadata tied to arbitrary model objects. You can also define
-'Templates' (optional dynamic schemas) in order to enable
-automatic constraints and form generation.
+This bundle provides an interface with which you can manipulate metadata tied to
+arbitrary model objects. You can also define 'Templates' (optional dynamic schemas) 
+in order to enable automatic constraints and form generation.
+
 Templates are stored in a database using Doctrine2.
 
+This bundle provide a light web user interface to create metastaz template.
+You can enable MetastazProductBundle to show how you can use metastaz with a
+concret case (A catalog manager in this case).
 
 Installation requirements
--------------------------
+=========================
 
 * Symfony2
 * Doctrine2
@@ -20,13 +23,13 @@ Installation requirements
   (http://symfony.com/doc/current/cookbook/doctrine/doctrine_fixtures.html)
 
 Optional dependencies
---------------------
+=====================
 
 * MongoDB (http://symfony.com/doc/current/cookbook/doctrine/mongodb.html)
 
 
 Installation
-------------
+============
 
 If you have install symfony without vendors, simply add a dependencies in the *deps* file:
 
@@ -64,7 +67,7 @@ Add 'MetastazBundle' and 'MetastazTemplateBundle' in registerBundles
     new Metastaz\Bundle\MetastazTemplateBundle\MetastazTemplateBundle(),
 
 Configuration
--------------
+=============
 
 Add this in your configuration (app/config/config.yml):
 
@@ -226,7 +229,7 @@ You should see these routes:
     metastaz_template_form_show     ANY    /metastaz/template/{id}/form/show
 
 Loading Fixtures
--------------
+================
 
 If you have well added DoctrineFixturesBundle,
 load default MetastazTemplateFieldType:
@@ -238,7 +241,7 @@ to http://your_vhost/[app_dev.php]/metastaz/template/ and configure your
 templates as you like.
 
 Building Template forms
-----------------------
+=======================
 
 You can generate template forms by running
 the following command with the console:
@@ -251,8 +254,38 @@ To show this form in action, register the namespace *Application* (autoload.php)
     'Application'                       => __DIR__.'/',
 
 
+Using web interfaces
+====================
+
+
 Using Metastaz
---------------
+==============
+
+You can choose two diffrents way to use metastaz.
+
+ * extends MetastazObject
+ * implements MetastazInterface
+
+Which method use ?
+
+If the metastazed object class needn't to extends an other class, you can simply
+choose the first method: extends the abstract class MetastazObject. If not you must
+have to implements MetastazInterface and define the right prototyped functions.
+
+Extends MetastazObject
+----------------------
+
+In the class within which you would like to use Metastaz:
+
+    use Metastaz\MetastazObject;
+
+    class MyClass extends MetastazObject
+    {
+        ...
+    }
+
+Implements MetastazInterface
+----------------------------
 
 In the class within which you would like to use Metastaz:
 
@@ -275,6 +308,8 @@ In the class within which you would like to use Metastaz:
          *
          * Generates an identifier referring to this
          * model object within Metastaz
+         *
+         * @return string
          */
         public function getMetastazDimensionId()
         {
@@ -282,6 +317,8 @@ In the class within which you would like to use Metastaz:
         }
 
         /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         *
          * Generates an identifier referring to this
          * model class within Metastaz
          *
@@ -306,6 +343,14 @@ In the class within which you would like to use Metastaz:
                 ;
             }
             return $this->metastaz_container;
+        }
+
+        /**
+         * @see Metastaz\Interfaces\MetastazInterface
+         */
+        public function getMetastazIndexes()
+        {
+            return $this->getMetastazContainer()->getIndexedFields();
         }
 
         /**
@@ -371,26 +416,15 @@ In the class within which you would like to use Metastaz:
         {
             return $this->getMetastazContainer()->flush();
         }
-
-        /**
-         * @see Metastaz\Interfaces\MetastazInterface
-         */
-        public function getMetastazIndexes()
-        {
-            return $this->getMetastazContainer()->getIndexedFields();
-        }
     }
 
-You can override the Metastaz configuration for each
-Metastazed Object by passing additional parameters
-while instanciating the MetastazContainer
 
-    use Metastaz\Interfaces\MetastazInterface;
-    use Metastaz\MetastazContainer;
+How custom metastaz configuration for each Metastazed class object
+------------------------------------------------------------------
 
-    class MyClass implements MetastazInterface
-    {
-        ...
+In each case, you can override the Metastaz configuration for
+each Metastazed Object by passing additional parameters while 
+instanciating the MetastazContainer
 
         /**
          * @see Metastaz\Interfaces\MetastazInterface
@@ -415,8 +449,9 @@ while instanciating the MetastazContainer
             return $this->metastaz_container;
         }
 
-        ...
-    }
+
+Manage data with metastaz
+--------------------------
 
 Now you can use metastazed classes this way:
 
@@ -428,9 +463,9 @@ Now you can use metastazed classes this way:
     // Retrieve a metadata by its namespace and key
     $YourClassObj->getMetastaz('ns', 'key');
 
-If the instance pool is enabled,
-you must call the *flushMetastaz* method
-in order to process write operations.
+If the instance pool is enabled, you must call the *flushMetastaz* method
+in order to process write operations. Else a writing operations is executed
+when you call to putMetastaz method
 
     $YourClassObj->flushMetastaz();
 
@@ -438,7 +473,7 @@ Note:
 Metastaz automatically persist data on a Doctrine Entity Manager persist call
 
 Licence
--------
+=======
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

@@ -3,6 +3,8 @@
 namespace Metastaz;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+use Metastaz\Interfaces\MetastazInterface;
 use Metastaz\Bundle\MetastazTemplateBundle\MetastazTemplateBundle;
 use Metastaz\Bundle\MetastazTemplateBundle\Entity\MetastazTemplate;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -50,6 +52,12 @@ class MetastazContainer
     {
         $configParams = MetastazTemplateBundle::getContainer()->getParameter('metastaz.parameters');
         $this->setParameters(array_merge($configParams, $parameters));
+        if(! $this->getMetastazObject() instanceof MetastazInterface) {
+            throw new NotFoundHttpException(sprintf(
+                'The given object %s doesn\'t implements MetastazInterface',
+                get_class($this->getMetastazObject())
+            ));
+        }
         $this->metastaz_pool = new MetastazPool($this->getMetastazDimension());
         if ($this->isInstancePoolingEnabled()) {
             $this->load();
@@ -85,8 +93,10 @@ class MetastazContainer
      */
     public function getParameter($name)
     {
-        if (!$this->hasParameter($name))
+        if (!$this->hasParameter($name)) {
             throw new NotFoundHttpException(sprintf('Missing %s parameter', $name));
+        }
+
         return $this->parameters[$name];
     }
 
@@ -142,13 +152,23 @@ class MetastazContainer
     }
 
     /**
+     * Get the associated Metastaz Object
+     *
+     * @return MetastazInterface
+     */
+    public function getMetastazObject()
+    {
+        return $this->getParameter('object');
+    }
+
+    /**
      * Get Metastaz Object Dimension
      *
      * @return string
      */
     public function getMetastazDimension()
     {
-        $obj = $this->getParameter('object');
+        $obj = $this->getMetastazObject();
         return get_class($obj).'\\'.$obj->getMetastazDimensionId();
     }
 
@@ -251,7 +271,7 @@ class MetastazContainer
     }
 
     /**
-     * getIndexedFields related to the object template
+     * Get Indexed Fields related to the object template
      *
      * @return array
      */

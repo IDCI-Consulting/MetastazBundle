@@ -25,6 +25,11 @@ class MetastazFormFactory
         } elseif ($object instanceof MetastazTemplate) {
             $name = $object->getName();
             $data = null;
+        } else {
+            throw new NotFoundHttpException(sprintf(
+                'The given object %s doesn\'t implements MetastazInterface or isn\'t a MetastazTemplate',
+                get_class($object)
+            ));
         }
 
         $class_name = self::getFormClassName($name);

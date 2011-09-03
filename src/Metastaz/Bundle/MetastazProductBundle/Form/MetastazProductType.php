@@ -13,7 +13,7 @@ class MetastazProductType extends AbstractType
             ->add('name')
             ->add('short_description', null, array('label' => 'Short description'))
             ->add('long_description', null, array('label' => 'Long description'))
-            ->add('category', null, array('required' => false))
+            ->add('category', null, array('label' => 'Template', 'required' => false))
         ;
     }
 

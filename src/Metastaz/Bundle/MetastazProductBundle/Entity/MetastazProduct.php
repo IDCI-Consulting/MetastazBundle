@@ -5,8 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Metastaz\Interfaces\MetastazInterface;
-use Metastaz\MetastazContainer;
+use Metastaz\MetastazObject;
 use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProductParent;
 use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProductAssociation;
 use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProductCategory;
@@ -19,9 +18,8 @@ use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProductCategory;
  * @licence: LGPL
  * @ORM\Entity
  * @ORM\Table(name="metastaz_product")
- * //@MTZ\Entity
  */
-class MetastazProduct implements MetastazInterface
+class MetastazProduct extends MetastazObject
 {
     /**
      * @ORM\Id
@@ -79,11 +77,6 @@ class MetastazProduct implements MetastazInterface
     protected $updated_at;
 
     /**
-     * Holds MetastazContainer Objects
-     */
-    protected $metastaz_container = null;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -137,7 +130,7 @@ class MetastazProduct implements MetastazInterface
     }
 
     /**
-     * Set shortDescription
+     * Set short description
      *
      * @param string $shortDescription
      */
@@ -147,7 +140,7 @@ class MetastazProduct implements MetastazInterface
     }
 
     /**
-     * Get shortDescription
+     * Get short description
      *
      * @return string
      */
@@ -157,7 +150,7 @@ class MetastazProduct implements MetastazInterface
     }
 
     /**
-     * Set longDescription
+     * Set long description
      *
      * @param text $longDescription
      */
@@ -167,7 +160,7 @@ class MetastazProduct implements MetastazInterface
     }
 
     /**
-     * Get longDescription
+     * Get long description
      *
      * @return text
      */
@@ -330,132 +323,6 @@ class MetastazProduct implements MetastazInterface
             $this->getCategory()->getTemplateName() :
             '';
         ;
-    }
-
-    /**
-     * Get metastaz_template_fields
-     *
-     * @return array
-     */
-    public function getMetastazTemplateFields()
-    {
-        return $this->getMetastazContainer()->getMetastazTemplateFields();
-    }
-
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function getMetastazContainer()
-    {
-        if(null === $this->metastaz_container)
-        {
-            $this->metastaz_container = new MetastazContainer(
-                array(
-                    'object' => $this,
-//                    'container' => array(
-//                        'use_template' => true,
-//                        'instance_spooling' => true
-//                    ),
-//                    'store' => array(
-//                        'class' => 'DoctrineODMMetastazStore',
-//                        'parameters' => array('connection' => 'metastaz')
-//                    )
-                )
-            );
-        }
-        return $this->metastaz_container;
-    }
-
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function getMetastaz($namespace, $key, $culture = null)
-    {
-        return $this->getMetastazContainer()->get($namespace, $key, $culture);
-    }
-
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function putMetastaz($namespace, $key, $value, $culture = null)
-    {
-        return $this->getMetastazContainer()->put($namespace, $key, $value, $culture);
-    }
-
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function deleteMetastaz($namespace, $key)
-    {
-        return $this->getMetastazContainer()->delete($namespace, $key);
-    }
-
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function getAllMetastaz()
-    {
-        return $this->getMetastazContainer()->getAll();
-    }
-
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function deleteAllMetastaz()
-    {
-        return $this->getMetastazContainer()->deleteAll();
-    }
-
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function loadMetastaz()
-    {
-        return $this->getMetastazContainer()->load();
-    }
-
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function persistMetastaz()
-    {
-        return $this->getMetastazContainer()->persist();
-    }
-
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function flushMetastaz()
-    {
-        return $this->getMetastazContainer()->flush();
-    }
-
-    /**
-     * @see Metastaz\Interfaces\MetastazInterface
-     */
-    public function getMetastazIndexes()
-    {
-        return $this->getMetastazContainer()->getIndexedFields();
-    }
-
-    public function __get($name)
-    {
-        if (false === strpos($name, '_')) {
-            return null;
-        }
-
-        list($namespace, $key) = explode('_', $name);
-        return $this->getMetastaz($namespace, $key);
-    }
-
-    public function __set($name, $value)
-    {
-        if (false === strpos($name, '_')) {
-            return;
-        }
-
-        list($namespace, $key) = explode('_', $name);
-        $this->putMetastaz($namespace, $key, $value);
     }
 
     /**
