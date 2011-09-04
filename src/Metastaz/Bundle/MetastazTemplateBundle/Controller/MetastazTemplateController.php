@@ -102,6 +102,7 @@ class MetastazTemplateController extends Controller
 
         $entity = new MetastazTemplateField();
         $entity->setMetastazTemplate($template);
+        $entity->setMetaNamespace($entity->getMetastazTemplate()->getName());
         $form   = $this->createForm(new MetastazTemplateFieldType(), $entity);
 
         $action_url = $this->get('router')->generate('metastaz_template_field_create', array(
