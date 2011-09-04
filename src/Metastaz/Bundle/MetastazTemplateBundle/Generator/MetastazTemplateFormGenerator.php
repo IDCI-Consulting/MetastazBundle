@@ -42,7 +42,7 @@ class MetastazTemplateFormGenerator extends Generator
      */
     public function generate(MetastazTemplate $template, $dir, $overwrite = false)
     {
-        $this->className = $template->getName().'MetastazTemplateType';
+        $this->className = $template->getFormTypeName();
         $this->classPath = $dir.DIRECTORY_SEPARATOR.$this->className.'.php';
 
         if (file_exists($this->classPath) && !$overwrite) {

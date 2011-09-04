@@ -124,16 +124,22 @@ class MetastazTemplate extends MetastazTemplateFieldType
     {
         foreach($this->getMetastazTemplateFields() as $field)
         {
-            if ($field->getMetastazTemplateFieldType() instanceof MetastazTemplate) {
-                return $field->getMetastazTemplateFieldType()->hasField($namespace, $key);
-            }
-
             if ($field->getMetaNamespace() == $namespace &&
                $field->getMetaKey() == $key) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Get form type name
+     *
+     * @return string
+     */
+    public function getFormTypeName()
+    {
+        return sprintf('%sMetastazTemplateType', $this->getName());
     }
 
     /**
@@ -147,12 +153,7 @@ class MetastazTemplate extends MetastazTemplateFieldType
         $fields = array();
 
         foreach ($this->getMetastazTemplateFields() as $field) {
-            if ($field->getMetastazTemplateFieldType() instanceof MetastazTemplate) {
-                $form_fields = $field->getMetastazTemplateFieldType()->getFormFields();
-            } else {
-                $tmp = $field->getFormField();
-            }
-
+            $tmp = $field->getFormField();
             $fields[$field->getMetaNamespace()][] = $tmp;
         }
 

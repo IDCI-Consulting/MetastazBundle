@@ -225,10 +225,17 @@ class MetastazTemplateField
      */
     public function getFormField()
     {
-        $ff = array(
-            '\''.$this->getMetaNamespace().'_'.$this->getMetaKey().'\'',
-            '\''.$this->getMetastazTemplateFieldType().'\''
-        );
+        if ($this->getMetastazTemplateFieldType() instanceof MetastazTemplate) {
+            $ff = array(
+                '\''.$this->getMetaNamespace().'_'.$this->getMetaKey().'\'',
+                'new '.$this->getMetastazTemplateFieldType()->getFormTypeName().'()'
+            );
+        } else {
+            $ff = array(
+                '\''.$this->getMetaNamespace().'_'.$this->getMetaKey().'\'',
+                '\''.$this->getMetastazTemplateFieldType().'\''
+            );
+        }
 
         $options = $this->getOptions() ? $this->getOptions().', ' : '';
         if ($options != '') {
