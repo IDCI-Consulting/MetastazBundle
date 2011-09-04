@@ -217,4 +217,24 @@ class MetastazTemplateField
     {
         return $this->metastaz_template_field_type;
     }
+
+    /**
+     * Get form field
+     *
+     * @return array 
+     */
+    public function getFormField()
+    {
+        $ff = array(
+            '\''.$this->getMetaNamespace().'_'.$this->getMetaKey().'\'',
+            '\''.$this->getMetastazTemplateFieldType().'\''
+        );
+
+        $options = $this->getOptions() ? $this->getOptions().', ' : '';
+        if ($options != '') {
+            $ff[] = 'array('.$options.')';
+        }
+
+        return $ff;
+    }
 }

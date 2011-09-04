@@ -124,6 +124,10 @@ class MetastazTemplate extends MetastazTemplateFieldType
     {
         foreach($this->getMetastazTemplateFields() as $field)
         {
+            if ($field->getMetastazTemplateFieldType() instanceof MetastazTemplate) {
+                return $field->getMetastazTemplateFieldType()->hasField($namespace, $key);
+            }
+
             if ($field->getMetaNamespace() == $namespace &&
                $field->getMetaKey() == $key) {
                 return true;
@@ -139,25 +143,24 @@ class MetastazTemplate extends MetastazTemplateFieldType
      */
     public function getFormFields()
     {
-        $ret = array();
+        $form_fields = array();
+        $fields = array();
+
         foreach ($this->getMetastazTemplateFields() as $field) {
-            $tmp = array(
-                '\''.$field->getMetaNamespace().'_'.$field->getMetaKey().'\'',
-                '\''.$field->getMetastazTemplateFieldType().'\''
-            );
-            $options = $field->getOptions() ? $field->getOptions().', ' : '';
-            //$tmp[] = 'array('.$options.'\'property_path\' => \'MetastazPropertyPath\')';
-            if ($options != '') {
-                $tmp[] = 'array('.$options.')';
+            if ($field->getMetastazTemplateFieldType() instanceof MetastazTemplate) {
+                $form_fields = $field->getMetastazTemplateFieldType()->getFormFields();
+            } else {
+                $tmp = $field->getFormField();
             }
-            $ret[$field->getMetaNamespace()][] = $tmp;
+
+            $fields[$field->getMetaNamespace()][] = $tmp;
         }
 
-        $fields = array();
-        foreach($ret as $namespaceFields) {
-            $fields = array_merge($fields, $namespaceFields);
+        foreach($fields as $namespaceFields) {
+            $form_fields = array_merge($form_fields, $namespaceFields);
         }
-        return $fields;
+
+        return $form_fields;
     }
 
     /**
