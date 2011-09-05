@@ -38,9 +38,12 @@ form fieldset > .inputs select {
     padding-right: 2px;
 }
 
-form fieldset:hover > .inputs input,
-form fieldset:hover > .inputs select,
-form fieldset:hover > .inputs textarea,
+form fieldset:hover > .inputs > input,
+form fieldset:hover > .inputs > select,
+form fieldset:hover > .inputs > textarea {
+    background: #F8F8F8;
+}
+
 form fieldset > .inputs input:focus,
 form fieldset > .inputs select:focus,
 form fieldset > .inputs textarea:focus {
