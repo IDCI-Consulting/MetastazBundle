@@ -11,7 +11,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProduct;
 use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProductCategory;
+use Metastaz\Bundle\MetastazProductBundle\Entity\MetastazProductAssociation;
 use Metastaz\Bundle\MetastazProductBundle\Form\MetastazProductWithCategoryType;
+use Metastaz\Bundle\MetastazProductBundle\Form\MetastazProductAssociationType;
 use Metastaz\Util\MetastazFormFactory;
 
 /**
@@ -253,6 +255,106 @@ class MetastazProductController extends Controller
         return $this->redirect($this->generateUrl('metastaz_product'));
     }
 
+    /**
+     * Displays a form to associate MetastazProduct entity with others.
+     *
+     * @Route("/{id}/association", name="metastaz_product_association")
+     * @Template()
+     */
+    public function associationAction($id)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $product = $em->getRepository('MetastazProductBundle:MetastazProduct')->find($id);
+
+        if (!$product) {
+            throw $this->createNotFoundException('Unable to find MetastazProduct entity.');
+        }
+
+        $entity = new MetastazProductAssociation();
+        $entity->setProduct($product);
+        $form = $this->createForm(new MetastazProductAssociationType(), $entity);
+
+        $form_action_url = $this->get('router')->generate(
+            'metastaz_product_association_create',
+            array('id' => $product->getId())
+        );
+
+        $form_params = array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+            'action_url' => $form_action_url
+        );
+
+        return array(
+            'product'     => $product,
+            'form_params' => $form_params
+        );
+    }
+
+    /**
+     * Create an association between two MetastazProduct.
+     *
+     * @Route("/{id}/association/create", name="metastaz_product_association_create")
+     * @Template("MetastazProductBundle:MetastazProduct:association.html.twig")
+     */
+    public function associationCreateAction($id)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $product = $em->getRepository('MetastazProductBundle:MetastazProduct')->find($id);
+
+        if (!$product) {
+            throw $this->createNotFoundException('Unable to find MetastazProduct entity.');
+        }
+
+        $entity = new MetastazProductAssociation();
+        $entity->setProduct($product);
+        $form = $this->createForm(new MetastazProductAssociationType(), $entity);
+
+        $request = $this->getRequest();
+
+        if ('POST' === $request->getMethod()) {
+            $form->bindRequest($request);
+
+            if ($form->isValid()) {
+
+                $em->persist($entity);
+
+                if ($form->get('bidirectional')->getData()) {
+                    $assoc = new MetastazProductAssociation();
+                    $assoc->setProduct($entity->getProductAssociation());
+                    $assoc->setProductAssociation($product);
+                    $assoc->setPriority($entity->getPriority());
+                    $em->persist($assoc);
+                }
+
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('metastaz_product_show', array('id' => $product->getId())));
+            }
+        }
+
+        $form_action_url = $this->get('router')->generate(
+            'metastaz_product_association_create',
+            array('id' => $product->getId())
+        );
+
+        $form_params = array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+            'action_url' => $form_action_url
+        );
+
+        return array(
+            'product'     => $product,
+            'form_params' => $form_params
+        );
+    }
+
+    /**
+     * Create a delete form
+     *
+     * @return form
+     */
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder(array('id' => $id))

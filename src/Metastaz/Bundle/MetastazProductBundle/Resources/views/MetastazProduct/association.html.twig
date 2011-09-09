@@ -1,0 +1,10 @@
+{% extends 'MetastazProductBundle::product.html.twig' %}
+
+{% block content %}
+
+<h2>{{ product }}</h2>
+<div class="form">
+    {% include 'MetastazProductBundle:MetastazProduct:associationForm.html.twig' with form_params %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% form_theme form 'MetastazDashboardBundle:Form:fields.html.twig' %}
+
+<form action="{{ action_url }}" method="post" {{ form_enctype(form) }}>
+    {{ form_errors(form) }}
+
+    {{ form_row(form.product_association) }}
+    {{ form_row(form.priority) }}
+    {{ form_row(form.bidirectional) }}
+
+    <input type="hidden" name="{{ form.product.vars.full_name }}" value="{{ entity.getProductId() }}" />
+    {{ form_row(form._token) }}
+    <ul class="actions">
+        <li>
+            <button type="submit">
+                Create
+            </button>
+        </li>
+        <li>
+            <a href="{{ path('metastaz_product', { 'id': entity.getProductId() }) }}">
+                Cancel
+            </a>
+        </li>
+    </ul>
+</form>

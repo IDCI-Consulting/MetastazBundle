@@ -13,6 +13,7 @@ class MetastazProductAssociationType extends AbstractType
             ->add('priority')
             ->add('product')
             ->add('product_association')
+            ->add('bidirectional', 'checkbox', array('property_path' => false))
         ;
     }
 

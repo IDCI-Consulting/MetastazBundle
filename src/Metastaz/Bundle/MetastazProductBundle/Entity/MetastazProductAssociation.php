@@ -122,4 +122,14 @@ class MetastazProductAssociation
     {
         return $this->priority;
     }
+
+    /**
+     * Get product id
+     *
+     * @return integer 
+     */
+    public function getProductId()
+    {
+        return $this->getProduct()->getId();
+    }
 }
